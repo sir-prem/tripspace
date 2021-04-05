@@ -1,0 +1,25 @@
+{
+  "name": "sit725-p2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "dependencies": {
+    "nodemon": "^2.0.7",
+	"express": "*",
+	"mongodb": "*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sir-prem/sit725-p2.git"
+  },
+  "author": "Prem G",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sir-prem/sit725-p2/issues"
+  },
+  "homepage": "https://github.com/sir-prem/sit725-p2#readme"
+}
