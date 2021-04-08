@@ -38,6 +38,11 @@ router.get('/', async function(req, res){
         await client.close();
     }
 
+	out += '<form method="POST" action="/user-profile">' +
+  				'Please enter user name: <input type="text" name="username" />' +
+				'<input type="submit" />' +
+			'</form>';
+
 	res.send(out);
 });
 
