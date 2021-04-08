@@ -16,10 +16,12 @@ app.use(express.urlencoded({
 //routes
 var test = require('./test.js');
 var userProf = require('./user-profile.js');
+var newListing = require('./new-listing.js');
 
-//both index.js and things.js should be in same directory
+//both index.js and e.g. user-profile.js should be in same directory
 app.use('/test', test);
 app.use('/user-profile', userProf);
+app.use('/new-listing', newListing);
 
 http.listen(port,()=>{
 	console.log("Listening on port ", port);

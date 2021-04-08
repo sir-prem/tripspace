@@ -19,17 +19,6 @@ router.get('/', async function(req, res){
         // Make the appropriate DB calls
         await  listDatabases(client, req, res);
 
-		/*
-		await createListing(client,
-        {
-            name: "Lovely Loft",
-            summary: "A charming loft in Paris",
-            bedrooms: 1,
-            bathrooms: 1
-        });
-		*/
-
-		//await findOneListingByName(client, /Paris/);
 		await findByName(client, /Paris/);
 
     } catch (e) {
@@ -40,6 +29,14 @@ router.get('/', async function(req, res){
 
 	out += '<form method="POST" action="/user-profile">' +
   				'Please enter user name: <input type="text" name="username" />' +
+				'<input type="submit" />' +
+			'</form><br>';
+
+	out += '<form method="POST" action="/new-listing">' +
+  				'Apartment name: <input type="text" name="apartName" /><br>' +
+  				'Summary: <input type="text" name="summary" /><br>' +
+  				'Bedrooms: <input type="text" name="bedrooms" /><br>' +
+  				'Bathrooms: <input type="text" name="bathrooms" /><br>' +
 				'<input type="submit" />' +
 			'</form>';
 
@@ -53,24 +50,6 @@ async function listDatabases(client, request, response){
     databasesList.databases.forEach(db => out+= (` - ${db.name}<br>`));
 };
 
-/*
-async function createListing(client, newListing){
-    const result = await client.db("sample_airbnb").collection("listingsAndReviews").insertOne(newListing);
-    console.log(`New listing created with the following id: ${result.insertedId}`);
-};
-
-async function findOneListingByName(client, nameOfListing) {
-
-    const result = await client.db("sample_airbnb").collection("listingsAndReviews").findOne({ name: nameOfListing });
-    
-	if (result) {
-        console.log(`Found a listing in the collection with the name '${nameOfListing}':`);
-        console.log(result.name);
-    } else {
-        console.log(`No listings found with the name '${nameOfListing}'`);
-    }
-};
-*/
 
 async function findByName(client, nameOfListing) {
 
