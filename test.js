@@ -19,7 +19,7 @@ router.get('/', async function(req, res){
         // Make the appropriate DB calls
         await  listDatabases(client, req, res);
 
-		await findByName(client, /Paris/);
+		await findByName(client, /Neil/);
 
     } catch (e) {
         console.error(e);
@@ -27,16 +27,13 @@ router.get('/', async function(req, res){
         await client.close();
     }
 
-	out += '<form method="POST" action="/user-profile">' +
-  				'Please enter user name: <input type="text" name="username" />' +
-				'<input type="submit" />' +
-			'</form><br>';
-
 	out += '<form method="POST" action="/new-listing">' +
-  				'Apartment name: <input type="text" name="apartName" /><br>' +
-  				'Summary: <input type="text" name="summary" /><br>' +
-  				'Bedrooms: <input type="text" name="bedrooms" /><br>' +
-  				'Bathrooms: <input type="text" name="bathrooms" /><br>' +
+  				'username: <input type="text" name="username" /><br>' +
+				'password: <input type="text" name="password" /><br>' +
+  				'Given name: <input type="text" name="givenname" /><br>' +
+  				'Last name: <input type="text" name="lastname" /><br>' +
+  				'Age: <input type="text" name="age" /><br>' +
+				'Gender: <input type="text" name="gender" /><br>' +
 				'<input type="submit" />' +
 			'</form>';
 
@@ -53,7 +50,7 @@ async function listDatabases(client, request, response){
 
 async function findByName(client, nameOfListing) {
 
-	const cursor = client.db("sample_airbnb").collection("listingsAndReviews").find({ name: nameOfListing });
+	const cursor = client.db("tripspaceDB").collection("drivers").find({ givenname: nameOfListing });
 
 	const results = await cursor.toArray(); 
 
@@ -63,13 +60,11 @@ async function findByName(client, nameOfListing) {
 
         results.forEach((result, i) => {
 
-            date = new Date(result.last_review).toDateString();
             out += "<br>";
-            out += `${i + 1}. name: ${result.name} <br>`;
+            out += `${i + 1}. username: ${result.username} <br>`;
             out += `   _id: ${result._id} <br>`;
-            out += `   bedrooms: ${result.bedrooms} <br>`;
-            out += `   bathrooms: ${result.bathrooms} <br>`;
-            out += `   most recent review date: ${new Date(result.last_review).toDateString()} <br>`;
+            out += `   given name: ${result.givenname} <br>`;
+            out += `   last name: ${result.lastname} <br>`;
         });
 
     } else {

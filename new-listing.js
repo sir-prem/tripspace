@@ -12,17 +12,20 @@ router.post('/', async function(req, res){
 
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
  
-	const apartName = req.body.apartName;
-	const summary = req.body.summary;
-	const bedrooms = req.body.bedrooms;
-	const bathrooms = req.body.bathrooms;
+	const user = req.body.username;
+	const pwd = req.body.password;
+	const given = req.body.givenname;
+	const last = req.body.lastname;
+	const age = req.body.age;
+	const gender = req.body.gender;
 
-	out += 'Received: Apartment name... ' + apartName + '<br>';
-	out += 'Received: summary.......... ' + summary + '<br>';
-	out += 'Received: bedrooms......... ' + bedrooms + '<br>';
-	out += 'Received: bathrooms........ ' + bathrooms + '<br>';
+	out += 'Received: Username......    ' + user + '<br>';
+	out += 'Received: Given name....... ' + given + '<br>';
+	out += 'Received: Last name........ ' + last + '<br>';
+	out += 'Received: age.............. ' + age + '<br>';
+	out += 'Received: gender........... ' + gender + '<br>';
 
-	console.log(out);
+	//console.log(out);
 
     try {
         // Connect to the MongoDB cluster
@@ -30,10 +33,12 @@ router.post('/', async function(req, res){
 
 		await createListing(client,
         {
-            name: apartName,
-            summary: summary,
-            bedrooms: bedrooms,
-            bathrooms: bathrooms
+			username: user,
+			password: pwd,
+            givenname: given,
+            lastname: last,
+            age: age,
+            gender: gender
         });
 
     } catch (e) {
@@ -47,7 +52,7 @@ router.post('/', async function(req, res){
 
 
 async function createListing(client, newListing){
-    const result = await client.db("sample_airbnb").collection("listingsAndReviews").insertOne(newListing);
+    const result = await client.db("tripspaceDB").collection("drivers").insertOne(newListing);
     out += `New listing created with the following id: ${result.insertedId}`;
 };
 
