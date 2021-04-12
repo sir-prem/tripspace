@@ -1,9 +1,8 @@
 <html>
 	<head>
-		Head
-
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link rel="stylesheet" href="./style.css">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -11,26 +10,50 @@
 	</head>
 	<body>
 
-  <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Logo</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">JavaScript</a></li>
-      </ul>
-    </div>
-  </nav>
+		  <nav>
+			<div class="nav-wrapper brown lighten-4">
+			  <a href="#" class="brand-logo"><img src="logo.png" width="160px"/></a>
+			  <ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="sass.html">Sass</a></li>
+				<li><a href="badges.html">Components</a></li>
+				<li><a href="collapsible.html">JavaScript</a></li>
+			  </ul>
+			</div>
+		  </nav>
 
-		<h1>Hello world</h1>
-		<a class="waves-effect waves-light btn">button</a>
+		<h1></h1>
 		<div class="container">
 			<div class="row">
-				<div class="col s12 l6" style="background-color: red;">
-					1
+				<div class="col s12 l6" style="background-color: lightgrey;">
+					<h2>Got some space?</h2>
+					<p>Have a vehicle, and do a bit of driving, often with the vehicle empty?
+					   Want to earn some extra income and do something good for the environment while you drive?
+					   Then why not sign up now and get started!</p>
+					<a href="./new-driver.html" class="waves-effect waves-light btn">New driver</a>
+					<p><br><br><h4>Driver login</h4></p>
+
+					<form method="POST" action="/driver-profile">
+						username: <input type="text" name="username" /><br>
+						password: <input type="text" name="password" /><br>
+						<input type="hidden" name="login" value="yes"/>
+						<button class="btn waves-effect waves-light" type="submit" name="action">Submit
+						  </button>
+					</form>
 				</div>
-				<div class="col s12 l6" style="background-color: blue;">
-					2
+				<div class="col s12 l6" style="background-color: slategrey; color: white">
+					<h2>Need some space?</h2>
+					<p>Need to get from A to B at low cost, while receiving great service?
+					   Or, need to courier small or large items at a fraction of the cost?
+					   Then why not sign up now and get started!</p>
+					<a href="./new-user.html" class="waves-effect waves-light btn">New user</a>
+					<p><br><br><h4>User login</h4></p>
+
+					<form method="POST" action="/user-profile">
+						username: <input type="text" name="username" /><br>
+						password: <input type="text" name="password" /><br>
+						<button class="btn waves-effect waves-light" type="submit" name="action">Submit
+						  </button>
+					</form>
 				</div>
 			</div>
 		</div>

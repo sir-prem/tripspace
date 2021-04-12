@@ -1,0 +1,55 @@
+<html>
+	<head>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link rel="stylesheet" href="./style.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+	</head>
+	<body>
+
+		  <nav>
+			<div class="nav-wrapper brown lighten-4">
+			  <a href="#" class="brand-logo">TripSPACE</a>
+			  <ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="sass.html">Sass</a></li>
+				<li><a href="badges.html">Components</a></li>
+				<li><a href="collapsible.html">JavaScript</a></li>
+			  </ul>
+			</div>
+		  </nav>
+
+		<h1></h1>
+		<div class="container">
+			<div class="row">
+				<div class="col s12 l6" style="background-color: lightgrey;">
+					<h1>Driver Sign-Up</h1>
+					<h5>Start earning an extra income, and helping the environment
+					   by utilising spare space in your vehicle.</h5>
+					<h5>Register your details with us, and get started right now!</h5>
+					<p>Not sure and want to know a bit more before you begin your journey with 
+					TripSpace? Click here to find out more...<br><br>
+					<a href="./how-tripspace-works.html" class="waves-effect waves-light btn light-green darken-1">Find out more</a>
+				</div>
+				<div class="col s12 l6" style="background-color: slategrey; color: white">
+					<h4>Register here</h4>
+					<p>Please fill in the below details.</p>
+
+					<form method="POST" action="/driver-profile">
+						username: <input type="text" name="username" /><br>
+						password: <input type="text" name="password" /><br>
+						Given name: <input type="text" name="givenname" /><br> 
+						Last name: <input type="text" name="lastname" /><br> 
+						Age: <input type="text" name="age" /><br> 
+						Gender: <input type="text" name="gender" /><br> 
+						<input type="hidden" name="login" value="no"/>
+						<button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit
+						  </button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
