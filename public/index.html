@@ -10,27 +10,30 @@
 	</head>
 	<body>
 
-		  <nav>
+		<nav>
 			<div class="nav-wrapper brown lighten-4">
-			  <a href="#" class="brand-logo"><img src="logo.png" width="160px"/></a>
-			  <ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><a href="sass.html">Sass</a></li>
-				<li><a href="badges.html">Components</a></li>
-				<li><a href="collapsible.html">JavaScript</a></li>
-			  </ul>
+				<a href="#" class="brand-logo"><img src="logo.png" width="160px"/></a>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+					<li><a href="./index.html">Home</a></li>
+					<li><a href="./about.html">About</a></li>
+					<li><a href="./contact.html">Contact</a></li>
+				</ul>
 			</div>
-		  </nav>
+		</nav>
 
-		<h1></h1>
 		<div class="container">
+
 			<div class="row">
-				<div class="col s12 l6" style="background-color: lightgrey;">
+				<div class="col s12 l5 card" style="background-color: lightgrey;">
 					<h2>Got some space?</h2>
 					<p>Have a vehicle, and do a bit of driving, often with the vehicle empty?
 					   Want to earn some extra income and do something good for the environment while you drive?
 					   Then why not sign up now and get started!</p>
 					<a href="./new-driver.html" class="waves-effect waves-light btn">New driver</a>
-					<p><br><br><h4>Driver login</h4></p>
+					
+					<p><br><br>
+					<p>Already a member? Then sign in below.</p>
+					<h4>Driver login</h4></p>
 
 					<form method="POST" action="/driver-profile">
 						username: <input type="text" name="username" /><br>
@@ -40,13 +43,21 @@
 						  </button>
 					</form>
 				</div>
-				<div class="col s12 l6" style="background-color: slategrey; color: white">
+
+				<!-- empty column to create space in the middle -->
+				<div class="col l1"></div>
+
+				<div class="col s12 l5 card" style="background-color: slategrey; color: white">
 					<h2>Need some space?</h2>
 					<p>Need to get from A to B at low cost, while receiving great service?
 					   Or, need to courier small or large items at a fraction of the cost?
 					   Then why not sign up now and get started!</p>
 					<a href="./new-user.html" class="waves-effect waves-light btn">New user</a>
-					<p><br><br><h4>User login</h4></p>
+
+
+					<p><br><br>
+					<p>Already a member? Then sign in below.</p>
+					<h4>User login</h4></p>
 
 					<form method="POST" action="/user-profile">
 						username: <input type="text" name="username" /><br>
@@ -56,6 +67,30 @@
 					</form>
 				</div>
 			</div>
+
+			<div class="row">
+
+				<div class="col s12 l4">
+
+					<div class="card">
+						<div class="card-image">
+						  <img src="wallpaper4.jpg">
+						  <span class="card-title">Our Mission</span>
+						</div>
+						<div class="card-content">
+						  <p>We aim to <b>better utilise vehicle trips</b>, by filling up vehicles that are on the road with plenty 
+							  of space left free and under-utilised. This leads to a <b>greener planet</b>, while providing financial 
+							incentives for end users. </p>
+						</div>
+						<div class="card-action">
+						  <a href="./about.html">Learn more about TripSpace</a>
+						</div>
+					  </div>
+
+				</div>	
+            
+			</div>
+
 		</div>
 	</body>
 </html>

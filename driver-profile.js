@@ -42,10 +42,8 @@ router.post('/', async function(req, res){
         
         await addHeaderHTML();
         
-        out += '	<h1></h1>';
         out += '	<div class="container">';
         out += '		<div class="row">';
-        out += '			<div class="col s12 l6 grey lighten-5 z-depth-1">';
         
         if(fromLogin=="no") {  // from registration form
 		    await checkExistingUser(client, user);
@@ -85,7 +83,6 @@ router.post('/', async function(req, res){
                 }                
         }
 
-        out+= '                </div>';
         out+= '            </div>';
         out+= '        </div>';
 
@@ -155,7 +152,6 @@ async function updateGlobalUserInfo(doc) {
     gender = doc.gender;
 }
 
-
 async function addHeaderHTML() {
     out += '<html>';
 	out += '<head>';
@@ -171,11 +167,11 @@ async function addHeaderHTML() {
 
 	out += '	  <nav>';
 	out += '		<div class="nav-wrapper brown lighten-4">';
-	out += '		  <a href="#" class="brand-logo">TripSPACE</a>';
+	out += '		  <a href="#" class="brand-logo"><img src="logo.png" width="160px"/></a>';
 	out += '		  <ul id="nav-mobile" class="right hide-on-med-and-down">';
-	out += '			<li><a href="sass.html">Sass</a></li>';
-	out += '			<li><a href="badges.html">Components</a></li>';
-	out += '			<li><a href="collapsible.html">JavaScript</a></li>';
+	out += '			<li><a href="./index.html">Home</a></li>';
+	out += '			<li><a href="./about.html">About</a></li>';
+	out += '			<li><a href="./contact.html">Contact</a></li>';
 	out += '		  </ul>';
 	out += '		</div>';
 	out += '	  </nav>';
@@ -214,38 +210,102 @@ out+= '</html>';
 }
 
 async function usernameExists() {
-            out += '<br> Sorry <b>' + given + '</b>, the username <b>' + user + '</b> already exists. Please choose another one.';
-            out +='<br><br><a href="./new-driver.html" class="waves-effect waves-light btn light-green darken-1">Back to registration</a><br><br>';
+    out += '<div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	<br> Sorry <b>' + given + '</b>, the username <b>' + user + '</b> already exists. Please choose another one.';
+    out += '	<br><br><a href="./new-driver.html" class="waves-effect waves-light btn light-green darken-1">Back to registration</a><br><br>';
+    out += '</div>';
 }
 
 async function wrongUsername() {
-    out += '<br> Sorry, the username <b>' + user + '</b> does not exist. Please check that you have the correct username, or register as a new Driver.';
-    out +='<br><br><a href="./index.html" class="waves-effect waves-light btn light-green darken-1">Back to Sign-in page</a><br><br>';
+    out += '<div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	<br> Sorry, the username <b>' + user + '</b> does not exist. Please check that you have the correct username, or register as a new Driver.';
+    out += '	<br><br><a href="./index.html" class="waves-effect waves-light btn light-green darken-1">Back to Sign-in page</a><br><br>';
+    out += '</div>';
 }
 
 async function wrongPassword() {
-            out += '<br> Sorry, the password for username: <b>' + user + '</b> is incorrect. Please try again.';
-            out +='<br><br><a href="./index.html" class="waves-effect waves-light btn light-green darken-1">Back to Sign-in page</a><br><br>';
+	out += '<div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	<br> Sorry, the password for username: <b>' + user + '</b> is incorrect. Please try again.';
+    out += '	<br><br><a href="./index.html" class="waves-effect waves-light btn light-green darken-1">Back to Sign-in page</a><br><br>';
+    out += '</div>';
 }
 
 async function verifiedUserLogin() {
-    out += '<h4>Welcome back, <b>' + given + '</b></h4>';
-    await profileInfoTable();
+
+    //change column span size of cards through these variables
+    const welcomeBackCard_colSpan_small = 12;
+    const welcomeBackCard_colSpan_large = 6;
+
+    const profileInfoCard_colSpan_small = 12;
+    const profileInfoCard_colSpan_large = 6;
+
+    const viewTripsBtnCard_colSpan_small = 12;
+    const viewTripsBtnCard_colSpan_large = 6;
+
+    out += `<div class="row">`;
+        await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
+    out += `</div>`;
+
+    out += `<div class="row">`;
+        await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+    out += `</div>`;
+
+    out += `<div class="row">`;
+        await viewTripsButtonCard(viewTripsBtnCard_colSpan_small, viewTripsBtnCard_colSpan_large);
+    out += `</div>`;
 }
 
 async function newRegistrant() {
-    out += '<h4>Thanks for registering, <b>' + given + '</b></h4>';
-    await profileInfoTable();
+
+    const profileInfoCard_colSpan_small = 12;
+    const profileInfoCard_colSpan_large = 6;
+
+    out += '<div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	<h4>Thanks for registering, <b>' + given + '</b></h4>';
+    await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+    out += '</div>';
 }
 
-async function profileInfoTable() {
-    out += '<table>';
-    out +=      '<tr><td>Username</td><td>' + user + '</td></tr>';
-    out +=      '<tr><td>Given name</td><td>' + given + '</td></tr>';
-    out +=      '<tr><td>Last name</td><td>' + last + '</td></tr>';
-    out +=      '<tr><td>age</td><td>' + age + '</td></tr>';
-    out +=      '<tr><td>gender</td><td>' + gender + '</td></tr>';
-    out += '</table>';
+async function welcomeBackCard(sColSpan, lColSpan) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
+    out += '	<h4>Welcome back, <b>' + given + '</b></h4>';
+    out += '</div>';
+}
+
+async function viewTripsButtonCard(sColSpan, lColSpan) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
+    out += '	<p>View My Trips Schedule</p>';
+    out += '	<form method="POST" action="/driver-schedule">';
+    out += '	    <input type="hidden" name="username" value=' + user + '>';
+    out += '	    <input type="hidden" name="addNew" value="false">';    
+    out += '	    <button class="btn waves-effect waves-light" type="submit" name="action">My Trips</button>';
+    out += '	</form>';
+    out += '</div>';
+}
+
+async function profileInfoCard(sColSpan, lColSpan) {
+	//out += '<div class="row">';
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
+    out += '	<div class="col s12 l6 grey lighten-5">';
+    out +=		   '<table>';
+    out +=				'<tr><td>Username</td><td>' + user + '</td></tr>';
+    out +=				'<tr><td>Given name</td><td>' + given + '</td></tr>';
+    out +=				'<tr><td>Last name</td><td>' + last + '</td></tr>';
+    out +=				'<tr><td>age</td><td>' + age + '</td></tr>';
+    out +=				'<tr><td>gender</td><td>' + gender + '</td></tr>';
+    out +=		   '</table>';
+	out += '	</div>';
+    out += '	<div class="col s4 l4 grey lighten-5">';
+
+	if (gender=="Male") {
+		out +=		   '<img src="avatar_M.jpeg" width=100% />';
+	}
+	else {
+		out +=		   '<img src="avatar_F.jpeg" width=100% />';
+	}
+
+	out +=	   '</div>';
+	out += '</div>';
 }
 
 
