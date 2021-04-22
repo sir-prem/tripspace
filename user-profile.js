@@ -286,12 +286,19 @@ async function displayUserUI() {
     const profileInfoCard_colSpan_small = 12;
     const profileInfoCard_colSpan_large = 6;
 
+    const tripFinderButtonCard_colSpan_small = 12;
+    const tripFinderButtonCard_colSpan_large = 6;
+
     out += `<div class="row">`;
         await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
     out += `</div>`;
 
     out += `<div class="row">`;
         await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+    out += `</div>`;
+
+    out += `<div class="row">`;
+        await tripFinderButtonCard(tripFinderButtonCard_colSpan_small, tripFinderButtonCard_colSpan_large);
     out += `</div>`;
 
 }
@@ -327,6 +334,18 @@ async function viewTripsButtonCard(sColSpan, lColSpan) {
     out += '	    <button class="btn waves-effect waves-light" type="submit" name="action">My Trips</button>';
     out += '	</form>';
     out += '</div>';
+}
+
+async function tripFinderButtonCard(sColSpan, lColSpan) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
+    out += '	<p>Start a trip search here</p>';
+    out += '	<form method="POST" action="/trip-finder">';
+    out += '	    <input type="hidden" name="username" value=' + user + '>';
+    out += '	    <input type="hidden" name="searchSubmitted" value="false">';    
+    out += '	    <button class="btn waves-effect waves-light" type="submit" name="action">Trip Finder</button>';
+    out += '	</form>';
+    out += '</div>';
+
 }
 
 async function profileInfoCard(sColSpan, lColSpan) {
