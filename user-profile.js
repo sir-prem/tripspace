@@ -14,6 +14,7 @@ var gender = "";
 var isExistingUsername;
 var fromLogin = "no";
 var isVerified;
+var userType;
 
 router.post('/', async function(req, res){
 	
@@ -24,8 +25,12 @@ router.post('/', async function(req, res){
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
  
     fromLogin = req.body.login;
+    userType = req.body.usertype;
 
-    //console.log("fromLogin value is: " + fromLogin);
+    
+    console.log("fromLogin value is: " + fromLogin);
+    console.log("usertype is: " + userType);
+
     user = req.body.username;
     pwd = req.body.password;
 
@@ -44,7 +49,6 @@ router.post('/', async function(req, res){
         
         out += '	<div class="container">';
         out += '		<div class="row">';
-        out += '			<div class="col s12 l6 grey lighten-5 z-depth-1">';
         
         if(fromLogin=="no") {  // from registration form
 		    await checkExistingUser(client, user);
@@ -52,14 +56,15 @@ router.post('/', async function(req, res){
                 await usernameExists();            
             }
             else { // new driver registration
-                await createDriver(client,
+                await createUser(client,
                     {
                     username: user,
                     password: pwd,
                     givenname: given,
                     lastname: last,
                     age: age,
-                    gender: gender
+                    gender: gender,
+                    usertype: userType
                     });
                 await newRegistrant(); 
             }
@@ -84,7 +89,6 @@ router.post('/', async function(req, res){
                 }                
         }
 
-        out+= '                </div>';
         out+= '            </div>';
         out+= '        </div>';
 
@@ -101,16 +105,16 @@ router.post('/', async function(req, res){
 });
 
 async function checkExistingUser(client, newUsername) {
-	const cursor = client.db("tripspaceDB").collection("drivers").find({ username: newUsername });
+	const cursor = client.db("tripspaceDB").collection("users").find({ username: newUsername });
 	const results = await cursor.toArray(); 
 	if (results.length > 0) {
         isExistingUsername = true;
 	}
 };
 
-async function createDriver(client, newListing){
-    const result = await client.db("tripspaceDB").collection("drivers").insertOne(newListing);
-    //out += `New listing created with the following id: ${result.insertedId}`;
+async function createUser(client, newUser){
+    const result = await client.db("tripspaceDB").collection("users").insertOne(newUser);
+    //out += `New user created with the following id: ${result.insertedId}`;
 };
 
 // verifyID() method checks user login credentials
@@ -122,7 +126,7 @@ async function createDriver(client, newListing){
 //  also updates user global variables for case '2' (verified user)
 //
 async function verifyID(client) {
-    const result = await client.db("tripspaceDB").collection("drivers").findOne({ username: user });
+    const result = await client.db("tripspaceDB").collection("users").findOne({ username: user });
 
     console.log(result);
 
@@ -152,6 +156,7 @@ async function updateGlobalUserInfo(doc) {
     last = doc.lastname;
     age = doc.age;
     gender = doc.gender;
+    userType = doc.usertype;
 }
 
 async function addHeaderHTML() {
@@ -171,9 +176,9 @@ async function addHeaderHTML() {
 	out += '		<div class="nav-wrapper brown lighten-4">';
 	out += '		  <a href="#" class="brand-logo"><img src="logo.png" width="160px"/></a>';
 	out += '		  <ul id="nav-mobile" class="right hide-on-med-and-down">';
-	out += '			<li><a href="sass.html">Sass</a></li>';
-	out += '			<li><a href="badges.html">Components</a></li>';
-	out += '			<li><a href="collapsible.html">JavaScript</a></li>';
+	out += '			<li><a href="./index.html">Home</a></li>';
+	out += '			<li><a href="./about.html">About</a></li>';
+	out += '			<li><a href="./contact.html">Contact</a></li>';
 	out += '		  </ul>';
 	out += '		</div>';
 	out += '	  </nav>';
@@ -212,33 +217,122 @@ out+= '</html>';
 }
 
 async function usernameExists() {
-            out += '<br> Sorry <b>' + given + '</b>, the username <b>' + user + '</b> already exists. Please choose another one.';
-            out +='<br><br><a href="./new-driver.html" class="waves-effect waves-light btn light-green darken-1">Back to registration</a><br><br>';
+    out += '<div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	<br> Sorry <b>' + given + '</b>, the username <b>' + user + '</b> already exists. Please choose another one.';
+    out += '	<br><br><a href="./new-user.html" class="waves-effect waves-light btn light-green darken-1">Back to registration</a><br><br>';
+    out += '</div>';
 }
 
 async function wrongUsername() {
-    out += '<br> Sorry, the username <b>' + user + '</b> does not exist. Please check that you have the correct username, or register as a new Driver.';
-    out +='<br><br><a href="./index.html" class="waves-effect waves-light btn light-green darken-1">Back to Sign-in page</a><br><br>';
+    out += '<div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	<br> Sorry, the username <b>' + user + '</b> does not exist. Please check that you have the correct username, or register as a new Driver.';
+    out += '	<br><br><a href="./index.html" class="waves-effect waves-light btn light-green darken-1">Back to Sign-in page</a><br><br>';
+    out += '</div>';
 }
 
 async function wrongPassword() {
-            out += '<br> Sorry, the password for username: <b>' + user + '</b> is incorrect. Please try again.';
-            out +='<br><br><a href="./index.html" class="waves-effect waves-light btn light-green darken-1">Back to Sign-in page</a><br><br>';
+	out += '<div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	<br> Sorry, the password for username: <b>' + user + '</b> is incorrect. Please try again.';
+    out += '	<br><br><a href="./index.html" class="waves-effect waves-light btn light-green darken-1">Back to Sign-in page</a><br><br>';
+    out += '</div>';
 }
 
 async function verifiedUserLogin() {
-    out += '<h4>Welcome back, <b>' + given + '</b></h4>';
-    await profileInfoTable();
+   
+    if (userType == 'driver') {
+        console.log("userType is: DRIVER");
+        await displayDriverUI();
+    }
+    else {
+        console.log("userType is: USER");
+        await displayUserUI();
+    }
+
+}
+
+async function displayDriverUI() {
+    
+    //change column span size of cards through these variables
+    const welcomeBackCard_colSpan_small = 12;
+    const welcomeBackCard_colSpan_large = 6;
+    
+    const profileInfoCard_colSpan_small = 12;
+    const profileInfoCard_colSpan_large = 6;
+    
+    const viewTripsBtnCard_colSpan_small = 12;
+    const viewTripsBtnCard_colSpan_large = 6;
+    
+    out += `<div class="row">`;
+        await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
+    out += `</div>`;
+    
+    out += `<div class="row">`;
+        await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+    out += `</div>`;
+    
+    
+    out += `<div class="row">`;
+        await viewTripsButtonCard(viewTripsBtnCard_colSpan_small, viewTripsBtnCard_colSpan_large);
+    out += `</div>`;
+    
+}
+
+async function displayUserUI() {
+
+    //change column span size of cards through these variables
+    const welcomeBackCard_colSpan_small = 12;
+    const welcomeBackCard_colSpan_large = 6;
+
+    const profileInfoCard_colSpan_small = 12;
+    const profileInfoCard_colSpan_large = 6;
+
+    out += `<div class="row">`;
+        await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
+    out += `</div>`;
+
+    out += `<div class="row">`;
+        await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+    out += `</div>`;
+
 }
 
 async function newRegistrant() {
-    out += '<h4>Thanks for registering, <b>' + given + '</b></h4>';
-    await profileInfoTable();
+
+    const profileInfoCard_colSpan_small = 12;
+    const profileInfoCard_colSpan_large = 6;
+
+    out += `<div class="row">`;
+    out += '    <div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	    <h4>Thanks for registering, <b>' + given + '</b></h4>';
+    out += `    </div>`;
+    out += `</div>`;
+
+    out += `<div class="row">`;
+        await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+    out += '</div>';
 }
 
-async function profileInfoTable() {
-	out += '<div class="row">';
-    out += '	<div class="col s8 l8 grey lighten-5">';
+async function welcomeBackCard(sColSpan, lColSpan) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
+    out += '	<h4>Welcome back, <b>' + given + '</b></h4>';
+    out += '</div>';
+}
+
+async function viewTripsButtonCard(sColSpan, lColSpan) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
+    out += '	<p>View My Trips Schedule</p>';
+    out += '	<form method="POST" action="/driver-schedule">';
+    out += '	    <input type="hidden" name="username" value=' + user + '>';
+    out += '	    <input type="hidden" name="addNew" value="false">';    
+    out += '	    <button class="btn waves-effect waves-light" type="submit" name="action">My Trips</button>';
+    out += '	</form>';
+    out += '</div>';
+}
+
+async function profileInfoCard(sColSpan, lColSpan) {
+	//out += '<div class="row">';
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
+    out += '	<div class="col s12 l6 grey lighten-5">';
     out +=		   '<table>';
     out +=				'<tr><td>Username</td><td>' + user + '</td></tr>';
     out +=				'<tr><td>Given name</td><td>' + given + '</td></tr>';
@@ -251,7 +345,6 @@ async function profileInfoTable() {
 
 	if (gender=="Male") {
 		out +=		   '<img src="avatar_M.jpeg" width=100% />';
-		console.log("yes.. male");
 	}
 	else {
 		out +=		   '<img src="avatar_F.jpeg" width=100% />';
