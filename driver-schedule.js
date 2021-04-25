@@ -15,6 +15,11 @@ router.post('/', async function(req, res){
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
     out = "";
     user = req.body.username;
+
+    userDoc = await U.retrieveUserDoc(user);
+    userType = userDoc.usertype;
+    console.log("back: userType is: " + userType);
+
     addTrip = req.body.addNew;
 
     console.log("username value is: " + user);
@@ -39,7 +44,7 @@ router.post('/', async function(req, res){
                 seats: req.body.seats,
                 });
             console.log("new trip added to database (trips collection)..");
-            //addTrip = false;
+            addTrip = false;
         }
         
         out = await U.addHeaderHTML(out);
@@ -47,15 +52,25 @@ router.post('/', async function(req, res){
         out += '	<div class="container">';
         out += '		<div class="row">';
         
-        //content
+                            //content
 
-        await showTripSchedule(client);
+                            await showTripSchedule(client);
 
-        await showNewTripForm();
+        out += `        </div>`;
 
+        out += `        <div class="row">`;
+        
+                            await showNewTripForm();
+
+        out += '            <div class="col s12 l1"></div>'; //empty div for spacing between columns
+
+
+                        out = await U.backToProfilePageButton(out,user);
+        
+        out += `        </div>`;
     
-        out+= '         </div>';
-        out+= '     </div>';
+        
+        out+= '     </div>'; // end container div
 
         out = await U.addFooterHTML(out);
 
@@ -76,7 +91,7 @@ async function addNewTripToDB(client, newTrip) {
 
 
 async function showTripSchedule(client) {
-    out += '<div class="row">';
+    
     out += '    <div class="col s12 l12 grey lighten-5 z-depth-1">';
     out += '	    <h5>Driver trip schedule for <b>' + user + ' :</b></h5>';
     
@@ -112,7 +127,10 @@ async function showTripSchedule(client) {
                 out += `    <td> ${result.seats} </td>`;
 
                 if (result.bookedBy != null) {
-                    out += `<td style="color:limegreen">BOOKED</td>`;
+                    out += `<td style="color:red">BOOKED</td>`;
+                }
+                else {
+                    out += `<td style="color:limegreen">AVAILABLE</td>`;
                 }
 
                 out += "</tr>";
@@ -125,11 +143,10 @@ async function showTripSchedule(client) {
         }
 
     out += '    </div>';
-    out += '</div>';
+    
 };
 
 async function showNewTripForm() {
-    out += '<div class="row">';
     out += '    <div class="col s12 l4 grey lighten-5 z-depth-1">';
     out += '	    <h5>Add new trip</h5>';
     out += '	    <form method="POST" action="/driver-schedule" id="addtrip">';
@@ -149,64 +166,6 @@ async function showNewTripForm() {
 
     out += '	    </form>';
     out += '    </div>';
-    out += '</div>';
-}
-
-async function addHeaderHTML() {
-    out += '<html>';
-	out += '<head>';
-    out += '<!-- Compiled and minified CSS -->';
-    out += '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">';
-    out += '<link rel="stylesheet" href="./style.css">';
-
-    out += '<!-- Compiled and minified JavaScript -->';
-    out += '<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>';
-            
-	out += '</head>';
-	out += '<body>';
-
-	out += '	  <nav>';
-	out += '		<div class="nav-wrapper brown lighten-4">';
-	out += '		  <a href="#" class="brand-logo"><img src="logo.png" width="160px"/></a>';
-	out += '		  <ul id="nav-mobile" class="right hide-on-med-and-down">';
-	out += '			<li><a href="./index.html">Home</a></li>';
-	out += '			<li><a href="./about.html">About</a></li>';
-	out += '			<li><a href="./contact.html">Contact</a></li>';
-	out += '		  </ul>';
-	out += '		</div>';
-	out += '	  </nav>';
-}
-
-async function addFooterHTML() {
-
-        out += '<footer class="page-footer brown darken-4 grey-text text-lighten-5">';
-        out += '  <div class="container">';
-        out += '    <div class="row">';
-        out += '      <div class="col l6 s12">';
-        out += '        <h5 class="white-text">Footer Content</h5>';
-        out += '        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>';
-        out += '      </div>';
-        out += '      <div class="col l4 offset-l2 s12">';
-        out += '        <h5 class="white-text">Links</h5>';
-        out += '        <ul>';
-        out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>';
-        out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>';
-        out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>';
-        out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>';
-        out += '        </ul>';
-        out += '      </div>';
-        out += '    </div>';
-        out += '  </div>';
-        out += '  <div class="footer-copyright brown darken-3 grey-text text-lighten-5">';
-        out += '    <div class="container">';
-        out += '    © 2021 Copyright TripSPACE';
-        out += '    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>';
-        out += '    </div>';
-        out += '  </div>';
-        out += '</footer>';
-
-out+= '    </body>';
-out+= '</html>';
 }
 
 //export this router to use in our index.js

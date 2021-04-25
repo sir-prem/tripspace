@@ -5,6 +5,8 @@ const {MongoClient} = require('mongodb');
 const { search } = require('./user-profile');
 const uri = "mongodb+srv://admin:00000@cluster0.7hvms.mongodb.net/test";
 
+let U = require("./utilities.js");
+
 var out;
 var user = "";
 var searchSubmitted; // flag to add new trip to database
@@ -15,6 +17,7 @@ router.post('/', async function(req, res){
     out = "";
     user = req.body.username;
     searchSubmitted = req.body.searchSubmitted;
+    //userDoc = await U.retrieveUserDoc(user);
 
     console.log("username value is: " + user);
     console.log("searchSubmitted value is: " + searchSubmitted);
@@ -24,35 +27,45 @@ router.post('/', async function(req, res){
         await client.connect();
 
         
+        
         await addHeaderHTML();
         
         out += '	<div class="container">';
+
         out += '		<div class="row">';
         
-        //content
-        
-        await showTripFinderForm();
+                        //content
+                        
+                        await showTripFinderForm();
+                        
 
-        //firstly, if a new trip was just submitted (in prev route call), update database
-        if (searchSubmitted == "true") {
-            console.log("a search was submitted..");
-
-            
-            await displayTripsFound(client, {
-                username: user,
-                fromSuburb: req.body.fromSuburb,
-                toSuburb: req.body.toSuburb,
-                date: req.body.tripDate,
-                cargoSpace: req.body.cargoSpace,
-                seats: req.body.seats,
-                });
-            //console.log("new trip added to database (trips collection)..");
-            
-            //addTrip = false;
-        }
-
+                        //firstly, if a new trip was just submitted (in prev route call), update database
+                        if (searchSubmitted == "true") {
+                            console.log("a search was submitted..");
+                            
+                            
+                            
+                            await displayTripsFound(client, {
+                                username: user,
+                                fromSuburb: req.body.fromSuburb,
+                                toSuburb: req.body.toSuburb,
+                                date: req.body.tripDate,
+                                cargoSpace: req.body.cargoSpace,
+                                seats: req.body.seats,
+                                });
+                            //console.log("new trip added to database (trips collection)..");
+                            
+                            //addTrip = false;
+                        }
     
         out+= '         </div>';
+
+        out += '		<div class="row">';
+
+                        out = await U.backToProfilePageButton(out,user);
+
+        out+= '         </div>';
+
         out+= '     </div>';
 
         await addFooterHTML();
@@ -66,8 +79,8 @@ router.post('/', async function(req, res){
 });
 
 async function displayTripsFound(client, searchParamObj) {
-    out += '<div class="row">';
-    out += '    <div class="col s12 l12 grey lighten-5 z-depth-1">';
+    //out += '    <div class="col s12 l1></div>'; // empty div column as spacer
+    out += '    <div class="col s12 l8 grey lighten-5 z-depth-1">';
     out += `	    <h5>Search Results</h5>`;
     
     const cursor = client.db("tripspaceDB").collection("driverTrips").find
@@ -133,12 +146,11 @@ async function displayTripsFound(client, searchParamObj) {
 
         
     out += '    </div>';
-    out += '</div>';
 };
 
 async function showTripFinderForm() {
-    out += '<div class="row">';
-    out += '    <div class="col s12 l4 grey lighten-5 z-depth-1">';
+
+    out += '    <div class="col s12 l3 grey lighten-5 z-depth-1">';
 
     out += '	    <h5>Trip Finder: Find a trip</h5>';
 
@@ -156,7 +168,7 @@ async function showTripFinderForm() {
 
     out += '	    </form>';
     out += '    </div>';
-    out += '</div>';
+
 }
 
 async function addHeaderHTML() {

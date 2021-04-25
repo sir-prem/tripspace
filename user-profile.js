@@ -98,8 +98,9 @@ router.post('/', async function(req, res){
                 }                
         }
         else { // if (fromSourcePage=="back") : back to profile page from another page
-            const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});    
-            await client.connect();        
+            userDoc = await U.retrieveUserDoc(user);
+            userType = userDoc.usertype;
+            console.log("back: userType is: " + userType);
             await verifiedUserLogin(client);
         }
 
@@ -220,19 +221,19 @@ async function displayDriverUI(client) {
     const viewTripsBtnCard_colSpan_large = 5;
     
     out += `<div class="row">`;
-        await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
+                await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
+                out += '    <div class="col s12 l1"></div>'; //empty div
+                out = await U.displayUserType(out,user);
     out += `</div>`;
     
     out += `<div class="row">`;
-        await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
-        out += '    <div class="col s12 l1"></div>'; //empty div
-        await thisDriversBookingsCard(client);
-
+                await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+                out += '    <div class="col s12 l1"></div>'; //empty div
+                await thisDriversBookingsCard(client);
     out += `</div>`;
     
-    
     out += `<div class="row">`;
-        await viewTripsButtonCard(viewTripsBtnCard_colSpan_small, viewTripsBtnCard_colSpan_large);
+                await viewTripsButtonCard(viewTripsBtnCard_colSpan_small, viewTripsBtnCard_colSpan_large);
     out += `</div>`;
 
     
@@ -251,17 +252,19 @@ async function displayUserUI(client) {
     const tripFinderButtonCard_colSpan_large = 5;
 
     out += `<div class="row">`;
-        await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
+                await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
+                out += '    <div class="col s12 l1"></div>'; //empty div
+                out = await U.displayUserType(out,user);
     out += `</div>`;
 
     out += `<div class="row">`;
-        await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
-        out += '    <div class="col s12 l1"></div>'; //empty div
-        await thisUsersBookingsCard(client);
+                await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+                out += '    <div class="col s12 l1"></div>'; //empty div
+                await thisUsersBookingsCard(client);
     out += `</div>`;
 
     out += `<div class="row">`;
-        await tripFinderButtonCard(tripFinderButtonCard_colSpan_small, tripFinderButtonCard_colSpan_large);
+                await tripFinderButtonCard(tripFinderButtonCard_colSpan_small, tripFinderButtonCard_colSpan_large);
     out += `</div>`;
 
 }
@@ -284,7 +287,7 @@ async function newRegistrant() {
 
 async function welcomeBackCard(sColSpan, lColSpan) {
     out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
-    out += '	<h4>Welcome back, <b>' + given + '</b></h4>';
+    out += '	<h4>Welcome back, <b>' + userDoc.givenname + '</b></h4>';
     out += '</div>';
 }
 
@@ -317,15 +320,15 @@ async function profileInfoCard(sColSpan, lColSpan) {
     out += '	<div class="col s12 l6 grey lighten-5">';
     out +=		   '<table>';
     out +=				'<tr><td><b>Username</b></td><td>' + user + '</td></tr>';
-    out +=				'<tr><td><b>Given name</b></td><td>' + given + '</td></tr>';
-    out +=				'<tr><td><b>Last name</b></td><td>' + last + '</td></tr>';
-    out +=				'<tr><td><b>age</b></td><td>' + age + '</td></tr>';
-    out +=				'<tr><td><b>gender</b></td><td>' + gender + '</td></tr>';
+    out +=				'<tr><td><b>Given name</b></td><td>' + userDoc.givenname + '</td></tr>';
+    out +=				'<tr><td><b>Last name</b></td><td>' + userDoc.lastname + '</td></tr>';
+    out +=				'<tr><td><b>age</b></td><td>' + userDoc.age + '</td></tr>';
+    out +=				'<tr><td><b>gender</b></td><td>' + userDoc.gender + '</td></tr>';
     out +=		   '</table>';
 	out += '	</div>';
     out += '	<div class="col s4 l4 grey lighten-5">';
 
-	if (gender=="Male") {
+	if (userDoc.gender=="Male") {
 		out +=		   '<img src="avatar_M.jpeg" width=100% />';
 	}
 	else {

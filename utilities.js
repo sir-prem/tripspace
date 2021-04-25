@@ -82,21 +82,35 @@ async function retrieveUserDoc(username) {
 async function backToProfilePageButton(out,username) {
 
     out += `<div class="col s12 l5 grey lighten-5 z-depth-1">
+                <p>
                 <form method="POST" action="/user-profile">
-                    <input type="hidden" name="username" value=${username}/>
+                    <input type="hidden" name="username" value=${username} />
                     <input type="hidden" name="sourcepage" value="back"/>
-                    <input type="hidden" name="usertype" value="user"/>
-                    <button class="btn waves-effect waves-light" type="submit" name="action">Back To Profile</button>
+                    <button class="btn waves-effect waves-light" type="submit">Back To Profile</button>
                     </form>
+                    </p>
                     </div>`;
                     return out;
                 };
-                //<input type="hidden" name="userType" value="user"/>
+
+async function displayUserType(out,username) {
+
+    const userDoc = await retrieveUserDoc(username);
+
+    const userType = userDoc.usertype;
+
+    out += `<div class="col s12 l5 grey lighten-5 z-depth-1">
+                <h5>My role is: <b>${userType}</b></h5>
+            </div>`;
+                    return out;
+                };
                 
+    //                <input type="hidden" name="usertype" value="user"/>
 module.exports = {
     addHeaderHTML,
     addFooterHTML,
     retrieveTripDoc,
     retrieveUserDoc,
-    backToProfilePageButton
+    backToProfilePageButton,
+    displayUserType
 };

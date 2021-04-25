@@ -4,11 +4,10 @@
   "description": "",
   "main": "test.js",
   "dependencies": {
-    "nodemon": "^2.0.7",
-	"express": "*",
-	"mongodb": "*"
+    "express": "*",
+    "mongodb": "^3.6.6",
+    "nodemon": "^2.0.7"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

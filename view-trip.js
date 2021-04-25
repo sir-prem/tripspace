@@ -28,21 +28,22 @@ router.post('/', async function(req, res){
         tripDoc = await U.retrieveTripDoc(client, tripID);
         console.log("After retrieval, tripDoc._id is: " + tripDoc._id);
         
-        
         out = await U.addHeaderHTML(out);
         
         //content
         out += '	<div class="container">';
         
-        
         out += '		<div class="row">';
-            await showTripDetails();
+                            await showTripDetails();
         out+= '         </div>';
         
         out += '		<div class="row">';
-            await showBookTripButton();
+                            await showBookTripButton();
         out+= '         </div>';
 
+        out += '		<div class="row">';
+                            out = await U.backToProfilePageButton(out,user);
+        out+= '         </div>';
         
         out+= '     </div>'; // end container div
 
