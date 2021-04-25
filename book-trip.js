@@ -41,13 +41,13 @@ router.post('/', async function(req, res){
             await showBookingConfirmation();
         
         out += `    </div>`;
-
+/*
         out += `    <div class="row">`;
 
             out = await U.backToProfilePageButton(out,user);
         
         out += `    </div>`;
-
+*/
         out+= '</div>'; // end container div
 
         out = await U.addFooterHTML(out);

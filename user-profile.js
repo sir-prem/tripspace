@@ -47,10 +47,7 @@ router.post('/', async function(req, res){
         console.log("usertype is: " + userType);
             
         pwd = req.body.password;
-    
-        if(fromSourcePage=="register") {
-        }
-        
+                 
         out = await U.addHeaderHTML(out);
         
         out += '	<div class="container">';
@@ -100,7 +97,9 @@ router.post('/', async function(req, res){
                     await verifiedUserLogin(client);
                 }                
         }
-        else { //back to profile page from another page            
+        else { // if (fromSourcePage=="back") : back to profile page from another page
+            const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});    
+            await client.connect();        
             await verifiedUserLogin(client);
         }
 
@@ -407,9 +406,56 @@ async function thisUsersBookingsCard(client) {
             out += '        <th>Driver</th>';
             out += '    </tr>';
     
-    await client.db("tripspaceDB").collection("driverTrips").find({ bookedBy: user })
+            console.log("reached here");
+            const cursor = await client.db("tripspaceDB").collection("driverTrips").find({ bookedBy: user });
+            const results = await cursor.toArray();
+
+            if (results.length > 0) {
+                console.log("results are there");
+
+                results.forEach((result, i) => {
+                    if (result.bookedBy != null) {
+                        console.log("result.bookedBy is: " + result.bookedBy);
+                        out += "<tr>";
+                        out += `    <td> ${result.date} </td>`;
+                        out += `    <td> ${result.start} </td>`;
+                        out += `    <td> ${result.end} </td>`;
+                        out += `    <td> ${result.fromSuburb} </td>`;
+                        out += `    <td> ${result.toSuburb} </td>`;
+                        out += `    <td> ${result.vehicle} </td>`;
+                        out += `    <td> ${result.cargoSpace} </td>`;
+                        out += `    <td> ${result.seats} </td>`;
+                        out += `    <td> ${result.username} </td>`;                
+                        out += "</tr>";
+                    }
+
+                });
+            }
+
+
+            /*
+            for (result in results) {
+                console.log("result is: " + result);
+                            if (result.bookedBy != null) {
+                                console.log("doc.bookedBy is: " + result.bookedBy);
+                                out += "<tr>";
+                                out += `    <td> ${result.date} </td>`;
+                                out += `    <td> ${result.start} </td>`;
+                                out += `    <td> ${result.end} </td>`;
+                                out += `    <td> ${result.fromSuburb} </td>`;
+                                out += `    <td> ${result.toSuburb} </td>`;
+                                out += `    <td> ${result.vehicle} </td>`;
+                                out += `    <td> ${result.cargoSpace} </td>`;
+                                out += `    <td> ${result.seats} </td>`;
+                                out += `    <td> ${result.username} </td>`;                
+                                out += "</tr>";
+                            }
+            }
+*/
+/*
                     .forEach(
                         function(doc) {
+                            console.log("doc is: " + doc);
                             if (doc.bookedBy != null) {
                                 console.log("doc.bookedBy is: " + doc.bookedBy);
                                 out += "<tr>";
@@ -426,13 +472,9 @@ async function thisUsersBookingsCard(client) {
                                 out += "</tr>";
                             }
                         }
-                    );
-
+                        );
+                        */
                     out += '</table>';
-
-
-
-
     out += '</div>';
 
 }
