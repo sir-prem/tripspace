@@ -4,6 +4,8 @@ var router = express.Router();
 const {MongoClient} = require('mongodb');
 const uri = "mongodb+srv://admin:00000@cluster0.7hvms.mongodb.net/test";
 
+let U = require("./utilities.js");
+
 var out;
 var user = "";
 var addTrip; // flag to add new trip to database
@@ -40,7 +42,7 @@ router.post('/', async function(req, res){
             //addTrip = false;
         }
         
-        await addHeaderHTML();
+        out = await U.addHeaderHTML(out);
         
         out += '	<div class="container">';
         out += '		<div class="row">';
@@ -55,7 +57,7 @@ router.post('/', async function(req, res){
         out+= '         </div>';
         out+= '     </div>';
 
-        await addFooterHTML();
+        out = await U.addFooterHTML(out);
 
     } catch (e) {
         console.error(e);
@@ -66,14 +68,6 @@ router.post('/', async function(req, res){
     
 
 });
-
-async function checkExistingUser(client, newUsername) {
-	const cursor = client.db("tripspaceDB").collection("drivers").find({ username: newUsername });
-	const results = await cursor.toArray(); 
-	if (results.length > 0) {
-        isExistingUsername = true;
-	}
-};
 
 async function addNewTripToDB(client, newTrip) {
     const result = await client.db("tripspaceDB").collection("driverTrips").insertOne(newTrip);
@@ -116,6 +110,10 @@ async function showTripSchedule(client) {
                 out += `    <td> ${result.vehicle} </td>`;
                 out += `    <td> ${result.cargoSpace} </td>`;
                 out += `    <td> ${result.seats} </td>`;
+
+                if (result.bookedBy != null) {
+                    out += `<td style="color:limegreen">BOOKED</td>`;
+                }
 
                 out += "</tr>";
             });

@@ -4,6 +4,8 @@ var router = express.Router();
 const {MongoClient} = require('mongodb');
 const uri = "mongodb+srv://admin:00000@cluster0.7hvms.mongodb.net/test";
 
+let U = require("./utilities.js");
+
 var out;
 var user = "";
 var pwd = "";
@@ -12,45 +14,55 @@ var last  = "";
 var age = 0;
 var gender = "";
 var isExistingUsername;
-var fromLogin = "no";
+//var fromLogin = "no";
 var isVerified;
 var userType;
+var userDoc;
+
 
 router.post('/', async function(req, res){
-	
-	out = "";
-	isExistingUsername = false;
-    isVerified = 0;
-
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
- 
-    fromLogin = req.body.login;
-    userType = req.body.usertype;
-
     
-    console.log("fromLogin value is: " + fromLogin);
-    console.log("usertype is: " + userType);
-
-    user = req.body.username;
-    pwd = req.body.password;
-
-    if(fromLogin=="no") {
-        given = req.body.givenname;
-        last = req.body.lastname;
-        age = req.body.age;
-        gender = req.body.gender;
-    }
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
     
     try {
+
         // Connect to the MongoDB cluster
         await client.connect();
+    
+        fromSourcePage = req.body.sourcepage; // get (prev) source page - {"login", "register", "back" }
+                                                    //used to display appropriate display data
+        user = req.body.username; // get username from form hidden input
         
-        await addHeaderHTML();
+        userType = req.body.usertype;
+
+        out = "";
+        isExistingUsername = false;
+        isVerified = 0;
+    
+        
+        
+    
+        
+        console.log("fromSource value is: " + fromSourcePage);
+        console.log("usertype is: " + userType);
+            
+        pwd = req.body.password;
+    
+        if(fromSourcePage=="register") {
+        }
+        
+        out = await U.addHeaderHTML(out);
         
         out += '	<div class="container">';
         out += '		<div class="row">';
         
-        if(fromLogin=="no") {  // from registration form
+        if(fromSourcePage=="register") {  // from registration form
+            
+            given = req.body.givenname;
+            last = req.body.lastname;
+            age = req.body.age;
+            gender = req.body.gender;            
+
 		    await checkExistingUser(client, user);
             if (isExistingUsername) {
                 await usernameExists();            
@@ -69,7 +81,7 @@ router.post('/', async function(req, res){
                 await newRegistrant(); 
             }
         }     
-        else  { // (fromLogin=="yes") --> from login form
+        else if (fromSourcePage=="login") { // from login form
                 
                 await verifyID(client);
 
@@ -85,14 +97,17 @@ router.post('/', async function(req, res){
                     await wrongPassword();
                 }
                 else { // (isVerified == 2)                    
-                    await verifiedUserLogin();
+                    await verifiedUserLogin(client);
                 }                
+        }
+        else { //back to profile page from another page            
+            await verifiedUserLogin(client);
         }
 
         out+= '            </div>';
         out+= '        </div>';
 
-        await addFooterHTML();
+        out = await U.addFooterHTML(out);
 
     } catch (e) {
         console.error(e);
@@ -159,63 +174,6 @@ async function updateGlobalUserInfo(doc) {
     userType = doc.usertype;
 }
 
-async function addHeaderHTML() {
-    out += '<html>';
-	out += '<head>';
-    out += '<!-- Compiled and minified CSS -->';
-    out += '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">';
-    out += '<link rel="stylesheet" href="./style.css">';
-
-    out += '<!-- Compiled and minified JavaScript -->';
-    out += '<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>';
-            
-	out += '</head>';
-	out += '<body>';
-
-	out += '	  <nav>';
-	out += '		<div class="nav-wrapper brown lighten-4">';
-	out += '		  <a href="#" class="brand-logo"><img src="logo.png" width="160px"/></a>';
-	out += '		  <ul id="nav-mobile" class="right hide-on-med-and-down">';
-	out += '			<li><a href="./index.html">Home</a></li>';
-	out += '			<li><a href="./about.html">About</a></li>';
-	out += '			<li><a href="./contact.html">Contact</a></li>';
-	out += '		  </ul>';
-	out += '		</div>';
-	out += '	  </nav>';
-}
-
-async function addFooterHTML() {
-
-        out += '<footer class="page-footer brown darken-4 grey-text text-lighten-5">';
-        out += '  <div class="container">';
-        out += '    <div class="row">';
-        out += '      <div class="col l6 s12">';
-        out += '        <h5 class="white-text">Footer Content</h5>';
-        out += '        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>';
-        out += '      </div>';
-        out += '      <div class="col l4 offset-l2 s12">';
-        out += '        <h5 class="white-text">Links</h5>';
-        out += '        <ul>';
-        out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>';
-        out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>';
-        out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>';
-        out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>';
-        out += '        </ul>';
-        out += '      </div>';
-        out += '    </div>';
-        out += '  </div>';
-        out += '  <div class="footer-copyright brown darken-3 grey-text text-lighten-5">';
-        out += '    <div class="container">';
-        out += '    © 2021 Copyright TripSPACE';
-        out += '    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>';
-        out += '    </div>';
-        out += '  </div>';
-        out += '</footer>';
-
-out+= '    </body>';
-out+= '</html>';
-}
-
 async function usernameExists() {
     out += '<div class="col s12 l6 grey lighten-5 z-depth-1">';
     out += '	<br> Sorry <b>' + given + '</b>, the username <b>' + user + '</b> already exists. Please choose another one.';
@@ -237,30 +195,30 @@ async function wrongPassword() {
     out += '</div>';
 }
 
-async function verifiedUserLogin() {
+async function verifiedUserLogin(client) {
    
     if (userType == 'driver') {
         console.log("userType is: DRIVER");
-        await displayDriverUI();
+        await displayDriverUI(client);
     }
     else {
         console.log("userType is: USER");
-        await displayUserUI();
+        await displayUserUI(client);
     }
 
 }
 
-async function displayDriverUI() {
+async function displayDriverUI(client) {
     
     //change column span size of cards through these variables
     const welcomeBackCard_colSpan_small = 12;
-    const welcomeBackCard_colSpan_large = 6;
+    const welcomeBackCard_colSpan_large = 5;
     
     const profileInfoCard_colSpan_small = 12;
-    const profileInfoCard_colSpan_large = 6;
+    const profileInfoCard_colSpan_large = 5;
     
     const viewTripsBtnCard_colSpan_small = 12;
-    const viewTripsBtnCard_colSpan_large = 6;
+    const viewTripsBtnCard_colSpan_large = 5;
     
     out += `<div class="row">`;
         await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
@@ -268,26 +226,30 @@ async function displayDriverUI() {
     
     out += `<div class="row">`;
         await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+        out += '    <div class="col s12 l1"></div>'; //empty div
+        await thisDriversBookingsCard(client);
+
     out += `</div>`;
     
     
     out += `<div class="row">`;
         await viewTripsButtonCard(viewTripsBtnCard_colSpan_small, viewTripsBtnCard_colSpan_large);
     out += `</div>`;
+
     
 }
 
-async function displayUserUI() {
+async function displayUserUI(client) {
 
     //change column span size of cards through these variables
     const welcomeBackCard_colSpan_small = 12;
-    const welcomeBackCard_colSpan_large = 6;
+    const welcomeBackCard_colSpan_large = 5;
 
     const profileInfoCard_colSpan_small = 12;
-    const profileInfoCard_colSpan_large = 6;
+    const profileInfoCard_colSpan_large = 5;
 
     const tripFinderButtonCard_colSpan_small = 12;
-    const tripFinderButtonCard_colSpan_large = 6;
+    const tripFinderButtonCard_colSpan_large = 5;
 
     out += `<div class="row">`;
         await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
@@ -295,6 +257,8 @@ async function displayUserUI() {
 
     out += `<div class="row">`;
         await profileInfoCard(profileInfoCard_colSpan_small, profileInfoCard_colSpan_large);
+        out += '    <div class="col s12 l1"></div>'; //empty div
+        await thisUsersBookingsCard(client);
     out += `</div>`;
 
     out += `<div class="row">`;
@@ -353,11 +317,11 @@ async function profileInfoCard(sColSpan, lColSpan) {
     out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
     out += '	<div class="col s12 l6 grey lighten-5">';
     out +=		   '<table>';
-    out +=				'<tr><td>Username</td><td>' + user + '</td></tr>';
-    out +=				'<tr><td>Given name</td><td>' + given + '</td></tr>';
-    out +=				'<tr><td>Last name</td><td>' + last + '</td></tr>';
-    out +=				'<tr><td>age</td><td>' + age + '</td></tr>';
-    out +=				'<tr><td>gender</td><td>' + gender + '</td></tr>';
+    out +=				'<tr><td><b>Username</b></td><td>' + user + '</td></tr>';
+    out +=				'<tr><td><b>Given name</b></td><td>' + given + '</td></tr>';
+    out +=				'<tr><td><b>Last name</b></td><td>' + last + '</td></tr>';
+    out +=				'<tr><td><b>age</b></td><td>' + age + '</td></tr>';
+    out +=				'<tr><td><b>gender</b></td><td>' + gender + '</td></tr>';
     out +=		   '</table>';
 	out += '	</div>';
     out += '	<div class="col s4 l4 grey lighten-5">';
@@ -371,6 +335,106 @@ async function profileInfoCard(sColSpan, lColSpan) {
 
 	out +=	   '</div>';
 	out += '</div>';
+}
+
+async function thisDriversBookingsCard(client) {
+
+    //var booking = null;
+
+    out += '    <div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	    <h5>My Bookings</h5>';
+
+    out += '<table>';
+            out += '    <tr>';
+            out += '        <th>Date</th>';
+            out += '        <th>From</th>';
+            out += '        <th>Til</th>';
+            out += '        <th>Start</th>';
+            out += '        <th>Destination</th>';
+            out += '        <th>Vehicle</th>';
+            out += '        <th>Cargo Space</th>';
+            out += '        <th>Seats Available</th>';
+            out += '        <th>Booked By</th>';
+            out += '    </tr>';
+    
+    await client.db("tripspaceDB").collection("driverTrips").find({ username: user })
+                    .forEach(
+                        function(doc) {
+                            if (doc.bookedBy != null) {
+                                console.log("doc.bookedBy is: " + doc.bookedBy);
+                                out += "<tr>";
+                                out += `    <td> ${doc.date} </td>`;
+                                out += `    <td> ${doc.start} </td>`;
+                                out += `    <td> ${doc.end} </td>`;
+                                out += `    <td> ${doc.fromSuburb} </td>`;
+                                out += `    <td> ${doc.toSuburb} </td>`;
+                                out += `    <td> ${doc.vehicle} </td>`;
+                                out += `    <td> ${doc.cargoSpace} </td>`;
+                                out += `    <td> ${doc.seats} </td>`;
+                                out += `    <td> ${doc.bookedBy} </td>`;
+                
+                                out += "</tr>";
+                            }
+                        }
+                    );
+
+                    out += '</table>';
+
+
+
+
+    out += '</div>';
+
+}
+
+async function thisUsersBookingsCard(client) {
+
+    //var booking = null;
+
+    out += '    <div class="col s12 l6 grey lighten-5 z-depth-1">';
+    out += '	    <h5>My Bookings</h5>';
+
+    out += '<table>';
+            out += '    <tr>';
+            out += '        <th>Date</th>';
+            out += '        <th>From</th>';
+            out += '        <th>Til</th>';
+            out += '        <th>Start</th>';
+            out += '        <th>Destination</th>';
+            out += '        <th>Vehicle</th>';
+            out += '        <th>Cargo Space</th>';
+            out += '        <th>Seats Available</th>';
+            out += '        <th>Driver</th>';
+            out += '    </tr>';
+    
+    await client.db("tripspaceDB").collection("driverTrips").find({ bookedBy: user })
+                    .forEach(
+                        function(doc) {
+                            if (doc.bookedBy != null) {
+                                console.log("doc.bookedBy is: " + doc.bookedBy);
+                                out += "<tr>";
+                                out += `    <td> ${doc.date} </td>`;
+                                out += `    <td> ${doc.start} </td>`;
+                                out += `    <td> ${doc.end} </td>`;
+                                out += `    <td> ${doc.fromSuburb} </td>`;
+                                out += `    <td> ${doc.toSuburb} </td>`;
+                                out += `    <td> ${doc.vehicle} </td>`;
+                                out += `    <td> ${doc.cargoSpace} </td>`;
+                                out += `    <td> ${doc.seats} </td>`;
+                                out += `    <td> ${doc.username} </td>`;
+                
+                                out += "</tr>";
+                            }
+                        }
+                    );
+
+                    out += '</table>';
+
+
+
+
+    out += '</div>';
+
 }
 
 

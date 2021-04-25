@@ -65,20 +65,6 @@ router.post('/', async function(req, res){
 	res.send(out);
 });
 
-async function checkExistingUser(client, newUsername) {
-	const cursor = client.db("tripspaceDB").collection("drivers").find({ username: newUsername });
-	const results = await cursor.toArray(); 
-	if (results.length > 0) {
-        isExistingUsername = true;
-	}
-};
-
-async function addNewTripToDB(client, newTrip) {
-    const result = await client.db("tripspaceDB").collection("driverTrips").insertOne(newTrip);
-    console.log(`New trip added to DB with id: ${result.insertedId}`);
-}
-
-
 async function displayTripsFound(client, searchParamObj) {
     out += '<div class="row">';
     out += '    <div class="col s12 l12 grey lighten-5 z-depth-1">';
@@ -124,11 +110,19 @@ async function displayTripsFound(client, searchParamObj) {
                 out += `    <td> ${result.vehicle} </td>`;
                 out += `    <td> ${result.cargoSpace} </td>`;
                 out += `    <td> ${result.seats} </td>`;
+                out += `    <td>`;
+                out += '	    <form method="POST" action="/view-trip" id="viewtripbtn">';
+                out += '            <input type="hidden" name="username" value=' + user + '>';
+                out += `            <input type="hidden" name="tripID" value=${result._id} >`;
+                out += '	        <button class="btn waves-effect waves-light" type="submit">View Trip Details</button>';
+
+                out += '	    </form>';
+                out+= `</td>`;
 
                 out += "</tr>";
             });
 
-            out += '</table>';
+            out += '</table>';            
     
         } else {
             out += `<b>0</b> trips found going
@@ -137,6 +131,7 @@ async function displayTripsFound(client, searchParamObj) {
                                     <br>`;
         }
 
+        
     out += '    </div>';
     out += '</div>';
 };
