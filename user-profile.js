@@ -38,10 +38,7 @@ router.post('/', async function(req, res){
         out = "";
         isExistingUsername = false;
         isVerified = 0;
-    
-        
-        
-    
+
         
         console.log("fromSource value is: " + fromSourcePage);
         console.log("usertype is: " + userType);
@@ -77,31 +74,35 @@ router.post('/', async function(req, res){
                     });
                 await newRegistrant(); 
             }
-        }     
-        else if (fromSourcePage=="login") { // from login form
-                
-                await verifyID(client);
-
-                // cases based on isVerified flag
-                // 0 - username invalid
-                // 1 - username valid, pwd not match
-                // 2 - username valid, pwd match (verified user)
-
-                if (isVerified == 0) {
-                    await wrongUsername();
-                }
-                else if (isVerified == 1) {
-                    await wrongPassword();
-                }
-                else { // (isVerified == 2)                    
-                    await verifiedUserLogin(client);
-                }                
         }
-        else { // if (fromSourcePage=="back") : back to profile page from another page
+        
+        else {
             userDoc = await U.retrieveUserDoc(user);
-            userType = userDoc.usertype;
-            console.log("back: userType is: " + userType);
-            await verifiedUserLogin(client);
+            
+            if (fromSourcePage=="login") { // from login form
+                    
+                    await verifyID(client);
+
+                    // cases based on isVerified flag
+                    // 0 - username invalid
+                    // 1 - username valid, pwd not match
+                    // 2 - username valid, pwd match (verified user)
+
+                    if (isVerified == 0) {
+                        await wrongUsername();
+                    }
+                    else if (isVerified == 1) {
+                        await wrongPassword();
+                    }
+                    else { // (isVerified == 2)                     
+                        await verifiedUserLogin(client);
+                    }                
+            }
+            else { // if (fromSourcePage=="back") : back to profile page from another page
+                userType = userDoc.usertype;
+                console.log("back: userType is: " + userType);
+                await verifiedUserLogin(client);
+            }
         }
 
         out+= '            </div>';
@@ -196,6 +197,8 @@ async function wrongPassword() {
 }
 
 async function verifiedUserLogin(client) {
+
+    console.log("do we get here?");
    
     if (userType == 'driver') {
         console.log("userType is: DRIVER");
@@ -221,7 +224,9 @@ async function displayDriverUI(client) {
     const viewTripsBtnCard_colSpan_large = 5;
     
     out += `<div class="row">`;
+            console.log("before welcomebackcard");
                 await welcomeBackCard(welcomeBackCard_colSpan_small, welcomeBackCard_colSpan_large);
+            console.log("after welcomebackcard");
                 out += '    <div class="col s12 l1"></div>'; //empty div
                 out = await U.displayUserType(out,user);
     out += `</div>`;
