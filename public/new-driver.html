@@ -36,13 +36,40 @@
 					<h4>Register here</h4>
 					<p>Please fill in the below details.</p>
 
-					<form method="POST" action="/user-profile">
+					<script>
+						window.addEventListener('load', function () {
+							document.querySelector('#profile_pic_src').addEventListener('change', function () {
+								if (this.files && this.files[0]) {
+									var img = document.querySelector('#profile_pic');
+									var realImg = document.querySelector('#real_image');
+									img.onload = () => {
+										URL.revokeObjectURL(img.src);  // no longer needed, free memory
+									}
+	
+									img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+									var reader = new FileReader();
+    								reader.onload = function(event) {
+        								console.log('File content:', event.target.result);
+										realImg.value = event.target.result;
+										console.log(realImg.value);
+    								};
+									reader.readAsArrayBuffer(this.files[0]);
+								}
+							});
+						});
+					</script>
+
+					<form method="POST" action="/user-profile" enctype="multipart/form-data">
 						username: <input type="text" name="username" /><br>
-						password: <input type="text" name="password" /><br>
+						password: <input type="password" name="password" /><br>
 						Given name: <input type="text" name="givenname" /><br> 
 						Last name: <input type="text" name="lastname" /><br> 
 						Age: <input type="text" name="age" /><br> 
 						Gender: <input type="text" name="gender" /><br> 
+						Profile picture: (Image should be smaller than 16MB)</br>
+						<input type='file' id="profile_pic_src"/></br>
+						<input type='text' name="profile_pic" id="real_image" style="display: none;"/>
+						<img id="profile_pic" width="100" height="100" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"></br></br>
 						<input type="hidden" name="sourcepage" value="register"/>
 						<input type="hidden" name="usertype" value="driver"/>
 						<button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit

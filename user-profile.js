@@ -13,6 +13,7 @@ var given = "";
 var last  = "";
 var age = 0;
 var gender = "";
+var profile_pic;
 var isExistingUsername;
 //var fromLogin = "no";
 var isVerified;
@@ -39,6 +40,7 @@ router.post('/', async function(req, res){
         isExistingUsername = false;
         isVerified = 0;
 
+        var ImgFile = Buffer.from(req.body.profile_pic);
         
         console.log("fromSource value is: " + fromSourcePage);
         console.log("usertype is: " + userType);
