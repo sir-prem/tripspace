@@ -40,7 +40,8 @@ router.post('/', async function(req, res){
         isExistingUsername = false;
         isVerified = 0;
 
-        var ImgFile = Buffer.from(req.body.profile_pic);
+        // Code to transfer Buffer string to image file
+        // var ImgFile = Buffer.from(req.body.profile_pic);
         
         console.log("fromSource value is: " + fromSourcePage);
         console.log("usertype is: " + userType);
@@ -72,7 +73,8 @@ router.post('/', async function(req, res){
                     lastname: last,
                     age: age,
                     gender: gender,
-                    usertype: userType
+                    usertype: userType,
+                    profile_pic:req.body.profile_pic
                     });
                 await newRegistrant(); 
             }
