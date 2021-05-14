@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "*",
     "mongodb": "^3.6.6",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "socket.io": "^4.1.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

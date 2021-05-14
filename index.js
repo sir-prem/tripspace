@@ -1,7 +1,15 @@
 let express = require("express");
 let app = express();
-const
+const socketio = require('socket.io');
+const http = require('http');
+const server = http.createServer(app);
+const io = socketio(server);
 
+//initialize socketio
+io.on('connect', function(socket){
+  console.log('connected to socket.io!')
+  
+});
 const {MongoClient} = require('mongodb');
 const uri = "mongodb+srv://admin:00000@cluster0.7hvms.mongodb.net/test";
 let http = require('http').createServer(app);
@@ -30,6 +38,6 @@ app.use('/trip-finder', tripFinder);
 app.use('/view-trip', viewTrip);
 app.use('/book-trip', bookTrip);
 
-http.listen(port,()=>{
+server.listen(port,()=>{
 	console.log("Listening on port ", port);
 });
