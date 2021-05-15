@@ -3,7 +3,7 @@ const socket = io.connect('http://localhost:8080');
 //setup toastr options
 toastr.options = {
     timeOut: 10000,
-    positionClass : 'toast-bottom-right',
+    positionClass : 'toast-top-right',
     extendedTimeOut: 0,
     fadeOut: 0,
     fadeIn: 0,
