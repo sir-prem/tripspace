@@ -49,6 +49,7 @@ router.post('/', async function(req, res){
         
         console.log("fromSource value is: " + fromSourcePage);
         console.log("usertype is: " + userType);
+        console.log(req.body);
             
         pwd = req.body.password;
                  
@@ -82,9 +83,32 @@ router.post('/', async function(req, res){
                     });
                 await newRegistrant(); 
             }
-        }
-        
-        else {
+        } else if (fromSourcePage == "editProfile") {
+            console.log(req.body.profile_pic);
+            await client.db("tripspaceDB").collection("users").findOneAndUpdate({
+                username: req.body.username
+            },
+            {$set:{
+                password: req.body.password,
+                givenname: req.body.givenname,
+                lastname: req.body.lastname,
+                age: req.body.age,
+                gender: req.body.gender,
+                profile_pic: req.body.profile_pic
+            }}
+            );
+
+
+            out += `
+                <script>
+                    alert("Update profile succeed");
+                </script>
+            `;
+
+            userType = userDoc.usertype;
+                console.log("back: userType is: " + userType);
+                await verifiedUserLogin(client);
+        }  else {
             userDoc = await U.retrieveUserDoc(user);
             
             if (fromSourcePage=="login") { // from login form
@@ -338,16 +362,28 @@ async function profileInfoCard(sColSpan, lColSpan) {
     out +=				'<tr><td><b>age</b></td><td>' + userDoc.age + '</td></tr>';
     out +=				'<tr><td><b>gender</b></td><td>' + userDoc.gender + '</td></tr>';
     out +=		   '</table>';
+    out +=		   '</br>';
+    out += '	<form method="POST" action="/editProfile">';
+    out += '	    <input type="hidden" name="username" value=' + user + '>';
+    out += '	    <input type="hidden" name="givenname" value=' + userDoc.givenname + '>';
+    out += '	    <input type="hidden" name="lastname" value=' + userDoc.lastname + '>';
+    out += '	    <input type="hidden" name="age" value=' + userDoc.age + '>';
+    out += '	    <input type="hidden" name="gender" value=' + userDoc.gender + '>';
+    out += '	    <input type="hidden" name="profile_pic" value=' + userDoc.profile_pic + '>';
+    out += '	    <input type="hidden" name="password" value=' + userDoc.password + '>';
+    out += '	    <input type="hidden" name="addNew" value="false">';    
+    out += '	    <button class="btn waves-effect waves-light" type="submit" name="action">Edit</button>';
+    out += '	</form>';
 	out += '	</div>';
     out += '	<div class="col s4 l4 grey lighten-5">';
 
     if (userDoc.profile_pic != null) {
-      out += '<img src="' + userDoc.profile_pic + '" width=100% />';
+      out += '<img src="' + userDoc.profile_pic + '" width=100 height=100 />';
     } else {
       if (userDoc.gender == "Male") {
-        out += '<img src="avatar_M.jpeg" width=100% />';
+        out += '<img src="avatar_M.jpeg" width=100 height=100 />';
       } else {
-        out += '<img src="avatar_F.jpeg" width=100% />';
+        out += '<img src="avatar_F.jpeg" width=100 height=100 />';
       }
     }
 
