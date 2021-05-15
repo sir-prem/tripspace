@@ -40,10 +40,12 @@ router.post('/', async function(req, res){
         isExistingUsername = false;
         isVerified = 0;
 
-        profile_pic = req.body.profile_pic
-        // Code to transfer Buffer string to image file
+        // profile_pic = req.body.profile_pic
+        // Code to transfer string to image file
         // var ImgFile = new Image();
         // ImgFile.src = 'profile_pic'
+
+        // console.log("the profile pic is:" + req.body.profile_pic);
         
         console.log("fromSource value is: " + fromSourcePage);
         console.log("usertype is: " + userType);
@@ -339,12 +341,15 @@ async function profileInfoCard(sColSpan, lColSpan) {
 	out += '	</div>';
     out += '	<div class="col s4 l4 grey lighten-5">';
 
-	if (userDoc.gender=="Male") {
-		out +=		   '<img src="avatar_M.jpeg" width=100% />';
-	}
-	else {
-		out +=		   '<img src="avatar_F.jpeg" width=100% />';
-	}
+    if (userDoc.profile_pic != null) {
+      out += '<img src="' + userDoc.profile_pic + '" width=100% />';
+    } else {
+      if (userDoc.gender == "Male") {
+        out += '<img src="avatar_M.jpeg" width=100% />';
+      } else {
+        out += '<img src="avatar_F.jpeg" width=100% />';
+      }
+    }
 
 	out +=	   '</div>';
 	out += '</div>';

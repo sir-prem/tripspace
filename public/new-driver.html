@@ -53,7 +53,7 @@
 										realImg.value = event.target.result;
 										console.log(realImg.value);
     								};
-									reader.readAsArrayBuffer(this.files[0]);
+									reader.readAsDataURL(this.files[0]);
 								}
 							});
 						});
@@ -70,6 +70,7 @@
 						<input type='file' id="profile_pic_src"/></br>
 						<input type='text' name="profile_pic" id="real_image" style="display: none;"/>
 						<img id="profile_pic" width="100" height="100" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"></br></br>
+						<input type="hidden" name="sourcepage" value="register"/>
 						<input type="hidden" name="sourcepage" value="register"/>
 						<input type="hidden" name="usertype" value="driver"/>
 						<button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit
