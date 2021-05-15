@@ -53,7 +53,7 @@
 										realImg.value = event.target.result;
 										console.log(realImg.value);
     								};
-									reader.readAsArrayBuffer(this.files[0]);
+									reader.readAsDataURL(this.files[0]);
 								}
 							});
 						});

@@ -42,9 +42,8 @@ router.post('/', async function(req, res){
 
         profile_pic = req.body.profile_pic
         // Code to transfer Buffer string to image file
-        var ImgFile = Buffer.from(profile_pic);
-        console.log(ImgFile);
-        console.log(profile_pic);
+        // var ImgFile = new Image();
+        // ImgFile.src = 'profile_pic'
         
         console.log("fromSource value is: " + fromSourcePage);
         console.log("usertype is: " + userType);
@@ -77,7 +76,7 @@ router.post('/', async function(req, res){
                     age: age,
                     gender: gender,
                     usertype: userType,
-                    profile_pic:profile_pic
+                    profile_pic: profile_pic
                     });
                 await newRegistrant(); 
             }
