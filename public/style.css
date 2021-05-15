@@ -79,3 +79,43 @@ form .field button{
   font-size:20px;
 }
 
+/* track driver */
+.text{
+  line-height:40px;
+  background:#5FA826;
+  position:absolute;
+  color:black;
+  margin-top:15vh;
+  padding:0 85px;
+  font-weight: 500;
+  font-size: 20px;
+  margin-left: 30px;
+}
+.refNum-container{
+  padding:20px;
+  position:absolute;
+  margin-top: 25vh;
+  margin-left: 30px;
+  background: #C4C4C4 ;
+  max-width:300px;
+}
+textarea{
+  width:250px;
+  font-size: 16px;
+  background: white;
+}
+.refNum{
+  line-height: 25px;
+  font-size: 17px;
+  font-weight: 500;
+}  
+#track{
+  line-height: 30px;
+  float:right;
+  background:#5FA826;
+  color:white;
+  padding: 0 20px;
+  font-weight:500;
+  font-size:20px;
+  margin-top: 20px;
+}
