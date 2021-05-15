@@ -23,7 +23,6 @@
 			<div class="head-text">Send Message <br/> to Driver</div>
 			<div class="chat-box">
 				<div class="desc-text">Type message here</div>
-
 				<form>
 					<div class="field textarea">
 						<textarea type="text" id="msg" cols="30" rows="10"></textarea>
@@ -62,10 +61,17 @@
 			</div>
 		  </footer>
 
+          <style>
+			footer{
+				position:absolute;
+				bottom:0;
+				height:60px;
+                width:100%;
+			}
+		</style>
+
 		<link rel="stylesheet" href="./style.css">
         <script src="/socket.io/socket.io.js"></script>
         <script src="/js/client.js"></script>
-		
-    
 	</body>
 </html>
