@@ -8,11 +8,17 @@ const io = socketio(server);
 //initialize socketio
 io.on('connect', function(socket){
   console.log('connected to socket.io!')
-  
+
+
+  //disconnect socketio
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+})
+
 });
 const {MongoClient} = require('mongodb');
 const uri = "mongodb+srv://admin:00000@cluster0.7hvms.mongodb.net/test";
-let http = require('http').createServer(app);
+// let http = require('http').createServer(app);
 
 var port = process.env.PORT || 8080;
 
