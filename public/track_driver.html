@@ -40,7 +40,7 @@
 
 		<div class="refNum-container">
 			<div class="refNum">Enter Trip Reference Number:</div>
-			<form>
+			<form onsubmit="startTimer(); return false;">
 				<div>
 					<textarea type="text" cols="30" rows="10" required></textarea>
 				</div>
@@ -50,8 +50,9 @@
 			</form>
 		</div>
 		
-		
-
+		<div class="center">
+			<div id="timer" style="font-weight:bold"></div>
+		</div>
         
 		<footer class="page-footer brown darken-4 grey-text text-lighten-5">
 			<div class="container">
