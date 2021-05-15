@@ -9,6 +9,10 @@ const io = socketio(server);
 io.on('connect', function(socket){
   console.log('connected to socket.io!')
 
+  //emits message to users
+  socket.on('send-notification', function(message){
+    io.emit('new-notification', message)
+  });
 
   //disconnect socketio
   socket.on('disconnect', function () {
