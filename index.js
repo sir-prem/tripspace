@@ -11,7 +11,7 @@ io.on('connect', function(socket){
 
   //emits message to users
   socket.on('send-notification', function(message){
-    io.emit('new-notification', message)
+    socket.broadcast.emit('new-notification', message)
   });
 
   //disconnect socketio
