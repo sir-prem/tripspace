@@ -13,8 +13,8 @@ toastr.options = {
 };
 
 //user's custom events
-socket.on('new-notification', function(data){
-    toastr.success(data, 'New Notification')
+socket.on('new-notification', function(message){
+    toastr.success(message, 'New Notification')
 });
 
 function sendNotification() {
