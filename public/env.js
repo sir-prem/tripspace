@@ -1,10 +1,8 @@
     // Initial Ratings
     const ratings = {
-        sony: 4.7,
-        samsung: 3.4,
-        vizio: 2.3,
-        panasonic: 3.6,
-        phillips: 4.1
+        Safety: 4.7,
+        Reliability: 3.4,
+        Customer_service: 2.3,
       }
   
       // Total Stars
@@ -23,6 +21,7 @@
       // Product select change
       productSelect.addEventListener('change', (e) => {
         product = e.target.value;
+        console.log(product);
         // Enable rating control
         ratingControl.disabled = false;
         ratingControl.value = ratings[product];
@@ -46,7 +45,6 @@
   
       // Get ratings
       function getRatings() {
-          console.log("getRatings Called")
         for (let rating in ratings) {
           // Get percentage
           const starPercentage = (ratings[rating] / starsTotal) * 100;

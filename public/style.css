@@ -7,14 +7,15 @@ footer{ min-height:50px; background:PapayaWhip; }
 body{ 
   display:flex; 
   flex-direction:column; 
-  background-image: url(wallpaper1.jpg);
+  /* background-image: url(wallpaper1.jpg); */
   background-repeat: no-repeat;
   background-size: 100%;
   background-position: center top;
   background-attachment: scroll;
 }
 
-  footer{
+
+footer{
   margin-top:auto; 
 }
 
