@@ -13,6 +13,8 @@ app.use(express.urlencoded({
   extended: true
 }))
 
+app.use(express.json());
+
 //routes
 var test = require('./test.js');
 var userProf = require('./user-profile.js');

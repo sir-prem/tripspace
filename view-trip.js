@@ -84,6 +84,8 @@ async function showBookTripButton() {
     out += `	    <h5>Make Booking</h5>`;
 
     out += '	    <form method="POST" action="/book-trip" id="booktripbtn">';
+    out += '            Seats required: <input type="text" name="seats" /><br>';
+    out += '            Cargo space required (m3): <input type="text" name="cargo" /><br>';
     out += '            <input type="hidden" name="username" value=' + user + '>';
     out += `            <input type="hidden" name="tripID" value=${tripID} >`;
     out += '	        <button class="btn waves-effect waves-light" type="submit">Book Trip</button>';

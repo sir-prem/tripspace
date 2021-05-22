@@ -1,0 +1,56 @@
+###################################################
+### HOME ROUTE
+
+GET http://localhost:8080/
+
+
+###################################################
+### LOGIN TEST
+
+POST http://localhost:8080/user-profile/ HTTP/1.1
+content-type: application/json
+
+{
+    "username": "abrahaml",
+    "password": "543543",
+    "sourcepage": "login",
+    "usertype": "user"
+}
+
+###################################################
+### BOOK TRIP (user)
+
+POST http://localhost:8080/book-trip/ HTTP/1.1
+content-type: application/json
+
+{
+    "tripID": "60a665899ea9fc21af0cc98e",
+    "username": "abrahaml",
+    "seats" : "0",
+    "cargo" : "15"
+}
+
+// request made from view-trip.js
+
+###################################################
+### ADD TRIP (driver)
+
+POST http://localhost:8080/driver-schedule/ HTTP/1.1
+content-type: application/json
+
+{
+    "username": "chuckie",
+    "fromSuburb" : "Brunswick",
+    "toSuburb" : "Pascoe Vale",
+    "tripDate" : "2021-06-04",
+    "startTime" : "15:00",
+    "endTime" : "16:00",
+    "vehicleType" : "Van",
+    "cargoSpace": "55",
+    "seatSpace" : "2",
+    "addNew" : "true"
+}
+
+// request made from driver-schedule.js
+
+###

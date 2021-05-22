@@ -1,0 +1,56 @@
+GET http://localhost:4000/
+
+
+###
+
+
+GET http://localhost:4000/someroute/
+
+
+
+###
+
+POST http://localhost:4000/user/
+Content-Type: application/json
+
+{
+    "username": "chuckie",
+    "password": "12345",
+    "givenname": "Chuck",
+    "lastname" : "Davis",
+    "age" : 25,
+    "gender": "Male",
+    "usertype": "driver"
+}
+
+###
+
+POST http://localhost:4000/user/
+Content-Type: application/json
+
+{
+    "username": "billie",
+    "password": "121212",
+    "givenname": "Billie",
+    "lastname" : "Jean",
+    "age" : 35,
+    "gender": "Male",
+    "usertype": "user"
+}
+
+
+
+
+
+###
+
+POST http://localhost:4000/book-trip/
+
+###
+
+PATCH http://localhost:4000/book-trip/
+
+
+###
+
+GET http://localhost:4000/abcd/

@@ -37,11 +37,13 @@ router.post('/', async function(req, res){
                 fromSuburb: req.body.fromSuburb,
                 toSuburb: req.body.toSuburb,
                 date: req.body.tripDate,
-                start: req.body.startTime,
-                end: req.body.endTime,
+                startTime: req.body.startTime,
+                endTime: req.body.endTime,
                 vehicle: req.body.vehicleType,
-                cargoSpace: req.body.cargoSpace,
-                seats: req.body.seats,
+                cargoSpaceTotal: req.body.cargoSpace,
+                seatSpaceTotal: req.body.seatSpace,
+                cargoSpaceRemaining: req.body.cargoSpace,
+                seatSpaceRemaining: req.body.seatSpace
                 });
             console.log("new trip added to database (trips collection)..");
             addTrip = false;
@@ -85,7 +87,7 @@ router.post('/', async function(req, res){
 });
 
 async function addNewTripToDB(client, newTrip) {
-    const result = await client.db("tripspaceDB").collection("driverTrips").insertOne(newTrip);
+    const result = await client.db("tripspaceDBTest").collection("trips").insertOne(newTrip);
     console.log(`New trip added to DB with id: ${result.insertedId}`);
 }
 
@@ -95,7 +97,7 @@ async function showTripSchedule(client) {
     out += '    <div class="col s12 l12 grey lighten-5 z-depth-1">';
     out += '	    <h5>Driver trip schedule for <b>' + user + ' :</b></h5>';
     
-    const cursor = client.db("tripspaceDB").collection("driverTrips").find({ username: user });
+    const cursor = client.db("tripspaceDBTest").collection("trips").find({ username: user });
     const results = await cursor.toArray(); 
     
         if (results.length > 0) {
@@ -110,24 +112,28 @@ async function showTripSchedule(client) {
             out += '        <th>Start</th>';
             out += '        <th>Destination</th>';
             out += '        <th>Vehicle</th>';
-            out += '        <th>Cargo Space</th>';
-            out += '        <th>Seats Available</th>';
+            out += '        <th>Cargo Space (Total)</th>';
+            out += '        <th>Seat Space (Total)</th>';
+            out += '        <th>Cargo Space (Remaining)</th>';
+            out += '        <th>Seat Space (Remaining)</th>';
             out += '    </tr>';
 
             results.forEach((result, i) => {
 
                 out += "<tr>";
                 out += `    <td> ${result.date} </td>`;
-                out += `    <td> ${result.start} </td>`;
-                out += `    <td> ${result.end} </td>`;
+                out += `    <td> ${result.startTime} </td>`;
+                out += `    <td> ${result.endTime} </td>`;
                 out += `    <td> ${result.fromSuburb} </td>`;
                 out += `    <td> ${result.toSuburb} </td>`;
                 out += `    <td> ${result.vehicle} </td>`;
-                out += `    <td> ${result.cargoSpace} </td>`;
-                out += `    <td> ${result.seats} </td>`;
+                out += `    <td> ${result.cargoSpaceTotal} </td>`;
+                out += `    <td> ${result.seatSpaceTotal} </td>`;
+                out += `    <td> ${result.cargoSpaceRemaining} </td>`;
+                out += `    <td> ${result.seatSpaceRemaining} </td>`;
 
-                if (result.bookedBy != null) {
-                    out += `<td style="color:red">BOOKED</td>`;
+                if (result.bookings != null) {
+                    out += `<td style="color:red">X% BOOKED</td>`;
                 }
                 else {
                     out += `<td style="color:limegreen">AVAILABLE</td>`;
@@ -158,7 +164,7 @@ async function showNewTripForm() {
     out += '            End Time: <input type="time" id="endTime" name="endTime"><br>';
     out += '            Vehicle type: <input type="text" id="vehicleType" name="vehicleType"><br>';
     out += '            Cargo space available: <input type="text" name="cargoSpace" /><br>';
-    out += '            Seats available: <input type="text" name="seats" /><br>';
+    out += '            Seat space available: <input type="text" name="seatSpace" /><br>';
 
     out += '            <input type="hidden" name="username" value=' + user + '>';
     out += '            <input type="hidden" name="addNew" value="true" >';

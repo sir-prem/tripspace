@@ -6,6 +6,7 @@
   "dependencies": {
     "express": "*",
     "mongodb": "^3.6.6",
+    "mongoose": "^5.12.10",
     "nodemon": "^2.0.7"
   },
   "scripts": {

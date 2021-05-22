@@ -64,7 +64,7 @@ return out;
 
 //retrieves trip document, given a trip ID
 async function retrieveTripDoc(client, tripID) { 
-    tripDoc = await client.db("tripspaceDB").collection("driverTrips").findOne({ _id: ObjectID(tripID)});
+    tripDoc = await client.db("tripspaceDBTest").collection("trips").findOne({ _id: ObjectID(tripID)});
     console.log(tripDoc);
     return tripDoc;    
 };
@@ -73,7 +73,7 @@ async function retrieveTripDoc(client, tripID) {
 async function retrieveUserDoc(username) { 
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
     await client.connect();
-    userDoc = await client.db("tripspaceDB").collection("users").findOne({ username: username });
+    userDoc = await client.db("tripspaceDBTest").collection("users").findOne({ username: username });
     console.log("retrieved the UserDoc for: " + username);
     console.log(userDoc);
     return userDoc;

@@ -10,6 +10,8 @@ let U = require("./utilities.js");
 var out;
 var user = "";
 var tripID; // flag to add new trip to database
+var seats;
+var cargo;
 
 router.post('/', async function(req, res){
 	
@@ -17,6 +19,8 @@ router.post('/', async function(req, res){
     out = "";
     user = req.body.username;
     tripID = req.body.tripID;
+    seats = req.body.seats;
+    cargo = req.body.cargo;
     console.log("username value is: " + user);
     console.log("tripID value is: " + tripID);
 
@@ -62,8 +66,22 @@ router.post('/', async function(req, res){
 });
 
 async function makeBooking(client){
-    const result = await client.db("tripspaceDB").collection("driverTrips")
-                .updateOne({_id : ObjectID(tripID) }, {$set: {bookedBy: user}}, {multi: true})
+
+    var userBookingInfo = {
+        "username" : user,
+        "seatSpace" : seats,
+        "cargoSpace" : cargo
+    }
+
+    const result = await client.db("tripspaceDBTest").collection("trips")
+                        .updateOne(
+                            {
+                                _id : ObjectID(tripID) 
+                            },                             
+                            {
+                                $push: { bookings : userBookingInfo }
+                            }                        
+                        );
     console.log(`Updated driverTrip with bookedBy user ${user}`);
 };
 

@@ -83,7 +83,7 @@ async function displayTripsFound(client, searchParamObj) {
     out += '    <div class="col s12 l8 grey lighten-5 z-depth-1">';
     out += `	    <h5>Search Results</h5>`;
     
-    const cursor = client.db("tripspaceDB").collection("driverTrips").find
+    const cursor = client.db("tripspaceDBTest").collection("trips").find
                                         ({ 
                                             $and: [
                                                 { fromSuburb: searchParamObj.fromSuburb },

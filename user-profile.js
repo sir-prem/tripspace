@@ -72,6 +72,8 @@ router.post('/', async function(req, res){
                     gender: gender,
                     usertype: userType
                     });
+
+                userDoc = await U.retrieveUserDoc(user);
                 await newRegistrant(); 
             }
         }
@@ -121,7 +123,7 @@ router.post('/', async function(req, res){
 });
 
 async function checkExistingUser(client, newUsername) {
-	const cursor = client.db("tripspaceDB").collection("users").find({ username: newUsername });
+	const cursor = client.db("tripspaceDBTest").collection("users").find({ username: newUsername });
 	const results = await cursor.toArray(); 
 	if (results.length > 0) {
         isExistingUsername = true;
@@ -129,7 +131,7 @@ async function checkExistingUser(client, newUsername) {
 };
 
 async function createUser(client, newUser){
-    const result = await client.db("tripspaceDB").collection("users").insertOne(newUser);
+    const result = await client.db("tripspaceDBTest").collection("users").insertOne(newUser);
     //out += `New user created with the following id: ${result.insertedId}`;
 };
 
@@ -142,7 +144,7 @@ async function createUser(client, newUser){
 //  also updates user global variables for case '2' (verified user)
 //
 async function verifyID(client) {
-    const result = await client.db("tripspaceDB").collection("users").findOne({ username: user });
+    const result = await client.db("tripspaceDBTest").collection("users").findOne({ username: user });
 
     console.log(result);
 
@@ -364,7 +366,7 @@ async function thisDriversBookingsCard(client) {
             out += '        <th>Booked By</th>';
             out += '    </tr>';
     
-    await client.db("tripspaceDB").collection("driverTrips").find({ username: user })
+    await client.db("tripspaceDBTest").collection("trips").find({ username: user })
                     .forEach(
                         function(doc) {
                             if (doc.bookedBy != null) {
@@ -415,7 +417,7 @@ async function thisUsersBookingsCard(client) {
             out += '    </tr>';
     
             console.log("reached here");
-            const cursor = await client.db("tripspaceDB").collection("driverTrips").find({ bookedBy: user });
+            const cursor = await client.db("tripspaceDBTest").collection("trips").find({ bookedBy: user });
             const results = await cursor.toArray();
 
             if (results.length > 0) {
@@ -440,48 +442,6 @@ async function thisUsersBookingsCard(client) {
                 });
             }
 
-
-            /*
-            for (result in results) {
-                console.log("result is: " + result);
-                            if (result.bookedBy != null) {
-                                console.log("doc.bookedBy is: " + result.bookedBy);
-                                out += "<tr>";
-                                out += `    <td> ${result.date} </td>`;
-                                out += `    <td> ${result.start} </td>`;
-                                out += `    <td> ${result.end} </td>`;
-                                out += `    <td> ${result.fromSuburb} </td>`;
-                                out += `    <td> ${result.toSuburb} </td>`;
-                                out += `    <td> ${result.vehicle} </td>`;
-                                out += `    <td> ${result.cargoSpace} </td>`;
-                                out += `    <td> ${result.seats} </td>`;
-                                out += `    <td> ${result.username} </td>`;                
-                                out += "</tr>";
-                            }
-            }
-*/
-/*
-                    .forEach(
-                        function(doc) {
-                            console.log("doc is: " + doc);
-                            if (doc.bookedBy != null) {
-                                console.log("doc.bookedBy is: " + doc.bookedBy);
-                                out += "<tr>";
-                                out += `    <td> ${doc.date} </td>`;
-                                out += `    <td> ${doc.start} </td>`;
-                                out += `    <td> ${doc.end} </td>`;
-                                out += `    <td> ${doc.fromSuburb} </td>`;
-                                out += `    <td> ${doc.toSuburb} </td>`;
-                                out += `    <td> ${doc.vehicle} </td>`;
-                                out += `    <td> ${doc.cargoSpace} </td>`;
-                                out += `    <td> ${doc.seats} </td>`;
-                                out += `    <td> ${doc.username} </td>`;
-                
-                                out += "</tr>";
-                            }
-                        }
-                        );
-                        */
                     out += '</table>';
     out += '</div>';
 
