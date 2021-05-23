@@ -1,0 +1,35 @@
+
+
+body{ 
+  background-image: url(wallpaper2.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center top;
+  background-attachment: scroll;
+}
+ 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+nav .brand-logo {
+  
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-left: 100px;
+}
+
+.row{
+	padding-top:50px;
+}	
+
+.card{
+	padding: 5px;
+}

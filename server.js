@@ -16,7 +16,8 @@ mongoose
       user: 'admin',
       pass: '00000',
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useFindAndModify: false
     }   
   )
   .then(
@@ -27,10 +28,11 @@ mongoose
 
 
 app.use(express.json());
-
+app.use(express.static(__dirname + '/Views'));
 
 const user = require('./Routes/user');
 app.use('/user', user);
+
 
 const bookTrip = require('./Routes/book-trip');
 app.use('/book-trip', bookTrip);
