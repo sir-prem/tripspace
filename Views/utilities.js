@@ -57,6 +57,56 @@ async function addFooterHTML(out) {
     return out;
 }
 
+async function driverHomepageCard(sColSpan, lColSpan, out) {
+    out += `<div class="col s${sColSpan} l${lColSpan} card" style="background-color: lightgrey;">`;
+	out += '				<h2>Got some space?</h2>';
+	out += '				<p>Have a vehicle, and do a bit of driving, often with the vehicle empty?';
+	out += '				   Want to earn some extra income and do something good for the environment while you drive?';
+	out += '				   Then why not sign up now and get started!</p>';
+	out += '				<a href="./new-driver" class="waves-effect waves-light btn">New driver</a>';
+	
+	out += '				<p><br><br>';
+	out += '				<p>Already a member? Then sign in below.</p>';
+	out += '				<h4>Driver login</h4></p>';
+
+	out += '				<form method="POST" action="/user/auth">';
+	out += '					username: <input type="text" name="username" /><br>';
+	out += '					password: <input type="text" name="password" /><br>';
+	out += '					<button class="btn waves-effect waves-light" type="submit" name="action">Submit';
+	out += '					  </button>';
+	out += '				</form>';
+	out += '			</div>';
+    return out;
+}
+
+async function driverRegistrationFormCard(sColSpan, lColSpan, out) {
+    out += `            <div class="col s${sColSpan} l${lColSpan}" style="background-color: lightgrey;">`;
+	out += `				<h1>Driver Sign-Up</h1>`;
+	out += `				<h5>Start earning an <b>extra income</b>, and <b>helping the environment</b>`;
+	out += `				   by utilising spare space in your vehicle.</h5>`;
+	out += `				<h5>Register your details with us, and get started right now!</h5>`;
+	out += `				<p>Not sure and want to know a bit more before you begin your journey with `;
+	out += `				TripSpace? Click here to find out more...<br><br>`;
+	out += `				<a href="./how-tripspace-works.html" class="waves-effect waves-light btn light-green darken-1">Find out more</a>`;
+	out += `			</div>`;
+	out += `			<div class="col s${sColSpan} l${lColSpan}" style="background-color: slategrey; color: white">`;
+	out += `				<h4>Register here</h4>`;
+	out += `				<p>Please fill in the below details.</p>`;
+	out += `				<form method="POST" action="/user">`;
+	out += `					username: <input type="text" name="username" /><br>`;
+	out += `					password: <input type="text" name="password" /><br>`;
+	out += `					Given name: <input type="text" name="givenname" /><br> `;
+	out += `					Last name: <input type="text" name="lastname" /><br> `;
+	out += `					Age: <input type="text" name="age" /><br> `;
+	out += `					Gender: <input type="text" name="gender" /><br> `;
+	out += `					<input type="hidden" name="usertype" value="driver"/>`;
+	out += `					<button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit`;
+	out += `					  </button>`;
+	out += `				</form>`;
+	out += `			</div>`;
+    return out;
+}
+
 async function welcomeBackCard(sColSpan, lColSpan, givenname, out) {
     out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
     out += '	<h4>Welcome back, <b>' + givenname + '</b></h4>';
@@ -94,5 +144,7 @@ module.exports = {
     addHeaderHTML,
     addFooterHTML,
     welcomeBackCard,
-    profileInfoCard
+    profileInfoCard,
+    driverHomepageCard,
+    driverRegistrationFormCard
 };

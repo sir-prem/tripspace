@@ -12,7 +12,10 @@ router.get('/', UserController.getAllUsers);
 router.get('/:id', UserController.getUserByID);
 
 
+router.post('/auth', UserController.authenticateUser);
 
+
+// New user registration
 router.post('/', async (req,res,next) => {
 
     try {

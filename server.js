@@ -26,28 +26,33 @@ mongoose
       }
   )
 
+const user = require('./Routes/user');
+const bookTrip = require('./Routes/book-trip');
+let homePage = require('./Views/homepage');
+let newDriver = require('./Views/new-driver');
 
 app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 app.use(express.static(__dirname + '/Views'));
 
-const user = require('./Routes/user');
 app.use('/user', user);
-
-
-const bookTrip = require('./Routes/book-trip');
 app.use('/book-trip', bookTrip);
 
-
-
-
-app.get("/", (req, res, next) => {
-  res.send("hello world");
+app.get("/", async (req, res, next) => {
+  await homePage.displayHomePage(res);
 });
 
+app.get("/new-driver", async (req, res, next) => {
+  await newDriver.displayNewDriverPage(res);
+});
+
+/*
 app.get("/someroute", (req, res, next) => {
-    res.send("SOME ROUTE's hello world");
+    res.send("SOME ROUTE: hello world");
 });
-
+*/
 
 app.listen(port, function() {
   console.log("Server is running on Port: " + port);

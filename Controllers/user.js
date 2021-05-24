@@ -28,6 +28,45 @@ module.exports = {
                 } catch (error) {
                     console.log(error.message);
                 }
+            },
+        authenticateUser:
+            async (req, res, next) => {
+                console.log('---------------------');
+                console.log("> authenticateUser method...")
+                console.log("req.body is: ");
+                console.log(req.body);
+                
+                const reqUsername = req.body.username;
+                const reqPassword = req.body.password;
+
+                console.log('reqUsername is: ' + reqUsername);
+                console.log('reqPassword is: ' + reqPassword);
+                console.log('req.headers content-type is: ' + req.headers['content-type']);
+                
+                var result = '';                
+                try {
+                    result = await UserModel.findOne( { username: reqUsername }, { __v:0 } );                    
+                    console.log(result);
+
+                    if (result == null) { // Invalid username
+                        res.send('Username not found');
+                    }
+                    else { // Valid username
+
+                        if (reqPassword == result.password) { // Valid password
+                            //res.send('Username found AND Password MATCH. User authenticated.');
+                            await UserView.displayUserProfilePage(res, result);
+                        }
+                        else { // Invalid password
+                            res.send('Username found. Invalid Password.');
+                        }
+
+                    }
+                    //await UserView.displayUserProfilePage(res, result);
+                } catch (error) {
+                    console.log(error.message);
+                }
+                
             }
 
 };
