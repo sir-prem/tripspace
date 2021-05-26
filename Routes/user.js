@@ -16,17 +16,7 @@ router.post('/auth', UserController.authenticateUser);
 
 
 // New user registration
-router.post('/', async (req,res,next) => {
-
-    try {
-        const newUser = new User(req.body);
-        const result = await newUser.save();        
-        res.send(result);
-    } catch (error) {
-        console.log(error.message);
-    }
-
-});
+router.post('/', UserController.userRegistration);
 
 
 

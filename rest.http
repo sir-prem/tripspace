@@ -49,6 +49,21 @@ Content-Type: application/json
 }
 
 
+### Add user
+POST http://localhost:4000/user/
+Content-Type: application/json
+
+{
+    "username": "venusw",
+    "password": "tennis123",
+    "givenname": "Venus",
+    "lastname" : "Williams",
+    "age" : 45,
+    "gender": "Female",
+    "usertype": "driver"
+}
+
+
 
 ###  Get all users
 GET http://localhost:4000/user/
@@ -82,3 +97,157 @@ Content-Type: application/json
     "username": "chuckie",
     "password": "12345"
 }
+
+###################################################################
+###
+###         TRIPS
+###
+###
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Essendon",
+    "toSuburb": "Richmond",
+    "username": "chuckie",
+    "date": "2021-05-27",
+    "departureTime": "09:00",
+    "arrivalTime": "10:00",
+    "vehicle": "Truck",
+    "cargoSpace": 60,
+    "seatSpace": 0
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Richmond",
+    "toSuburb": "Docklands",
+    "username": "chuckie",
+    "date": "2021-05-27",
+    "departureTime": "13:00",
+    "arrivalTime": "15:00",
+    "vehicle": "Truck",
+    "cargoSpace": 60,
+    "seatSpace": 0
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Docklands",
+    "toSuburb": "Brunswick",
+    "username": "venusw",
+    "date": "2021-05-27",
+    "departureTime": "15:00",
+    "arrivalTime": "16:00",
+    "vehicle": "Ute",
+    "cargoSpace": 8,
+    "seatSpace": 3
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Brunswick",
+    "toSuburb": "Coburg",
+    "username": "venusw",
+    "date": "2021-05-28",
+    "departureTime": "13:00",
+    "arrivalTime": "15:00",
+    "vehicle": "Ute",
+    "cargoSpace": 8,
+    "seatSpace": 3
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "St Kilda",
+    "toSuburb": "Dandenong",
+    "username": "neilarm3",
+    "date": "2021-05-28",
+    "departureTime": "08:30",
+    "arrivalTime": "10:00",
+    "vehicle": "Truck",
+    "cargoSpace": 30,
+    "seatSpace": 2
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Essendon",
+    "toSuburb": "Richmond",
+    "username": "neilarm3",
+    "date": "2021-05-30",
+    "departureTime": "16:30",
+    "arrivalTime": "18:00",
+    "vehicle": "Truck",
+    "cargoSpace": 20,
+    "seatSpace": 0
+}
+
+### Get all trips
+GET http://localhost:4000/trip/
+
+
+### Get trip by driver
+GET http://localhost:4000/trip/driver/chuckie
+
+### Get trip by driver
+GET http://localhost:4000/trip/driver/neilarm3
+
+### Get trip by ID
+GET http://localhost:4000/trip/60ae595cbee7541fec7642b3
+
+
+### Find trips
+GET http://localhost:4000/trip/search?fromSub=Essendon&toSub=Richmond
+Content-Type: application/x-www-form-urlencoded
+
+
+###################################################################
+###
+###         BOOKINGS
+###
+###
+
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae595cbee7541fec7642b3",
+    "userID": "abrahaml",
+    "cargoSpace": "15",
+    "seatSpace": "2",
+    "comments": "Got a few heavy items, such as fridge, and washing machine"
+}
+
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae595cbee7541fec7642b3",
+    "userID": "billie",
+    "cargoSpace": "7",
+    "seatSpace": "0",
+    "comments": "Please pick up from my home address"
+}
+
+### Get all bookings
+GET http://localhost:4000/booking/

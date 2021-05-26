@@ -114,6 +114,13 @@ async function welcomeBackCard(sColSpan, lColSpan, givenname, out) {
     return out;
 }
 
+async function thankYouCard(sColSpan, lColSpan, givenname, out) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
+    out += '	<h4>Thanks for registering, <b>' + givenname + '</b></h4>';
+    out += '</div>';
+    return out;
+}
+
 async function profileInfoCard(sColSpan, lColSpan, result, out) {
 	//out += '<div class="row">';
     out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
@@ -144,6 +151,7 @@ module.exports = {
     addHeaderHTML,
     addFooterHTML,
     welcomeBackCard,
+	thankYouCard,
     profileInfoCard,
     driverHomepageCard,
     driverRegistrationFormCard

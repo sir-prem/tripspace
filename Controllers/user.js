@@ -29,7 +29,7 @@ module.exports = {
                     console.log(error.message);
                 }
             },
-        authenticateUser:
+    authenticateUser:
             async (req, res, next) => {
                 console.log('---------------------');
                 console.log("> authenticateUser method...")
@@ -67,6 +67,18 @@ module.exports = {
                     console.log(error.message);
                 }
                 
+            },
+    userRegistration:
+            async (req,res,next) => {
+
+                try {
+                    const newUser = new UserModel(req.body);
+                    const result = await newUser.save();        
+                    await UserView.displayRegistrationCompletePage(res, result);
+                } catch (error) {
+                    console.log(error.message);
+                }
+            
             }
 
 };

@@ -27,7 +27,8 @@ mongoose
   )
 
 const user = require('./Routes/user');
-const bookTrip = require('./Routes/book-trip');
+const bookTrip = require('./Routes/trip');
+const booking = require('./Routes/booking')
 let homePage = require('./Views/homepage');
 let newDriver = require('./Views/new-driver');
 
@@ -38,7 +39,8 @@ app.use(express.urlencoded({
 app.use(express.static(__dirname + '/Views'));
 
 app.use('/user', user);
-app.use('/book-trip', bookTrip);
+app.use('/trip', bookTrip);
+app.use('/booking', booking);
 
 app.get("/", async (req, res, next) => {
   await homePage.displayHomePage(res);

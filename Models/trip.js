@@ -6,8 +6,8 @@ const TripSchema = new Schema({
     fromSuburb: String,
     toSuburb: String,
     date: Date,
-    departureTime: Date,
-    arrivalTime: Date,
+    departureTime: String,
+    arrivalTime: String,
     vehicle: String,
     cargoSpace: Number,
     seatSpace: Number
