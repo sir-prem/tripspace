@@ -63,6 +63,20 @@ Content-Type: application/json
     "usertype": "driver"
 }
 
+### Add user
+POST http://localhost:4000/user/
+Content-Type: application/json
+
+{
+    "username": "denzelw",
+    "password": "actor111",
+    "givenname": "Denzel",
+    "lastname" : "Washington",
+    "age" : 60,
+    "gender": "Male",
+    "usertype": "user"
+}
+
 
 
 ###  Get all users
@@ -207,7 +221,7 @@ GET http://localhost:4000/trip/
 ### Get trip by driver
 GET http://localhost:4000/trip/driver/chuckie
 
-### Get trip by driver
+### Get trips by driver
 GET http://localhost:4000/trip/driver/neilarm3
 
 ### Get trip by ID
@@ -249,5 +263,33 @@ Content-Type: application/json
     "comments": "Please pick up from my home address"
 }
 
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae595cbee7541fec7642b3",
+    "userID": "denzelw",
+    "cargoSpace": "5",
+    "seatSpace": "0",
+    "comments": "Busy acting on next movie. Please pick up from front door"
+}
+
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae5948bee7541fec7642b2",
+    "userID": "abrahaml",
+    "cargoSpace": "4",
+    "seatSpace": "2",
+    "comments": "Need to take some sports gear. I will have them in boxes."
+}
+
 ### Get all bookings
 GET http://localhost:4000/booking/
+
+
+### Get bookings by user
+GET http://localhost:4000/booking/user/abrahaml

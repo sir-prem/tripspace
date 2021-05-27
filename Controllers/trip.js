@@ -1,4 +1,5 @@
 const TripModel = require('../Models/trip');
+const BookingModel = require('../Models/booking');
 let TripView = require('../Views/trip');
 
 module.exports = {
@@ -45,12 +46,87 @@ module.exports = {
             async (req, res, next) => {
                 const driverUsername = req.params.username;
                 console.log("driverUsername is: " + driverUsername);
-                var results = '';
+                var driverTrips = '';
+                var driverTrip = ''; 
+                var array = [];               
                 
                 try {
-                    results = await TripModel.find( { username: driverUsername }, { __v:0 } );                    
-                    console.log(results);
-                    res.send(results);
+                    driverTrips = await TripModel.find( { username: driverUsername }, { __v:0 } );                    
+
+                    for (var i = 0; i < driverTrips.length; i++) {
+                        driverTrip = driverTrips[i];
+                        console.log("driverTrip._id is: " + driverTrip._id);
+                        const bookingsForThisTrip = await BookingModel.find( { tripID: driverTrip._id }, { __v:0 } );
+
+                        const tripTotalSeatSpace = driverTrip.seatSpace;
+                        const tripTotalCargoSpace = driverTrip.cargoSpace;
+                        var totalBookedSeats = 0;
+                        var totalBookedCargo = 0;
+                        var remainingSeats;
+                        var remainingCargo;
+                        var percentageUtilizedSeatSpace;
+                        var percentageUtilizedCargoSpace;
+
+                        var driverTripStatus;
+                        var numberOfBookingsForThisTrip = bookingsForThisTrip.length;
+
+                        //console.log("num bookings for this trip is: " + bookingsForThisTrip.length); 
+
+                        for (var j = 0; j < numberOfBookingsForThisTrip; j++) {
+                            var thisBooking = bookingsForThisTrip[j];
+                            totalBookedSeats += thisBooking.seatSpace;
+                            totalBookedCargo += thisBooking.cargoSpace;
+                        }
+                        
+                        remainingSeats = tripTotalSeatSpace - totalBookedSeats;
+                        remainingCargo = tripTotalCargoSpace - totalBookedCargo;
+                        if (tripTotalSeatSpace == 0) {
+                            percentageUtilizedSeatSpace = "N/A";
+                        }
+                        else {
+                            percentageUtilizedSeatSpace = Math.round((totalBookedSeats/tripTotalSeatSpace)*100);    
+                        }
+
+                        if (tripTotalCargoSpace == 0) {
+                            percentageUtilizedCargoSpace = "N/A";
+                        }
+                        else {
+                            percentageUtilizedCargoSpace = Math.round((totalBookedCargo/tripTotalCargoSpace)*100);
+                        }
+
+                        var bookingStats = {
+                                tripTotalSeatSpace: tripTotalSeatSpace,
+                                tripTotalCargoSpace: tripTotalCargoSpace,
+                                totalBookedSeats: totalBookedSeats,
+                                totalBookedCargo: totalBookedCargo,                                
+                                remainingSeats: remainingSeats,
+                                remainingCargo: remainingCargo,
+                                percentageUtilizedSeatSpace: percentageUtilizedSeatSpace,
+                                percentageUtilizedCargoSpace: percentageUtilizedCargoSpace
+                        };
+                        
+                        
+                        if (numberOfBookingsForThisTrip > 0) {
+                            driverTripStatus = {
+                                status: "BOOKED BY " + numberOfBookingsForThisTrip + " USERS",
+                                colour: "red"
+                            };
+                        }
+                        else {
+                            driverTripStatus = {
+                                status: "AVAILABLE",
+                                colour: "green"
+                            };
+
+                        }
+                        array.push({ driverTrip, bookingsForThisTrip, driverTripStatus, bookingStats });
+                    }
+                    
+                    for (var i = 0; i < array.length; i++) {
+                        console.log(array[i]);
+                    }
+                    res.send(array);
+
                     //await UserView.displayUserProfilePage(res, result);
                 } catch (error) {
                     console.log(error.message);

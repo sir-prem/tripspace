@@ -1,4 +1,5 @@
 const BookingModel = require('../Models/booking');
+const TripModel = require('../Models/trip');
 let BookingView = require('../Views/booking');
 
 module.exports = {
@@ -41,17 +42,87 @@ module.exports = {
                     console.log(error.message);
                 }
             },
-    getTripsBookedByUser:
+    getBookingsByUser:
             async (req, res, next) => {
                 const username = req.params.username;
                 console.log("username is: " + username);
-                var results = '';
+                var userBookings = '';
+                var userBooking = '';
+                var out = '';
+                var array = [];
                 
                 try {
-                    results = await BookingModel.find( { username: username }, { __v:0 } );                    
-                    console.log(results);
-                    res.send(results);
-                    //await UserView.displayUserProfilePage(res, result);
+                    userBookings = await BookingModel.find( { userID: username }, { __v:0 } );
+                    
+                    //console.log(results);
+                    
+                    //res.send(userBookings);
+                    console.log("userBookings length is: " + userBookings.length);
+
+                    for (var i = 0; i < userBookings.length; i++) {
+                        userBooking = userBookings[i];
+                        console.log("tripID is: " + userBooking.tripID);
+                        const tripLinkedtoThisBooking = await TripModel.findOne( { _id: userBooking.tripID }, { __v:0 } );                        
+                        const allBookingsForThisTrip = await BookingModel.find( { tripID: userBooking.tripID }, { __v:0 } );
+                        
+                        var otherBookingsForThisTrip = [];
+
+                        const tripTotalSeatSpace = tripLinkedtoThisBooking.seatSpace;
+                        const tripTotalCargoSpace = tripLinkedtoThisBooking.cargoSpace;
+                        var otherUsersSeatsTotal = 0;
+                        var otherUsersCargoTotal = 0;
+                        const mySeats = userBooking.seatSpace;
+                        const myCargo = userBooking.cargoSpace;
+                        var totalBookedSeats;
+                        var totalBookedCargo;
+                        var remainingSeats;
+                        var remainingCargo;
+                        var percentageUtilizedSeatSpace;
+                        var percentageUtilizedCargoSpace;
+
+
+                        for (var j = 0; j < allBookingsForThisTrip.length; j++) {                                                        
+                            var thisBooking = allBookingsForThisTrip[j];
+                            if (thisBooking.userID != username) {
+                                otherBookingsForThisTrip.push(thisBooking);
+                                otherUsersSeatsTotal += thisBooking.seatSpace;
+                                otherUsersCargoTotal += thisBooking.cargoSpace;
+                            }
+                        }
+
+                        totalBookedSeats = mySeats + otherUsersSeatsTotal;
+                        totalBookedCargo = myCargo + otherUsersCargoTotal;
+                        remainingSeats = tripTotalSeatSpace - totalBookedSeats;
+                        remainingCargo = tripTotalCargoSpace - totalBookedCargo;
+                        percentageUtilizedSeatSpace = Math.round((totalBookedSeats/tripTotalSeatSpace)*100);
+                        percentageUtilizedCargoSpace = Math.round((totalBookedCargo/tripTotalCargoSpace)*100);
+
+                        var bookingStats = {
+                                tripTotalSeatSpace: tripTotalSeatSpace,
+                                tripTotalCargoSpace: tripTotalCargoSpace,
+                                mySeats: mySeats,
+                                myCargo: myCargo,
+                                otherUsersSeatsTotal: otherUsersSeatsTotal,
+                                otherUsersCargoTotal: otherUsersCargoTotal,
+                                remainingSeats: remainingSeats,
+                                remainingCargo: remainingCargo,
+                                percentageUtilizedSeatSpace: percentageUtilizedSeatSpace,
+                                percentageUtilizedCargoSpace: percentageUtilizedCargoSpace
+                        };
+
+                        array.push({ userBooking, tripLinkedtoThisBooking, otherBookingsForThisTrip, bookingStats });
+                    }
+
+
+
+
+
+                    for (var i = 0; i < array.length; i++) {
+                        console.log(array[i]);                        
+                    }
+                    res.send(array);
+                    //res.send(userBookings);
+                    //await UserView.displayUserProfilePage(res, userBooking);
                 } catch (error) {
                     console.log(error.message);
                 }

@@ -7,7 +7,7 @@ router.get("/", BookingController.getAllBookings);
 router.post("/", BookingController.addNewBooking);
 
 
-router.get('/user/:username', BookingController.getTripsBookedByUser);
+router.get('/user/:username', BookingController.getBookingsByUser);
 
 router.get('/:id', BookingController.getBookingByID);
 
