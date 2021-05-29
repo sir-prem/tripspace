@@ -218,7 +218,7 @@ Content-Type: application/json
 GET http://localhost:4000/trip/
 
 
-### Get trip by driver
+### Get trips by driver
 GET http://localhost:4000/trip/driver/chuckie
 
 ### Get trips by driver
@@ -290,9 +290,27 @@ Content-Type: application/json
     "comments": "Need to take some sports gear. I will have them in boxes."
 }
 
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae5948bee7541fec7642b2",
+    "userID": "denzelw",
+    "cargoSpace": "4",
+    "seatSpace": "1",
+    "comments": "Need to transport some books. Will have them in 2 x boxes"
+}
+
 ### Get all bookings
 GET http://localhost:4000/booking/
 
 
 ### Get bookings by user
 GET http://localhost:4000/booking/user/abrahaml
+
+### View User Booking Details
+GET http://localhost:4000/booking/user/booking-details/60ae76a42a6f0f3205c58eed
+
+### View User Booking Details
+GET http://localhost:4000/booking/user/booking-details/60ae862f7204a5414d2aa13d
