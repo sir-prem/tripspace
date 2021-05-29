@@ -1,6 +1,7 @@
 const BookingModel = require('../Models/booking');
 const TripModel = require('../Models/trip');
 const UserModel = require('../Models/user');
+let Util = require('./utilities');
 let BookingView = require('../Views/booking');
 
 module.exports = {
@@ -45,6 +46,8 @@ module.exports = {
             },
     getBookingsByUser:
             async (req, res, next) => {
+
+                Util.consoleLogHeader('Get Bookings By User');
                 const username = req.params.username;
                 console.log("username is: " + username);
                 var userBookings = '';
@@ -114,13 +117,14 @@ module.exports = {
             async (req, res, next) => {
 
                 const bookingID = req.params.bookingID;
+                
+                Util.consoleLogHeader('Viewing User Booking Details');
+
                 console.log("bookingID is: " + bookingID);
                                 
                 var userBooking = '';
                 var driverInfo = '';
                 var outputJSON;
-
-
                 
                 try {
 

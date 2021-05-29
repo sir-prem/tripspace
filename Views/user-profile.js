@@ -1,6 +1,4 @@
-//let express = require('express');
-
-let U = require('./utilities');
+let U = require('../Views/utilities');
 var out;
 
 async function displayUserProfilePage(res, result) {

@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const TripController = require('../Controllers/trip');
 
-router.get("/", TripController.getAllTrips);
+router.get('/', TripController.getAllTrips);
 
-router.post("/", TripController.addNewTrip);
+router.post('/', TripController.addNewTrip);
 
 router.get('/driver/trip-details/:tripID', TripController.viewDriverTripDetails);
 

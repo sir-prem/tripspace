@@ -5,14 +5,14 @@ async function addHeaderHTML(out) {
 	out += '    <head>';
     out += '        <!-- Compiled and minified CSS -->';
     out += '        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">';
-    out += '        <link rel="stylesheet" href="../style.css">';
+    out += '        <link rel="stylesheet" href="/style.css">';
     out += '        <!-- Compiled and minified JavaScript -->';
     out += '        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>';            
 	out += '    </head>';
 	out += '    <body>';
 	out += '    	  <nav>';
 	out += '    		<div class="nav-wrapper brown lighten-4">';
-	out += '    		  <a href="#" class="brand-logo"><img src="../logo.png" width="120px"/></a>';
+	out += '    		  <a href="#" class="brand-logo"><img src="/logo.png" width="120px"/></a>';
 	out += '    		  <ul id="nav-mobile" class="right hide-on-med-and-down">';
 	out += '    			<li><a href="./index.html">Home</a></li>';
 	out += '    			<li><a href="./about.html">About</a></li>';
@@ -147,6 +147,51 @@ async function profileInfoCard(sColSpan, lColSpan, result, out) {
     return out;
 }
 
+async function driverTripsCard( sColSpan, lColSpan, array, out ) {
+    
+    const numberOfDriverTrips = array.length;
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
+                <table>
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Date</th>
+                        <th>Departing</th>
+                        <th>Arriving</th>
+                        <th>Vehicle</th>
+                        <th>Cargo Space</th>
+                        <th>Seat Space</th>
+                        <th>Status</th>
+                        <th>Link</th>
+                    </tr>`;
+                for (var i = 0; i < numberOfDriverTrips; i++) {
+                    var thisDriverTrip = array[i].driverTrip;
+                    var thisTripStatus = array[i].driverTripStatus;
+                    var thisViewTripDetailsURL = array[i].viewTripDetailsURL;
+                    var thisTripDate = array[i].dateJSON.dateString;
+    out +=          `<tr>
+                        <td>${thisDriverTrip.fromSuburb}</td>
+                        <td>${thisDriverTrip.toSuburb}</td>
+                        <td>${thisTripDate}</td>
+                        <td>${thisDriverTrip.departureTime}</td>
+                        <td>${thisDriverTrip.arrivalTime}</td>
+                        <td>${thisDriverTrip.vehicle}</td>
+                        <td>${thisDriverTrip.cargoSpace}</td>
+                        <td>${thisDriverTrip.seatSpace}</td>
+                        <td style="color:${thisTripStatus.colour};">${thisTripStatus.status}</td>
+                        <td>
+                            <form method="GET" action="/trip${thisViewTripDetailsURL}">
+                                <button class="btn waves-effect waves-light" type="submit" name="action">View</button>
+                            </form>
+                        </td>
+                    </tr>`;
+                }
+
+    out +=      `</table>
+            </div>`;
+    return out;
+}
+
 module.exports = {
     addHeaderHTML,
     addFooterHTML,
@@ -154,5 +199,6 @@ module.exports = {
 	thankYouCard,
     profileInfoCard,
     driverHomepageCard,
-    driverRegistrationFormCard
+    driverRegistrationFormCard,
+    driverTripsCard
 };

@@ -1,5 +1,4 @@
 const UserModel = require('../Models/user');
-
 let UserView = require('../Views/user-profile');
 
 module.exports = {
