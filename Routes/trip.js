@@ -6,6 +6,7 @@ router.get("/", TripController.getAllTrips);
 
 router.post("/", TripController.addNewTrip);
 
+router.get('/driver/trip-details/:tripID', TripController.viewDriverTripDetails);
 
 router.get('/driver/:username', TripController.getTripsByDriver);
 
