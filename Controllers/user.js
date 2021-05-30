@@ -42,19 +42,29 @@ module.exports = {
                 console.log('reqPassword is: ' + reqPassword);
                 console.log('req.headers content-type is: ' + req.headers['content-type']);
                 
-                var result = '';                
+                var user = '';                
                 try {
-                    result = await UserModel.findOne( { username: reqUsername }, { __v:0 } );                    
-                    console.log(result);
+                    user = await UserModel.findOne( { username: reqUsername }, { __v:0 } );                    
+                    console.log(user);
 
-                    if (result == null) { // Invalid username
+                    if (user == null) { // Invalid username
                         res.send('Username not found');
                     }
                     else { // Valid username
 
-                        if (reqPassword == result.password) { // Valid password
+                        if (reqPassword == user.password) { // Valid password
                             //res.send('Username found AND Password MATCH. User authenticated.');
-                            await UserView.displayUserProfilePage(res, result);
+                            var url;
+                            var buttonTitle;
+                            if (user.usertype == 'driver') {
+                                url = `/trip/driver/${user.username}`;
+                                buttonTitle = `My Trips`;
+                            }
+                            else { // usertype is 'user'
+                                url = `/booking/user/${user.username}`;
+                                buttonTitle = `My Bookings`;
+                            }
+                            await UserView.displayUserProfilePage(res, user, url, buttonTitle);
                         }
                         else { // Invalid password
                             res.send('Username found. Invalid Password.');

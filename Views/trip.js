@@ -5,6 +5,7 @@ async function displayTripsByDriverPage(res, array) {
     out = ``;
     out = await U.addHeaderHTML(out);
     out = await U.openingHtmlElements(out);
+    out = await U.addPageTitle( 12, 12, "My Trips", out );
 
     out += `<div class="row">`;
     out =       await U.driverTripsCard( 12, 12, array, out);
@@ -24,6 +25,7 @@ async function displayDriverTripDetailsPage(res, outputJSON) {
     out = ``;
     out = await U.addHeaderHTML(out);
     out = await U.openingHtmlElements(out);
+    out = await U.addPageTitle( 12, 12, "View Trip Details", out );
 
     console.log("driver trip: ");
     console.log(driverTrip);
@@ -36,7 +38,7 @@ async function displayDriverTripDetailsPage(res, outputJSON) {
     out =               await U.userBookingsCard( 12, 12, userBookingsArray, out );
     out +=          `</div>`;
     out +=          `<div class="row">`;    
-    out =               await U.bookingStatsCard( 12, 6, bookingStats, out );
+    out =               await U.bookingStatsCard( 12, 7, bookingStats, out );
     out +=          `</div>`;
     
     out +=      `</div>`;

@@ -99,15 +99,17 @@ module.exports = {
                         
                         const viewBookingDetailsURL = `/user/booking-details/${userBooking._id}`;
 
-                        array.push({ userBooking, tripLinkedtoThisBooking, mySpace, remainingSpace, viewBookingDetailsURL });
+                        var userBookingWithNames = await Util.addNameToBooking(userBooking);
+                        var dateJSON = await Util.getDateJSON(tripLinkedtoThisBooking.date);
+                        array.push({ userBookingWithNames, tripLinkedtoThisBooking, dateJSON, mySpace, remainingSpace, viewBookingDetailsURL });
                     }
 
                     for (var i = 0; i < array.length; i++) {
                         console.log(array[i]);                        
                     }
-                    res.send(array);
+                    //res.send(array);
                     //res.send(userBookings);
-                    //await UserView.displayUserProfilePage(res, userBooking);
+                    await BookingView.displayBookingsByUserPage(res, array);
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -184,14 +186,14 @@ module.exports = {
                             percentageUtilizedSeatSpace: percentageUtilizedSeatSpace,
                             percentageUtilizedCargoSpace: percentageUtilizedCargoSpace
                     };
-                    
-                    outputJSON = { userBooking, tripLinkedtoThisBooking, driverInfo, otherBookingsForThisTrip, bookingStats };
+                    var dateJSON = await Util.getDateJSON(tripLinkedtoThisBooking.date);
+                    outputJSON = { userBooking, tripLinkedtoThisBooking, dateJSON, driverInfo, otherBookingsForThisTrip, bookingStats };
                     
                     console.log(outputJSON);
-                    res.send(outputJSON);
+                    //res.send(outputJSON);
 
                     //res.send(userBookings);
-                    //await UserView.displayUserProfilePage(res, userBooking);
+                    await BookingView.displayUserBookingDetailsPage(res, outputJSON);
 
                 } catch (error) {
                     console.log(error.message);

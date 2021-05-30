@@ -181,7 +181,7 @@ async function driverTripsCard( sColSpan, lColSpan, array, out ) {
                         <td style="color:${thisTripStatus.colour};">${thisTripStatus.status}</td>
                         <td>
                             <form method="GET" action="/trip${thisViewTripDetailsURL}">
-                                <button class="btn waves-effect waves-light" type="submit" name="action">View</button>
+                                <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">View</button>
                             </form>
                         </td>
                     </tr>`;
@@ -237,6 +237,7 @@ async function tripDetailsCard( sColSpan, lColSpan, driverTrip, dateString, out 
     return out;
 }
 
+// this function is for Drivers to see User Bookings on their trip
 async function userBookingsCard (sColSpan, lColSpan, userBookingsArray, out ) {
     var numberOfUserBookings = userBookingsArray.length;
 
@@ -309,6 +310,123 @@ async function bookingStatsCard (sColSpan, lColSpan, bookingStats, out ) {
     return out;
 }
 
+async function myTripBookingsCard (sColSpan, lColSpan, tripBookingsArray, out ) {
+    var numberOfTripBookings = tripBookingsArray.length;
+
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
+                <h5>My Bookings</h5>`
+
+    
+    out +=      `<p>You have <b>${numberOfTripBookings}</b> trip bookings.</p>`;
+
+    if (numberOfTripBookings > 0) {
+    
+        out +=      `<table>
+                        <tr>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Date</th>
+                            <th>My Cargo Space</th>
+                            <th>My Seat Space</th>
+                            <th>Link</th>
+                        </tr>`;
+
+        for ( var i = 0; i < numberOfTripBookings; i++ ) {
+            var thisBooking = tripBookingsArray[i];
+            out +=      `<tr>
+                            <td>${thisBooking.tripLinkedtoThisBooking.fromSuburb}</td>
+                            <td>${thisBooking.tripLinkedtoThisBooking.toSuburb}</td>
+                            <td>${thisBooking.dateJSON.dateString}</td>
+                            <td>${thisBooking.userBookingWithNames.cargoSpace}</td>
+                            <td>${thisBooking.userBookingWithNames.seatSpace}</td>
+                            <td>
+                                <form method="GET" action="/booking${thisBooking.viewBookingDetailsURL}">
+                                    <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">View</button>
+                                </form>
+                            </td>
+                        </tr>`;
+        }
+
+        out +=      `</table>`;
+    }
+
+    out += `</div>`;
+    return out;
+}
+
+async function bookingCommentsCard(sColSpan, lColSpan, bookingComments, out ) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
+                <h5>My Booking Comments</h5>
+                <p>${bookingComments}</p>
+                
+            </div>`;
+    return out;
+}
+
+async function userViewBookingStatsCard (sColSpan, lColSpan, bookingStats, out ) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
+                <h5>Booking Stats</h5>
+                <table>
+                    <tr>
+                        <th> </th>
+                        <th>Cargo Space (m3)</th>
+                        <th>Seat Space</th>
+                    </tr>
+                    <tr>
+                        <td><b>Trip Capacity</b></td>
+                        <td>${bookingStats.tripTotalCargoSpace}</td>
+                        <td>${bookingStats.tripTotalSeatSpace}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Space Booked by Me</b></td>
+                        <td>${bookingStats.myCargo}</td>
+                        <td>${bookingStats.mySeats}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Space Booked by Other Users</b></td>
+                        <td>${bookingStats.otherUsersCargoTotal}</td>
+                        <td>${bookingStats.otherUsersSeatsTotal}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Space Remaining</b></td>
+                        <td>${bookingStats.remainingCargo}</td>
+                        <td>${bookingStats.remainingSeats}</td>
+                    </tr>
+                    <tr>
+                        <td><b>% Utilised</b></td>
+                        <td style="font-size:14pt"><b>${bookingStats.percentageUtilizedCargoSpace}%</b></td>
+                        <td style="font-size:14pt"><b>${bookingStats.percentageUtilizedSeatSpace}%</b></td>
+                    </tr>
+                </table> 
+            <div>`;
+    return out;
+}
+
+async function driverInfoCard( sColSpan, lColSpan, driverInfo, out ) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
+                <h5>Driver Info</h5>
+                <table>
+                    <tr> 
+                        <td><b> Username </b></td> 
+                        <td> ${ driverInfo.username } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> Name </b></td> 
+                        <td> ${ driverInfo.givenname } ${ driverInfo.lastname } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> Age </b></td> 
+                        <td> ${ driverInfo.age } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> Gender </b></td> 
+                        <td> ${ driverInfo.gender } </td> 
+                    </tr>                                  
+                </table>
+            </div>`;
+    return out;
+}
+
 async function openingHtmlElements(out) {
     out += `<main>
                 <div class="container">`;
@@ -327,6 +445,15 @@ async function addSpacerColumn(dividingSpace, out) {
     return out;
 }
 
+async function addPageTitle(sColSpan, lColSpan, pageTitle, out) {
+    out += `<div class="row">
+                <div class="col s${sColSpan} l${lColSpan} white-text blue-grey darken-3 z-depth-1">
+                    <h3>${pageTitle}</h3>
+                </div>
+            </div>`;
+    return out;
+}
+
 module.exports = {
     addHeaderHTML,
     addFooterHTML,
@@ -341,5 +468,10 @@ module.exports = {
     addSpacerColumn,
     tripDetailsCard,
     userBookingsCard,
-    bookingStatsCard
+    bookingStatsCard,
+    myTripBookingsCard,
+    bookingCommentsCard,
+    userViewBookingStatsCard,
+    driverInfoCard,
+    addPageTitle
 };
