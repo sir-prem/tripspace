@@ -192,6 +192,141 @@ async function driverTripsCard( sColSpan, lColSpan, array, out ) {
     return out;
 }
 
+async function tripDetailsCard( sColSpan, lColSpan, driverTrip, dateString, out ) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
+                <h5>Trip Info</h5>
+                <table>
+                    <tr> 
+                        <td><b> Driver </b></td> 
+                        <td> ${ driverTrip.username } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> From </b></td> 
+                        <td> ${ driverTrip.fromSuburb } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> To </b></td> 
+                        <td> ${ driverTrip.toSuburb } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> Date </b></td> 
+                        <td> ${ dateString } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> Departing </b></td> 
+                        <td> ${ driverTrip.departureTime } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> Arriving </b></td> 
+                        <td> ${ driverTrip.arrivalTime } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> Vehicle </b></td> 
+                        <td> ${ driverTrip.vehicle } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> Cargo Space </b></td> 
+                        <td> ${ driverTrip.cargoSpace } </td> 
+                    </tr>
+                    <tr> 
+                        <td><b> Seat Space </b></td> 
+                        <td> ${ driverTrip.seatSpace } </td> 
+                    </tr>                    
+                </table>
+            </div>`;
+    return out;
+}
+
+async function userBookingsCard (sColSpan, lColSpan, userBookingsArray, out ) {
+    var numberOfUserBookings = userBookingsArray.length;
+
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
+                <h5>User Bookings</h5>`
+
+    
+    out +=      `<p>There are <b>${numberOfUserBookings}</b> user bookings for this trip.</p>`;
+
+    if (numberOfUserBookings > 0) {
+    
+        out +=      `<table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Cargo Space</th>
+                            <th>Seat Space</th>
+                            <th>Comments</th>
+                        </tr>`;
+
+        for ( var i = 0; i < numberOfUserBookings; i++ ) {
+            var thisBooking = userBookingsArray[i];
+            out +=      `<tr>
+                            <td>${thisBooking.givenname} ${thisBooking.lastname}</td>
+                            <td>${thisBooking.userID}</td>
+                            <td>${thisBooking.cargoSpace}</td>
+                            <td>${thisBooking.seatSpace}</td>
+                            <td>${thisBooking.comments}</td>
+                        </tr>`;
+        }
+
+        out +=      `</table>`;
+    }
+
+    out += `</div>`;
+    return out;
+}
+
+async function bookingStatsCard (sColSpan, lColSpan, bookingStats, out ) {
+    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
+                <h5>Booking Stats</h5>
+                <table>
+                    <tr>
+                        <th> </th>
+                        <th>Cargo Space (m3)</th>
+                        <th>Seat Space</th>
+                    </tr>
+                    <tr>
+                        <td><b>Trip Capacity</b></td>
+                        <td>${bookingStats.tripTotalCargoSpace}</td>
+                        <td>${bookingStats.tripTotalSeatSpace}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Space Booked</b></td>
+                        <td>${bookingStats.totalBookedCargo}</td>
+                        <td>${bookingStats.totalBookedSeats}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Space Remaining</b></td>
+                        <td>${bookingStats.remainingCargo}</td>
+                        <td>${bookingStats.remainingSeats}</td>
+                    </tr>
+                    <tr>
+                        <td><b>% Utilised</b></td>
+                        <td style="font-size:14pt"><b>${bookingStats.percentageUtilizedCargoSpace}%</b></td>
+                        <td style="font-size:14pt"><b>${bookingStats.percentageUtilizedSeatSpace}%</b></td>
+                    </tr>
+                </table> 
+            <div>`;
+    return out;
+}
+
+async function openingHtmlElements(out) {
+    out += `<main>
+                <div class="container">`;
+    return out;
+}
+
+async function closingHtmlElements(out) {
+    out += `    </div>
+            </main>`;
+    return out;
+}
+
+async function addSpacerColumn(dividingSpace, out) {
+    out += `<div class="col s${dividingSpace} l${dividingSpace}">
+            </div>`;
+    return out;
+}
+
 module.exports = {
     addHeaderHTML,
     addFooterHTML,
@@ -200,5 +335,11 @@ module.exports = {
     profileInfoCard,
     driverHomepageCard,
     driverRegistrationFormCard,
-    driverTripsCard
+    driverTripsCard,
+    openingHtmlElements,
+    closingHtmlElements,
+    addSpacerColumn,
+    tripDetailsCard,
+    userBookingsCard,
+    bookingStatsCard
 };

@@ -83,22 +83,8 @@ module.exports = {
                             
                         }
 
-                        var date = new Date(driverTrip.date);
-                        var dateString = date.toDateString();
-                        var dd = date.getDate();
-                        var mm = date.getMonth()+1;
-                        var yyyy = date.getFullYear();
-                        
-                        //console.log("dateString is: " + dateString);
-                        //console.log("dd is: " + dd);
-                        //console.log("yyyy is: " + yyyy);
-                        //console.log("mm is: " + mm);
-
-                        var dateJSON = { dateString, dd, mm, yyyy };
-
-
-
-                        const viewTripDetailsURL = `/driver/trip-details/${driverTrip._id}`;
+                        var dateJSON = await Util.getDateJSON(driverTrip.date);
+                        const viewTripDetailsURL = `/driver/trip-details/${driverTrip._id}`;                        
                         array.push({ driverTrip, dateJSON, driverTripStatus, viewTripDetailsURL });
                     }
                     
@@ -129,7 +115,7 @@ module.exports = {
                 try {
                     driverTrip = await TripModel.findOne( { _id: tripID }, { __v:0 } );
 
-                    const bookingsForThisTrip = await BookingModel.find( { tripID: driverTrip._id }, { __v:0 } );
+                    var bookingsForThisTrip = await BookingModel.find( { tripID: driverTrip._id }, { __v:0 } );
 
                     const tripTotalSeatSpace = driverTrip.seatSpace;
                     const tripTotalCargoSpace = driverTrip.cargoSpace;
@@ -140,10 +126,14 @@ module.exports = {
                     var percentageUtilizedSeatSpace;
                     var percentageUtilizedCargoSpace;
 
+                    var bookingsForTripWithNames = [];
+
                     const numberOfBookingsForThisTrip = bookingsForThisTrip.length;
 
                     for (var j = 0; j < numberOfBookingsForThisTrip; j++) {
                         var thisBooking = bookingsForThisTrip[j];
+                        var thisBookingWithNames = await Util.addNameToBooking(thisBooking);
+                        bookingsForTripWithNames.push(thisBookingWithNames);
                         totalBookedSeats += thisBooking.seatSpace;
                         totalBookedCargo += thisBooking.cargoSpace;
                     }
@@ -174,14 +164,15 @@ module.exports = {
                             percentageUtilizedSeatSpace: percentageUtilizedSeatSpace,
                             percentageUtilizedCargoSpace: percentageUtilizedCargoSpace
                     };
-                    
-                    json = { driverTrip, bookingsForThisTrip, bookingStats };
+                                        
+                    var dateJSON = await Util.getDateJSON(driverTrip.date);
+                    json = { driverTrip, dateJSON, bookingsForTripWithNames, bookingStats };
 
 
                     console.log(json);
-                    res.send(json);
+                    //res.send(json);
 
-                    //await UserView.displayUserProfilePage(res, result);
+                    await TripView.displayDriverTripDetailsPage(res, json);
 
                 } catch (error) {
                     console.log(error.message);
