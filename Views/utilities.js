@@ -80,6 +80,28 @@ async function driverHomepageCard(sColSpan, lColSpan, out) {
 }
 
 async function driverRegistrationFormCard(sColSpan, lColSpan, out) {
+    out += `					<script>
+    window.addEventListener('load', function () {
+        document.querySelector('#profile_pic_src').addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                var img = document.querySelector('#profile_pic');
+                var realImg = document.querySelector('#real_image');
+                img.onload = () => {
+                    URL.revokeObjectURL(img.src);  // no longer needed, free memory
+                }
+
+                img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    console.log('File content:', event.target.result);
+                    realImg.value = event.target.result;
+                    console.log(realImg.value);
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>`;
     out += `            <div class="col s${sColSpan} l${lColSpan}" style="background-color: lightgrey;">`;
 	out += `				<h1>Driver Sign-Up</h1>`;
 	out += `				<h5>Start earning an <b>extra income</b>, and <b>helping the environment</b>`;
@@ -99,6 +121,10 @@ async function driverRegistrationFormCard(sColSpan, lColSpan, out) {
 	out += `					Last name: <input type="text" name="lastname" /><br> `;
 	out += `					Age: <input type="text" name="age" /><br> `;
 	out += `					Gender: <input type="text" name="gender" /><br> `;
+    out += `                    Profile picture: (Image should be smaller than 16MB)</br>`;
+    out += `                    <input type='file' id="profile_pic_src"/></br>`;
+    out += `                    <input type='text' name="profile_pic" id="real_image" style="display: none;"/>`;
+    out += `                    <img id="profile_pic" width="100" height="100" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"></br></br>`;
 	out += `					<input type="hidden" name="usertype" value="driver"/>`;
 	out += `					<button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit`;
 	out += `					  </button>`;
@@ -136,10 +162,10 @@ async function profileInfoCard(sColSpan, lColSpan, result, out) {
     out += '	<div class="col s4 l4 grey lighten-5">';
 
 	if (result.gender=="Male") {
-		out +=		   '<img src="../avatar_M.jpeg" width=100% />';
+		out +=		   '<img src="'+result.profile_pic+'" width=100% />';
 	}
 	else {
-		out +=		   '<img src="../avatar_F.jpeg" width=100% />';
+		out +=		   '<img src="'+result.profile_pic+'" width=100% />';
 	}
 
 	out +=	   '</div>';
