@@ -40,7 +40,7 @@ router.post('/', async function(req, res){
         isExistingUsername = false;
         isVerified = 0;
 
-        // profile_pic = req.body.profile_pic
+        profile_pic = req.body.profile_pic
         // Code to transfer string to image file
         // var ImgFile = new Image();
         // ImgFile.src = 'profile_pic'
