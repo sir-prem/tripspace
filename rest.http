@@ -1,0 +1,316 @@
+GET http://localhost:4000/
+
+
+
+### Add user 
+POST http://localhost:4000/user/
+Content-Type: application/json
+
+{
+    "username": "chuckie",
+    "password": "12345",
+    "givenname": "Chuck",
+    "lastname" : "Davis",
+    "age" : 25,
+    "gender": "Male",
+    "usertype": "driver"
+}
+
+
+
+### Add user
+POST http://localhost:4000/user/
+Content-Type: application/json
+
+{
+    "username": "billie",
+    "password": "121212",
+    "givenname": "Billie",
+    "lastname" : "Jean",
+    "age" : 35,
+    "gender": "Male",
+    "usertype": "user"
+}
+
+
+
+### Add user
+POST http://localhost:4000/user/
+Content-Type: application/json
+
+{
+    "username": "abrahaml",
+    "password": "543543",
+    "givenname": "Abraham",
+    "lastname" : "Lincoln",
+    "age" : 55,
+    "gender": "Male",
+    "usertype": "user"
+}
+
+
+### Add user
+POST http://localhost:4000/user/
+Content-Type: application/json
+
+{
+    "username": "venusw",
+    "password": "tennis123",
+    "givenname": "Venus",
+    "lastname" : "Williams",
+    "age" : 45,
+    "gender": "Female",
+    "usertype": "driver"
+}
+
+### Add user
+POST http://localhost:4000/user/
+Content-Type: application/json
+
+{
+    "username": "denzelw",
+    "password": "actor111",
+    "givenname": "Denzel",
+    "lastname" : "Washington",
+    "age" : 60,
+    "gender": "Male",
+    "usertype": "user"
+}
+
+
+
+###  Get all users
+GET http://localhost:4000/user/
+
+
+
+### Get user by id
+GET http://localhost:4000/user/60a9152bb124eb3349179bb4
+
+
+
+### Delete user by id
+DELETE http://localhost:4000/user/60a8f94bee05282435586002
+
+
+
+### Update user by id
+PATCH http://localhost:4000/user/60a9152bb124eb3349179bb4
+Content-Type: application/json
+
+{
+    "username": "chuckie",
+    "password": "12345"
+}
+
+### Authenticate user
+POST http://localhost:4000/user/auth
+Content-Type: application/json
+
+{
+    "username": "chuckie",
+    "password": "12345"
+}
+
+###################################################################
+###
+###         TRIPS
+###
+###
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Essendon",
+    "toSuburb": "Richmond",
+    "username": "chuckie",
+    "date": "2021-05-27",
+    "departureTime": "09:00",
+    "arrivalTime": "10:00",
+    "vehicle": "Truck",
+    "cargoSpace": 60,
+    "seatSpace": 0
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Richmond",
+    "toSuburb": "Docklands",
+    "username": "chuckie",
+    "date": "2021-05-27",
+    "departureTime": "13:00",
+    "arrivalTime": "15:00",
+    "vehicle": "Truck",
+    "cargoSpace": 60,
+    "seatSpace": 0
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Docklands",
+    "toSuburb": "Brunswick",
+    "username": "venusw",
+    "date": "2021-05-27",
+    "departureTime": "15:00",
+    "arrivalTime": "16:00",
+    "vehicle": "Ute",
+    "cargoSpace": 8,
+    "seatSpace": 3
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Brunswick",
+    "toSuburb": "Coburg",
+    "username": "venusw",
+    "date": "2021-05-28",
+    "departureTime": "13:00",
+    "arrivalTime": "15:00",
+    "vehicle": "Ute",
+    "cargoSpace": 8,
+    "seatSpace": 3
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "St Kilda",
+    "toSuburb": "Dandenong",
+    "username": "neilarm3",
+    "date": "2021-05-28",
+    "departureTime": "08:30",
+    "arrivalTime": "10:00",
+    "vehicle": "Truck",
+    "cargoSpace": 30,
+    "seatSpace": 2
+}
+
+### Add trip
+POST http://localhost:4000/trip/
+Content-Type: application/json
+
+{
+    "fromSuburb": "Essendon",
+    "toSuburb": "Richmond",
+    "username": "neilarm3",
+    "date": "2021-05-30",
+    "departureTime": "16:30",
+    "arrivalTime": "18:00",
+    "vehicle": "Truck",
+    "cargoSpace": 20,
+    "seatSpace": 0
+}
+
+### Get all trips
+GET http://localhost:4000/trip/
+
+
+### Get trips by driver
+GET http://localhost:4000/trip/driver/chuckie
+
+### Get trips by driver
+GET http://localhost:4000/trip/driver/neilarm3
+
+### Get trip by ID
+GET http://localhost:4000/trip/60ae595cbee7541fec7642b3
+
+
+### Find trips
+GET http://localhost:4000/trip/search?fromSub=Essendon&toSub=Richmond
+Content-Type: application/x-www-form-urlencoded
+
+### View driver's trip details by trip ID
+GET http://localhost:4000/trip/driver/trip-details/60ae595cbee7541fec7642b3
+
+
+###################################################################
+###
+###         BOOKINGS
+###
+###
+
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae595cbee7541fec7642b3",
+    "userID": "abrahaml",
+    "cargoSpace": "15",
+    "seatSpace": "2",
+    "comments": "Got a few heavy items, such as fridge, and washing machine"
+}
+
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae595cbee7541fec7642b3",
+    "userID": "billie",
+    "cargoSpace": "7",
+    "seatSpace": "0",
+    "comments": "Please pick up from my home address"
+}
+
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae595cbee7541fec7642b3",
+    "userID": "denzelw",
+    "cargoSpace": "5",
+    "seatSpace": "0",
+    "comments": "Busy acting on next movie. Please pick up from front door"
+}
+
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae5948bee7541fec7642b2",
+    "userID": "abrahaml",
+    "cargoSpace": "4",
+    "seatSpace": "2",
+    "comments": "Need to take some sports gear. I will have them in boxes."
+}
+
+### Add booking
+POST http://localhost:4000/booking/
+Content-Type: application/json
+
+{
+    "tripID": "60ae5948bee7541fec7642b2",
+    "userID": "denzelw",
+    "cargoSpace": "4",
+    "seatSpace": "1",
+    "comments": "Need to transport some books. Will have them in 2 x boxes"
+}
+
+### Get all bookings
+GET http://localhost:4000/booking/
+
+
+### Get bookings by user
+GET http://localhost:4000/booking/user/abrahaml
+
+### View User Booking Details
+GET http://localhost:4000/booking/user/booking-details/60ae76a42a6f0f3205c58eed
+
+### View User Booking Details
+GET http://localhost:4000/booking/user/booking-details/60ae862f7204a5414d2aa13d
