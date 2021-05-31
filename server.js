@@ -1,8 +1,25 @@
 const express = require("express");
 const app = express();
-
+const socketio = require('socket.io');
+const http = require('http');
+const server = http.createServer(app);
+const io = socketio(server);
 const port = 4000;
 
+//initialize socketio
+io.on('connect', function(socket){
+  console.log('connected to socket.io!')
+
+  //broadcast message to users
+  socket.on('send-notification', function(message){
+    socket.broadcast.emit('new-notification', message)
+  });
+
+  //disconnect socketio
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+  })
+})
 
 var uri = "mongodb+srv://cluster0.7hvms.mongodb.net/";
 
@@ -56,6 +73,6 @@ app.get("/someroute", (req, res, next) => {
 });
 */
 
-app.listen(port, function() {
+server.listen(port, function() {
   console.log("Server is running on Port: " + port);
 });

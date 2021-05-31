@@ -33,4 +33,48 @@ body{
   .card{
       padding: 5px;
   }
+
+/* notification */
+.wrapper{
+  position:absolute;
+  right:30px;
+  bottom:85px;
+  max-width:400px;
+  background:#fff;
+}
+.wrapper .head-text{
+  line-height: 30px;
+  background:#4F4D5B;
+  color:#fff;
+  padding: 0 20px;
+  font-weight:500;
+  font-size:20px;
+}
+.wrapper .chat-box{
+  padding:20px;
+}
+.chat-box .desc-text{
+  line-height: 25px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.chat-box form .field{
+  height:50px;
+  margin-top:20px;
+}
+form .textarea textarea{
+  height:110%;
+  padding-left:20px;
+  border: 1px solid lightgrey;
+  font-size: 16px;
+}
+form .field button{
+  line-height: 30px;
+  float:right;
+  background:#5FA826;
+  color:white;
+  padding: 0 20px;
+  font-weight:500;
+  font-size:20px;
+}
   
