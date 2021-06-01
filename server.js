@@ -31,6 +31,7 @@ const bookTrip = require('./Routes/trip');
 const booking = require('./Routes/booking')
 let homePage = require('./Views/homepage');
 let newDriver = require('./Views/new-driver');
+var editProfile = require('./Routes/editProfile');
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -41,6 +42,7 @@ app.use(express.static(__dirname + '/Views'));
 app.use('/user', user);
 app.use('/trip', bookTrip);
 app.use('/booking', booking);
+app.use('/editProfile', editProfile)
 
 app.get("/", async (req, res, next) => {
   await homePage.displayHomePage(res);

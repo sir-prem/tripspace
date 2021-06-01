@@ -2,7 +2,18 @@ const UserModel = require('../Models/user');
 let UserView = require('../Views/user-profile');
 
 module.exports = {
-
+    editProfile: 
+    async (req, res, next) => {
+        try {
+            console.log(req.body);
+            var result = await UserModel.findOne( {username: req.body.username}, { __v:0 } );
+            console.log(result);
+            await UserView.displayEditUserProfilePage(res, result);
+        } catch (error) {
+            console.log(error.message);
+        }
+    
+    },
     getAllUsers: 
             async (req, res, next) => {
                 try {
