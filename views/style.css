@@ -118,4 +118,39 @@ textarea{
   font-size:20px;
   margin-top: 20px;
 }
+
+	/* map */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #map {				
+    margin-left:5px;
+    width: 700px; 
+    height: 400px;
+    bottom:0;
+    border:solid;
+  }
+
+  .map-container{
+    padding:20px;
+    position:absolute;
+    margin-top: 25vh;
+    margin-left: 25px;
+    background: #4F4D5B; ;
+    max-width:800px;
+    bottom:-250px;
+  }
+
+  .map-text{
+    padding:20px;
+    line-height: 25px;
+    font-size: 17px;
+    font-weight: 500;
+    color: white;
+  }
   
+
+
+
