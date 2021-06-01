@@ -34,6 +34,22 @@
 			</div>		
 		</div>
 
+		<div class="text">
+			<div>Track Driver</div>
+		</div>
+
+		<div class="refNum-container">
+			<div class="refNum">Enter Trip Reference Number:</div>
+			<form onsubmit="startTimer(); return false;">
+				<div>
+					<textarea type="text" cols="30" rows="10" required></textarea>
+				</div>
+				<div>
+					<button id="track" type="submit">Track</button>
+				</div>
+			</form>
+		</div>
+
         <link rel="stylesheet" href="./style.css">
         <script src="/socket.io/socket.io.js"></script>
         <script src="/js/client.js"></script>
