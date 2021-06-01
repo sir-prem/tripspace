@@ -2,6 +2,37 @@ const UserModel = require('../Models/user');
 let UserView = require('../Views/user-profile');
 
 module.exports = {
+    edit:
+    async (req, res, next) => {
+        try {
+            console.log("The body is: " + JSON.stringify(req.body));
+            console.log("The id is: " + req.body.uid);
+            var p = req.body.profile_pic;
+            var result;
+            if (p == "") {
+                result = await UserModel.findOneAndUpdate( {_id: req.body.uid}, {$set:{
+                    password: req.body.password,
+                    givenname: req.body.givenname,
+                    lastname: req.body.lastname,
+                    age: req.body.age,
+                    gender: req.body.gender,
+                }} ); 
+        } else {
+            result = await UserModel.findOneAndUpdate( {_id: req.body.uid}, {$set:{
+                    password: req.body.password,
+                    givenname: req.body.givenname,
+                    lastname: req.body.lastname,
+                    age: req.body.age,
+                    gender: req.body.gender,
+                    profile_pic: req.body.profile_pic
+                }} ); 
+        }
+        await UserView.displayUserProfilePage(res, result);
+        } catch (error) {
+            console.log(error.message);
+        }
+    
+    },
     editProfile: 
     async (req, res, next) => {
         try {
