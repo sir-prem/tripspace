@@ -158,6 +158,18 @@ async function profileInfoCard(sColSpan, lColSpan, result, out) {
     out +=				'<tr><td><b>age</b></td><td>' + result.age + '</td></tr>';
     out +=				'<tr><td><b>gender</b></td><td>' + result.gender + '</td></tr>';
     out +=		   '</table>';
+    out +=		   '</br>';
+    out += '	<form method="POST" action="/editProfile">';
+    out += '	    <input type="hidden" name="username" value=' + result.username + '>';
+    out += '	    <input type="hidden" name="givenname" value=' + result.givenname + '>';
+    out += '	    <input type="hidden" name="lastname" value=' + result.lastname + '>';
+    out += '	    <input type="hidden" name="age" value=' + result.age + '>';
+    out += '	    <input type="hidden" name="gender" value=' + result.gender + '>';
+    out += '	    <input type="hidden" name="profile_pic" value=' + result.profile_pic + '>';
+    out += '	    <input type="hidden" name="password" value=' + result.password + '>';
+    out += '	    <input type="hidden" name="addNew" value="false">';    
+    out += '	    <button class="btn waves-effect waves-light" type="submit" name="action">Edit</button>';
+    out += '	</form>';
 	out += '	</div>';
     out += '	<div class="col s4 l4 grey lighten-5">';
 
