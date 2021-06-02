@@ -31,9 +31,9 @@ const bookTrip = require('./Routes/trip');
 const booking = require('./Routes/booking')
 let homePage = require('./Views/homepage');
 let newDriver = require('./Views/new-driver');
+let newUser = require('./Views/new-user');
 var editProfile = require('./Routes/editProfile');
 
-//app.use(express.json());
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({ limit: "200mb",  extended: true, parameterLimit: 1000000 }));
 app.use(express.static(__dirname + '/Views'));
@@ -49,6 +49,10 @@ app.get("/", async (req, res, next) => {
 
 app.get("/new-driver", async (req, res, next) => {
   await newDriver.displayNewDriverPage(res);
+});
+
+app.get("/new-user", async (req, res, next) => {
+  await newUser.displayNewUserPage(res);
 });
 
 /*

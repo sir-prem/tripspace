@@ -1,11 +1,12 @@
 
 
 body{ 
-  background-image: url(wallpaper2.jpg);
+  /*background-image: url(wallpaper2.jpg);
   background-repeat: no-repeat;
   background-size: 100%;
   background-position: center top;
-  background-attachment: scroll;
+  background-attachment: scroll;*/
+  background-color: #333333;
 }
  
 body {
@@ -26,10 +27,37 @@ nav .brand-logo {
   padding-left: 100px;
 }
 
+nav {
+  margin-bottom:50px;
+}
+
+.container {
+  margin: 0 auto;
+  margin-inline-end: 0px;
+  width: 100%;
+}
+/*
 .row{
 	padding-top:50px;
 }	
+*/
 
 .card{
 	padding: 5px;
+}
+
+p.logo {
+  color:#75d147;
+}
+
+div#redblock {
+  background-color: red;
+}
+
+div#red-border {
+  border: 1px solid red;
+}
+
+div#title {
+  vertical-align: top;
 }

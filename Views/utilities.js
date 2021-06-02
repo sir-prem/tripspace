@@ -14,7 +14,7 @@ async function addHeaderHTML(out) {
 	out += '    		<div class="nav-wrapper brown lighten-4">';
 	out += '    		  <a href="#" class="brand-logo"><img src="/logo.png" width="120px"/></a>';
 	out += '    		  <ul id="nav-mobile" class="right hide-on-med-and-down">';
-	out += '    			<li><a href="./index.html">Home</a></li>';
+	out += '    			<li><a href="/">Home</a></li>';
 	out += '    			<li><a href="./about.html">About</a></li>';
 	out += '    			<li><a href="./contact.html">Contact</a></li>';
 	out += '    		  </ul>';
@@ -57,79 +57,80 @@ async function addFooterHTML(out) {
     return out;
 }
 
-async function driverHomepageCard(sColSpan, lColSpan, out) {
-    out += `<div class="col s${sColSpan} l${lColSpan} card" style="background-color: lightgrey;">`;
-	out += '				<h2>Got some space?</h2>';
-	out += '				<p>Have a vehicle, and do a bit of driving, often with the vehicle empty?';
-	out += '				   Want to earn some extra income and do something good for the environment while you drive?';
-	out += '				   Then why not sign up now and get started!</p>';
-	out += '				<a href="./new-driver" class="waves-effect waves-light btn">New driver</a>';
-	
-	out += '				<p><br><br>';
-	out += '				<p>Already a member? Then sign in below.</p>';
-	out += '				<h4>Driver login</h4></p>';
-
-	out += '				<form method="POST" action="/user/auth">';
-	out += '					username: <input type="text" name="username" /><br>';
-	out += '					password: <input type="text" name="password" /><br>';
-	out += '					<button class="btn waves-effect waves-light" type="submit" name="action">Submit';
-	out += '					  </button>';
-	out += '				</form>';
-	out += '			</div>';
+async function driverHomepageCard(sColSpan, lColSpan,  out) {
+    out += `<div class="col s${sColSpan} l${lColSpan} card" style="background-color: lightgrey;">
+                <h6><b>DRIVERS:</b></h6>
+                <h4>Got some space?</h4>
+                <p>Have a vehicle, and do a bit of driving, often with the vehicle empty?
+                            Want to earn some extra income and do something good for the environment while you drive?
+                            Then why not sign up now and get started!</p>
+                <p><a href="./new-driver" class="waves-effect waves-light light-green darken-1 btn">Sign Up</a></p>
+            </div>`;
     return out;
 }
 
-async function driverRegistrationFormCard(sColSpan, lColSpan, out) {
-    out += `					<script>
-    window.addEventListener('load', function () {
-        document.querySelector('#profile_pic_src').addEventListener('change', function () {
-            if (this.files && this.files[0]) {
-                var img = document.querySelector('#profile_pic');
-                var realImg = document.querySelector('#real_image');
-                img.onload = () => {
-                    URL.revokeObjectURL(img.src);  // no longer needed, free memory
-                }
+async function signUpCard(sColSpan, lColSpan, heading, subheading, para, href, out) {
+    out += `<div class="col s${sColSpan} l${lColSpan} card" style="background-color: lightgrey;">
+                <h6><b>${heading}:</b></h6>
+                <h4>${subheading}</h4>
+                <p>${para}</p>
+                <p><a href="${href}" class="waves-effect waves-light light-green darken-1 btn">Sign Up</a></p>
+            </div>`;
+    return out;
+}
 
-                img.src = URL.createObjectURL(this.files[0]); // set src to blob url
-                var reader = new FileReader();
-                reader.onload = function(event) {
-                    console.log('File content:', event.target.result);
-                    realImg.value = event.target.result;
-                    console.log(realImg.value);
-                };
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    });
-</script>`;
-    out += `            <div class="col s${sColSpan} l${lColSpan}" style="background-color: lightgrey;">`;
-	out += `				<h1>Driver Sign-Up</h1>`;
-	out += `				<h5>Start earning an <b>extra income</b>, and <b>helping the environment</b>`;
-	out += `				   by utilising spare space in your vehicle.</h5>`;
-	out += `				<h5>Register your details with us, and get started right now!</h5>`;
-	out += `				<p>Not sure and want to know a bit more before you begin your journey with `;
-	out += `				TripSpace? Click here to find out more...<br><br>`;
-	out += `				<a href="./how-tripspace-works.html" class="waves-effect waves-light btn light-green darken-1">Find out more</a>`;
-	out += `			</div>`;
-	out += `			<div class="col s${sColSpan} l${lColSpan}" style="background-color: slategrey; color: white">`;
-	out += `				<h4>Register here</h4>`;
-	out += `				<p>Please fill in the below details.</p>`;
-	out += `				<form method="POST" action="/user">`;
-	out += `					username: <input type="text" name="username" /><br>`;
-	out += `					password: <input type="text" name="password" /><br>`;
-	out += `					Given name: <input type="text" name="givenname" /><br> `;
-	out += `					Last name: <input type="text" name="lastname" /><br> `;
-	out += `					Age: <input type="text" name="age" /><br> `;
-	out += `					Gender: <input type="text" name="gender" /><br> `;
-    out += `                    Profile picture: (Image should be smaller than 16MB)</br>`;
-    out += `                    <input type='file' id="profile_pic_src"/></br>`;
-    out += `                    <input type='text' name="profile_pic" id="real_image" style="display: none;"/>`;
-    out += `                    <img id="profile_pic" width="100" height="100" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"></br></br>`;
-	out += `					<input type="hidden" name="usertype" value="driver"/>`;
-	out += `					<button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit`;
-	out += `					  </button>`;
-	out += `				</form>`;
-	out += `			</div>`;
+async function regForm(sColSpan, lColSpan, heading, subheading, usertype, out) {
+    out += `<script>
+                window.addEventListener('load', function () {
+                    document.querySelector('#profile_pic_src').addEventListener('change', function () {
+                        if (this.files && this.files[0]) {
+                            var img = document.querySelector('#profile_pic');
+                            var realImg = document.querySelector('#real_image');
+                            img.onload = () => {
+                                URL.revokeObjectURL(img.src);  // no longer needed, free memory
+                            }
+
+                            img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+                            var reader = new FileReader();
+                            reader.onload = function(event) {
+                                console.log('File content:', event.target.result);
+                                realImg.value = event.target.result;
+                                console.log(realImg.value);
+                            };
+                            reader.readAsDataURL(this.files[0]);
+                        }
+                    });
+                });
+            </script>
+            <div class="col s1 l1"></div>
+            <div class="col s5 l5" style="background-color: lightgrey;">
+                <h3>${heading}</h3>
+                <h5>${subheading}</h5>
+                <p>Not sure and want to know a bit more before you begin your journey with 
+                TripSpace? Click here to find out more...<br><br>
+                <a href="./how-tripspace-works.html" class="waves-effect waves-light btn light-green darken-1">Find out more</a>
+            </div>
+            <div class="col s1 l1"></div>
+            <div class="col s4 l4" style="background-color: slategrey; color: white">
+                <h4>Register here</h4>
+                <p>Please fill in the below details.</p>
+                <form method="POST" action="/user">
+                    <p>username: <input type="text" name="username" /></p>
+                    <p>password: <input type="text" name="password" /></p>
+                    <p>Given name: <input type="text" name="givenname" /></p> 
+                    <p>Last name: <input type="text" name="lastname" /></p> 
+                    <p>Age: <input type="text" name="age" /></p> 
+                    <p>Gender: <input type="text" name="gender" /></p> 
+                    <p>Profile picture: (Image should be smaller than 16MB)</p>
+                    <input type='file' id="profile_pic_src"/></br>
+                    <input type='text' name="profile_pic" id="real_image" style="display: none;"/>
+                    <img id="profile_pic" width="100" height="100" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"></br></br>
+                    <input type="hidden" name="usertype" value="${usertype}"/>
+                    <button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit
+                        </button>
+                </form>
+            </div>
+            <div class="col s1 l1"></div>`;
     return out;
 }
 
@@ -158,18 +159,6 @@ async function profileInfoCard(sColSpan, lColSpan, result, out) {
     out +=				'<tr><td><b>age</b></td><td>' + result.age + '</td></tr>';
     out +=				'<tr><td><b>gender</b></td><td>' + result.gender + '</td></tr>';
     out +=		   '</table>';
-    out +=		   '</br>';
-    out += '	<form method="POST" action="/editProfile">';
-    out += '	    <input type="hidden" name="username" value=' + result.username + '>';
-    out += '	    <input type="hidden" name="givenname" value=' + result.givenname + '>';
-    out += '	    <input type="hidden" name="lastname" value=' + result.lastname + '>';
-    out += '	    <input type="hidden" name="age" value=' + result.age + '>';
-    out += '	    <input type="hidden" name="gender" value=' + result.gender + '>';
-    out += '	    <input type="hidden" name="profile_pic" value=' + result.profile_pic + '>';
-    out += '	    <input type="hidden" name="password" value=' + result.password + '>';
-    out += '	    <input type="hidden" name="addNew" value="false">';    
-    out += '	    <button class="btn waves-effect waves-light" type="submit" name="action">Edit</button>';
-    out += '	</form>';
 	out += '	</div>';
     out += '	<div class="col s4 l4 grey lighten-5">';
 
@@ -466,14 +455,14 @@ async function driverInfoCard( sColSpan, lColSpan, driverInfo, out ) {
 }
 
 async function openingHtmlElements(out) {
-    out += `<main>
-                <div class="container">`;
+    out += `<main>`;
+    //            <div class="container">`;
     return out;
 }
 
 async function closingHtmlElements(out) {
-    out += `    </div>
-            </main>`;
+    out += `    </div>`;
+    //        </main>`;
     return out;
 }
 
@@ -485,9 +474,33 @@ async function addSpacerColumn(dividingSpace, out) {
 
 async function addPageTitle(sColSpan, lColSpan, pageTitle, out) {
     out += `<div class="row">
-                <div class="col s${sColSpan} l${lColSpan} white-text blue-grey darken-3 z-depth-1">
-                    <h3>${pageTitle}</h3>
+                <div class="col s1 l1"></div>
+                <div class="col s1 l1" id="redblock">
+                    <p><br><br><br></p>
                 </div>
+                <div class="col s10 l10 white-text"><h1>${pageTitle}</h1></div>
+            </div>`;
+
+    return out;
+}
+
+async function displaySymbolLogo(sColSpan, lColSpan, out) {    
+    out += `<div class="col s${sColSpan} l${lColSpan}">
+                <img src="/logo-reverse.png" width="250px"/>
+                <p class="logo">Utilising unused space on moving vehicles</p>
+            </div>`;
+    return out;
+}
+
+async function loginCard(out) {
+    out += `<div class="col s12 l12 grey lighten-5 z-depth-1">
+    			<p>Already a member? Then sign in below.</p>
+				<h4>Login</h4></p>
+				<form method="POST" action="/user/auth">
+                    username: <input type="text" name="username" /><br>
+                    password: <input type="text" name="password" /><br>
+                    <button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit</button>
+				</form>
             </div>`;
     return out;
 }
@@ -499,7 +512,6 @@ module.exports = {
 	thankYouCard,
     profileInfoCard,
     driverHomepageCard,
-    driverRegistrationFormCard,
     driverTripsCard,
     openingHtmlElements,
     closingHtmlElements,
@@ -511,5 +523,9 @@ module.exports = {
     bookingCommentsCard,
     userViewBookingStatsCard,
     driverInfoCard,
-    addPageTitle
+    addPageTitle,
+    displaySymbolLogo,
+    loginCard,
+    signUpCard,
+    regForm
 };

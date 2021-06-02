@@ -2,21 +2,20 @@
 let U = require('./utilities');
 var out;
 
-async function displayNewDriverPage(res) {
+async function displayNewUserPage(res) {
 
-    const heading = `Driver Sign-Up`;
-    const subheading = `Start earning an <b>extra income</b>, and <b>helping the environment</b>
-	                    by utilising spare space in your vehicle. 
+    const heading = `User Sign-Up`;
+    const subheading = `Enjoy <b>discounted rides</b> and <b>courier services</b>. Search your required route, 
+                        and book cargo space or seat space (or both) on a trip instantly, it's <b>super easy</b>!
                         <p>Register your details with us, and get started right now!</p>`;
-    const usertype = `driver`;
+    const usertype = `user`;
     
     out = ``;
-    console.log('> displayNewDriverPage: method entered...');
+    console.log('> displayNewUserPage: method entered...');
     
     out = await U.addHeaderHTML(out);
 
     out += '<main>';
-
     out = await U.addPageTitle(12, 12, "Registration", out);
 
     out += '    <div class="row">';
@@ -33,5 +32,5 @@ async function displayNewDriverPage(res) {
 }
 
 module.exports = {
-    displayNewDriverPage
+    displayNewUserPage
 }
