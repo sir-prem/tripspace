@@ -106,26 +106,24 @@ async function displayEditUserProfilePage(res, user) {
     res.send(out);
 }
 
-async function displayRegistrationCompletePage(res, result) {
+async function regComplete(res, user) {
     out = ``;
-    console.log('> displayRegistrationCompletePage: method entered...');
+    console.log('> regComplete: method entered...');
 
     out = await U.addHeaderHTML(out);
     
-    console.log("username is: " + result.username);
+    console.log("username is: " + user.username);
 
-    //out += result;
+    //out += user;
 
     out += '<main>';
-    out += '  <div class="container">';
+
+    out = await U.addPageTitle(12, 12, "Thanks", out);
 
     out += '    <div class="row">';
-    out =           await U.thankYouCard( 12, 5, result.givenname, out );
+    out =           await U.thankYouCard( user, out );
     out += '    </div>';
     
-    out += '    <div class="row">';
-    out =           await U.profileInfoCard( 12, 5, result, out );
-    out += '    </div>';
     out += '</main>';
 
 
@@ -137,7 +135,7 @@ async function displayRegistrationCompletePage(res, result) {
 
 module.exports = {
     displayUserProfilePage,
-    displayRegistrationCompletePage,
+    regComplete,
     displayEditUserProfilePage
 }
 

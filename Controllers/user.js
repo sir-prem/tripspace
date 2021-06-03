@@ -125,7 +125,7 @@ module.exports = {
                 try {
                     const newUser = new UserModel(req.body);
                     const result = await newUser.save();        
-                    await UserView.displayRegistrationCompletePage(res, result);
+                    await UserView.regComplete(res, result);
                 } catch (error) {
                     console.log(error.message);
                 }

@@ -11,7 +11,7 @@ router.get('/', UserController.getAllUsers);
 
 router.get('/:id', UserController.getUserByID);
 
-
+// User attempt to login
 router.post('/auth', UserController.authenticateUser);
 
 

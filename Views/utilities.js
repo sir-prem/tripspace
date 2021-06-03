@@ -57,18 +57,6 @@ async function addFooterHTML(out) {
     return out;
 }
 
-async function driverHomepageCard(sColSpan, lColSpan,  out) {
-    out += `<div class="col s${sColSpan} l${lColSpan} card" style="background-color: lightgrey;">
-                <h6><b>DRIVERS:</b></h6>
-                <h4>Got some space?</h4>
-                <p>Have a vehicle, and do a bit of driving, often with the vehicle empty?
-                            Want to earn some extra income and do something good for the environment while you drive?
-                            Then why not sign up now and get started!</p>
-                <p><a href="./new-driver" class="waves-effect waves-light light-green darken-1 btn">Sign Up</a></p>
-            </div>`;
-    return out;
-}
-
 async function signUpCard(sColSpan, lColSpan, heading, subheading, para, href, out) {
     out += `<div class="col s${sColSpan} l${lColSpan} card" style="background-color: lightgrey;">
                 <h6><b>${heading}:</b></h6>
@@ -102,16 +90,15 @@ async function regForm(sColSpan, lColSpan, heading, subheading, usertype, out) {
                     });
                 });
             </script>
-            <div class="col s1 l1"></div>
-            <div class="col s5 l5" style="background-color: lightgrey;">
+            <div class="col l1"></div>
+            <div class="col s12 l3" style="background-color: lightgrey;">
                 <h3>${heading}</h3>
                 <h5>${subheading}</h5>
                 <p>Not sure and want to know a bit more before you begin your journey with 
                 TripSpace? Click here to find out more...<br><br>
                 <a href="./how-tripspace-works.html" class="waves-effect waves-light btn light-green darken-1">Find out more</a>
-            </div>
-            <div class="col s1 l1"></div>
-            <div class="col s4 l4" style="background-color: slategrey; color: white">
+            </div>            
+            <div class="col s5 l5" style="background-color: slategrey; color: white; margin-left:2%;">
                 <h4>Register here</h4>
                 <p>Please fill in the below details.</p>
                 <form method="POST" action="/user">
@@ -124,13 +111,28 @@ async function regForm(sColSpan, lColSpan, heading, subheading, usertype, out) {
                     <p>Profile picture: (Image should be smaller than 16MB)</p>
                     <input type='file' id="profile_pic_src"/></br>
                     <input type='text' name="profile_pic" id="real_image" style="display: none;"/>
-                    <img id="profile_pic" width="100" height="100" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"></br></br>
+                    <img id="profile_pic" width="100" height="100" src="/images/blank_profile.png"></br></br>
                     <input type="hidden" name="usertype" value="${usertype}"/>
                     <button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit
                         </button>
                 </form>
             </div>
-            <div class="col s1 l1"></div>`;
+            
+            <div class="col s5 l2" style="margin-left:2%;">`;
+            if (usertype == 'user') {
+                out+= ` <div class="row"><img src="/images/pic15.png" width="100%"/></div>
+                        <div class="row"><img src="/images/pic25.png" width="100%"/></div>
+                        <div class="row"><img src="/images/pic13.png" width="100%"/></div>`;
+            }
+            else { // driver
+                out+= ` <div class="row"><img src="/images/pic7.png" width="100%"/></div>
+                        <div class="row"><img src="/images/pic20.png" width="100%"/></div>
+                        <div class="row"><img src="/images/pic19.png" width="100%"/></div>`;
+            }
+
+                
+    out+= ` </div>
+            <div class="col l1"></div>`;
     return out;
 }
 
@@ -141,10 +143,25 @@ async function welcomeBackCard(sColSpan, lColSpan, givenname, out) {
     return out;
 }
 
-async function thankYouCard(sColSpan, lColSpan, givenname, out) {
-    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
-    out += '	<h4>Thanks for registering, <b>' + givenname + '</b></h4>';
-    out += '</div>';
+async function thankYouCard(user, out) {
+    out += `<div class="col l2"></div>
+            <div class="col s12 l3 grey lighten-5 z-depth-1">
+                <img src="/images/pic23.png" width="100%"/>
+            </div>
+            <div class="col s12 l4 grey lighten-5 z-depth-1">
+                <h4>Thanks for registering, <b>${user.givenname}</b></h4>
+                <p>You are now a registered <b>${user.usertype}</b> for TripSpace. We hope you will 
+                have a great time here, as part of our small cause towards a greener sustainable future.</p>
+                <p>Please click below to proceed to your Profile "DashBoard" and start your rewarding journey 
+                with TripSpace...</p>
+                <p>
+                    <form method="GET" action="/user/${user.username}">                
+                        <button class="btn waves-effect waves-light light-green darken-1" 
+                                    type="submit" name="action">Submit</button>
+                    </form>
+                </p>
+            </div>
+            <div class="col l3"></div>`;
     return out;
 }
 
@@ -511,7 +528,6 @@ module.exports = {
     welcomeBackCard,
 	thankYouCard,
     profileInfoCard,
-    driverHomepageCard,
     driverTripsCard,
     openingHtmlElements,
     closingHtmlElements,
