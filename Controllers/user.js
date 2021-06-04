@@ -59,13 +59,13 @@ module.exports = {
             async (req, res, next) => {
                 const id = req.params.id;
                 console.log("id is: " + id);
-                var result = '';
+                var user = '';
                 try {
                     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                        result = await UserModel.findOne( { _id: id }, { __v:0 } );
+                        user = await UserModel.findOne( { _id: id }, { __v:0 } );
                     }
-                    console.log(result);
-                    await UserView.displayUserProfilePage(res, result);
+                    console.log(user);
+                    await UserView.userProfile(res, user);
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -96,17 +96,13 @@ module.exports = {
 
                         if (reqPassword == user.password) { // Valid password
                             //res.send('Username found AND Password MATCH. User authenticated.');
-                            var url;
-                            var buttonTitle;
+                            
                             if (user.usertype == 'driver') {
-                                url = `/trip/driver/${user.username}`;
-                                buttonTitle = `My Trips`;
+                                await UserView.driverProfile(res, user);
                             }
                             else { // usertype is 'user'
-                                url = `/booking/user/${user.username}`;
-                                buttonTitle = `My Bookings`;
+                                await UserView.userProfile(res, user);                                
                             }
-                            await UserView.displayUserProfilePage(res, user, url, buttonTitle);
                         }
                         else { // Invalid password
                             res.send('Username found. Invalid Password.');

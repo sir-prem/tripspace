@@ -4,6 +4,74 @@ const UserModel = require('../Models/user');
 let Util = require('./utilities');
 let BookingView = require('../Views/booking');
 
+async function getBookingsByUser(username) {
+    Util.consoleLogHeader('Get Bookings By User');
+    var userBookings = '';
+    var userBooking = '';
+    var array = [];
+    
+    try {
+        userBookings = await BookingModel.find( { userID: username }, { __v:0 } );
+        
+        console.log("userBookings length is: " + userBookings.length);
+
+        for (var i = 0; i < userBookings.length; i++) {
+            userBooking = userBookings[i];
+            console.log("tripID is: " + userBooking.tripID);
+            const tripLinkedtoThisBooking = await TripModel.findOne( { _id: userBooking.tripID }, { __v:0 } );
+
+            const allBookingsForThisTrip = await BookingModel.find( { tripID: userBooking.tripID }, { __v:0 } );
+
+            const tripTotalSeatSpace = tripLinkedtoThisBooking.seatSpace;
+            const tripTotalCargoSpace = tripLinkedtoThisBooking.cargoSpace;
+            
+            const mySeats = userBooking.seatSpace;
+            const myCargo = userBooking.cargoSpace;
+            var totalBookedSeats = 0;
+            var totalBookedCargo = 0;
+            var remainingSeats;
+            var remainingCargo;                        
+
+            // get the total amount of booked seats and booked cargo for this trip
+            for (var j = 0; j < allBookingsForThisTrip.length; j++) {                                                        
+                var thisBooking = allBookingsForThisTrip[j];                            
+                totalBookedSeats += thisBooking.seatSpace;
+                totalBookedCargo += thisBooking.cargoSpace;
+            }
+
+            remainingSeats = tripTotalSeatSpace - totalBookedSeats;
+            remainingCargo = tripTotalCargoSpace - totalBookedCargo;
+            
+            const mySpace = { myCargo, mySeats };
+            
+            if (remainingCargo == 0) {
+                remainingCargo = "FULL";
+            }
+            if (remainingSeats == 0) {
+                remainingSeats = "FULL";
+            }
+
+            const remainingSpace = { remainingCargo, remainingSeats };
+            
+            const viewBookingDetailsURL = `/user/booking-details/${userBooking._id}`;
+
+            var userBookingWithNames = await Util.addNameToBooking(userBooking);
+            var dateJSON = await Util.getDateJSON(tripLinkedtoThisBooking.date);
+            array.push({ userBookingWithNames, tripLinkedtoThisBooking, dateJSON, mySpace, remainingSpace, viewBookingDetailsURL });
+        }
+
+        for (var i = 0; i < array.length; i++) {
+            console.log(array[i]);                        
+        }
+        //res.send(array);
+        //res.send(userBookings);
+        
+    } catch (error) {
+        console.log(error.message);        
+    }
+    return array;
+}
+
 module.exports = {
 
     addNewBooking:
@@ -44,77 +112,19 @@ module.exports = {
                     console.log(error.message);
                 }
             },
-    getBookingsByUser:
+    getBookingsByUserParams:
             async (req, res, next) => {
 
-                Util.consoleLogHeader('Get Bookings By User');
                 const username = req.params.username;
                 console.log("username is: " + username);
-                var userBookings = '';
-                var userBooking = '';
-                var array = [];
+                Util.consoleLogHeader('Get Bookings By User Params');
                 
-                try {
-                    userBookings = await BookingModel.find( { userID: username }, { __v:0 } );
-                    
-                    console.log("userBookings length is: " + userBookings.length);
-
-                    for (var i = 0; i < userBookings.length; i++) {
-                        userBooking = userBookings[i];
-                        console.log("tripID is: " + userBooking.tripID);
-                        const tripLinkedtoThisBooking = await TripModel.findOne( { _id: userBooking.tripID }, { __v:0 } );
-
-                        const allBookingsForThisTrip = await BookingModel.find( { tripID: userBooking.tripID }, { __v:0 } );
-
-                        const tripTotalSeatSpace = tripLinkedtoThisBooking.seatSpace;
-                        const tripTotalCargoSpace = tripLinkedtoThisBooking.cargoSpace;
-                        
-                        const mySeats = userBooking.seatSpace;
-                        const myCargo = userBooking.cargoSpace;
-                        var totalBookedSeats = 0;
-                        var totalBookedCargo = 0;
-                        var remainingSeats;
-                        var remainingCargo;                        
-
-                        // get the total amount of booked seats and booked cargo for this trip
-                        for (var j = 0; j < allBookingsForThisTrip.length; j++) {                                                        
-                            var thisBooking = allBookingsForThisTrip[j];                            
-                            totalBookedSeats += thisBooking.seatSpace;
-                            totalBookedCargo += thisBooking.cargoSpace;
-                        }
-
-                        remainingSeats = tripTotalSeatSpace - totalBookedSeats;
-                        remainingCargo = tripTotalCargoSpace - totalBookedCargo;
-                        
-                        const mySpace = { myCargo, mySeats };
-                        
-                        if (remainingCargo == 0) {
-                            remainingCargo = "FULL";
-                        }
-                        if (remainingSeats == 0) {
-                            remainingSeats = "FULL";
-                        }
-
-                        const remainingSpace = { remainingCargo, remainingSeats };
-                        
-                        const viewBookingDetailsURL = `/user/booking-details/${userBooking._id}`;
-
-                        var userBookingWithNames = await Util.addNameToBooking(userBooking);
-                        var dateJSON = await Util.getDateJSON(tripLinkedtoThisBooking.date);
-                        array.push({ userBookingWithNames, tripLinkedtoThisBooking, dateJSON, mySpace, remainingSpace, viewBookingDetailsURL });
-                    }
-
-                    for (var i = 0; i < array.length; i++) {
-                        console.log(array[i]);                        
-                    }
-                    //res.send(array);
-                    //res.send(userBookings);
-                    await BookingView.displayBookingsByUserPage(res, array);
-                } catch (error) {
-                    console.log(error.message);
-                }
+                var array = await getBookingsByUser(username);
+                var out = await BookingView.displayBookingsByUserPage(array);
+                res.send(out);
                 
             },
+    getBookingsByUser,
     viewUserBookingDetails:
             async (req, res, next) => {
 

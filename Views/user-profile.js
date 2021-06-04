@@ -1,34 +1,87 @@
 let U = require('../Views/utilities');
+let ctrlUtil = require('../Controllers/utilities');
+let BookingController = require('../Controllers/booking');
 var out;
 
-async function displayUserProfilePage(res, user, url, buttonTitle) {
+async function userProfile(res, user) {
+    ctrlUtil.consoleLogHeader('userProfile');
     out = ``;
-    console.log('> displayUserProfilePage: method entered...');
+    var array = await BookingController.getBookingsByUser(user.username);
+
     console.log('_id is: ' + user._id);
+    console.log("username is: " + user.username);
     
     out = await U.addHeaderHTML(out);
     
-    console.log("username is: " + user.username);
-
-    //out += result;
 
     out += '<main>';
-    out += '  <div class="container">';
-
-    out += '    <div class="row">';
-    out =           await U.welcomeBackCard( 12, 5, user.username, out );
-    out += '    </div>';
+    out = await U.addPageTitle(12, 12, "User Profile", out);
     
-    out += '    <div class="row">';
-    out =           await U.profileInfoCard( 12, 5, user, out );
+    out += `    <div class="row" id="red-border">
+
+    
+                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>
+
+                    <div class="col s12 l3" id="green-border">
+
+                        <div class="row grey lighten-5 z-depth-1">`;
+
+                            out =           await U.profileInfoCard( user, out );
+
+
+    out +=              `</div>
+                    
+                        <div class="row">
+
+                            <p>blah blah</p>
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    
+                    <div class="col s12 l7" id="green-border" style="padding-left:2%;">
+                    
+                        <div class="row">`;
+
+                            
+                            out =       await U.myTripBookingsCard( 12, 12, array, out);
+    out +=              `</div>
+
+                        <div class="row">
+                            <p>blah blah</p>
+
+                        </div>
+
+                        <div class="row">
+                            <p>blah blah</p>
+
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    
+                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>`; 
+
+                    
+
+    
+    
+    
+    
+    
     out += '    </div>';
 
+
+
+
     out += '    <div class="row">';
-    out +=          `<form method="GET" action="${url}">
-                        <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">${buttonTitle}</button>
+    out +=          `<form method="GET" action="/">
+                        <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">blah</button>
                     </form>`;
     out += '    </div>';
-    out += '  </div>';
+    
     out += '</main>';
 
 
@@ -134,7 +187,7 @@ async function regComplete(res, user) {
 }
 
 module.exports = {
-    displayUserProfilePage,
+    userProfile,
     regComplete,
     displayEditUserProfilePage
 }

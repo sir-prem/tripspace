@@ -1,7 +1,7 @@
 let U = require('../Views/utilities');
 var out;
 
-async function displayBookingsByUserPage(res, array) {
+async function displayBookingsByUserPage(array) {
     out = ``;
     out = await U.addHeaderHTML(out);
     out = await U.openingHtmlElements(out);
@@ -13,7 +13,7 @@ async function displayBookingsByUserPage(res, array) {
 
     out = await U.closingHtmlElements(out);
     out = await U.addFooterHTML(out);
-    res.send(out);
+    return out;
 }
 
 async function displayUserBookingDetailsPage(res, outputJSON) {

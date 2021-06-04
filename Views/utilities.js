@@ -98,7 +98,7 @@ async function regForm(sColSpan, lColSpan, heading, subheading, usertype, out) {
                 TripSpace? Click here to find out more...<br><br>
                 <a href="./how-tripspace-works.html" class="waves-effect waves-light btn light-green darken-1">Find out more</a>
             </div>            
-            <div class="col s5 l5" style="background-color: slategrey; color: white; margin-left:2%;">
+            <div class="col s5 l5" style="background-color: slategrey; color: white; padding-left:2%;">
                 <h4>Register here</h4>
                 <p>Please fill in the below details.</p>
                 <form method="POST" action="/user">
@@ -118,7 +118,7 @@ async function regForm(sColSpan, lColSpan, heading, subheading, usertype, out) {
                 </form>
             </div>
             
-            <div class="col s5 l2" style="margin-left:2%;">`;
+            <div class="col s5 l2" style="padding-left:2%;">`;
             if (usertype == 'user') {
                 out+= ` <div class="row"><img src="/images/pic15.png" width="100%"/></div>
                         <div class="row"><img src="/images/pic25.png" width="100%"/></div>
@@ -165,9 +165,9 @@ async function thankYouCard(user, out) {
     return out;
 }
 
-async function profileInfoCard(sColSpan, lColSpan, result, out) {
+async function profileInfoCard(result, out) {
 	//out += '<div class="row">';
-    out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
+    //out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
     out += '	<div class="col s12 l6 grey lighten-5">';
     out +=		   '<table>';
     out +=				'<tr><td><b>Username</b></td><td>' + result.username + '</td></tr>';
@@ -187,7 +187,7 @@ async function profileInfoCard(sColSpan, lColSpan, result, out) {
 	}
 
 	out +=	   '</div>';
-	out += '</div>';
+	//out += '</div>';
     return out;
 }
 
@@ -478,8 +478,8 @@ async function openingHtmlElements(out) {
 }
 
 async function closingHtmlElements(out) {
-    out += `    </div>`;
-    //        </main>`;
+    //out += `    </div>`;
+    out += `        </main>`;
     return out;
 }
 
