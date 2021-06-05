@@ -52,6 +52,7 @@ h1 {
   margin-bottom: 80px;
 }
 
+
 .card{
 	padding: 5px;
 }
@@ -62,6 +63,11 @@ p.logo {
 
 div#redblock {
   background-color: red;
+}
+
+div#greenblock {
+  background-color: #8da84d;
+  border-left: 5px solid red;
 }
 
 div#red-border {

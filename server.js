@@ -55,12 +55,6 @@ app.get("/new-user", async (req, res, next) => {
   await newUser.displayNewUserPage(res);
 });
 
-/*
-app.get("/someroute", (req, res, next) => {
-    res.send("SOME ROUTE: hello world");
-});
-*/
-
 app.listen(port, function() {
   console.log("Server is running on Port: " + port);
 });

@@ -1,6 +1,7 @@
 let U = require('../Views/utilities');
 let ctrlUtil = require('../Controllers/utilities');
 let BookingController = require('../Controllers/booking');
+let TripController = require('../Controllers/trip');
 var out;
 
 async function userProfile(res, user) {
@@ -12,82 +13,111 @@ async function userProfile(res, user) {
     console.log("username is: " + user.username);
     
     out = await U.addHeaderHTML(out);
-    
 
     out += '<main>';
-    out = await U.addPageTitle(12, 12, "User Profile", out);
+    out =       await U.addPageTitle(12, 12, "User Profile", out);
     
     out += `    <div class="row" id="red-border">
-
     
                     <div class="col s12 l1" id="green-border"><p>SPACER</p></div>
 
                     <div class="col s12 l3" id="green-border">
-
                         <div class="row grey lighten-5 z-depth-1">`;
-
-                            out =           await U.profileInfoCard( user, out );
-
-
+    out =                   await U.profileInfoCard( user, out );
     out +=              `</div>
-                    
-                        <div class="row">
-
-                            <p>blah blah</p>
+                        <div class="row grey lighten-5 z-depth-1">
+                            <div class="col s6 l6">
+                                <p><img src="/images/pic15.png" width="100%" /></p>
+                            </div>
+                            <div class="col s6 l6">
+                                <h5>Trip Finder</h5>
+                                <p><b>Find a trip</b> that's going <b>your</b> way.</p>
+                                <form method="GET" action="/trip/trip-finder">
+                                    <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">Find</button>
+                                </form>
+                            </div>
                         </div>
-                    
-                    
-                    
                     </div>
                     
                     <div class="col s12 l7" id="green-border" style="padding-left:2%;">
-                    
                         <div class="row">`;
-
-                            
-                            out =       await U.myTripBookingsCard( 12, 12, array, out);
+    out =                   await U.myTripBookingsCard( 12, 12, array, out);
     out +=              `</div>
-
-                        <div class="row">
-                            <p>blah blah</p>
-
+                        <div class="row grey lighten-5 z-depth-1">
+                            <div class="col s6 l6">
+                                <h5>Bookmarked Trips</h5>
+                                <p>To be implemented</p>
+                            </div>
                         </div>
-
-                        <div class="row">
-                            <p>blah blah</p>
-
+                        <div class="row grey lighten-5 z-depth-1">
+                            <div class="col s6 l6">
+                                <h5>Recent Trips</h5>
+                                <p>To be implemented</p>
+                            </div>
                         </div>
-                    
-                    
-                    
                     </div>
                     
                     <div class="col s12 l1" id="green-border"><p>SPACER</p></div>`; 
-
-                    
-
     
-    
-    
-    
-    
-    out += '    </div>';
-
-
-
-
-    out += '    <div class="row">';
-    out +=          `<form method="GET" action="/">
-                        <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">blah</button>
-                    </form>`;
-    out += '    </div>';
-    
+    out += '    </div>';  // end larger row
+        
     out += '</main>';
-
-
     
     out = await U.addFooterHTML(out);
+    res.send(out);
+}
 
+async function driverProfile(res, user) {
+    ctrlUtil.consoleLogHeader('driverProfile');
+    out = ``;
+    var array = await TripController.getTripsByDriver(user.username);
+
+    console.log('_id is: ' + user._id);
+    console.log("username is: " + user.username);
+    
+    out = await U.addHeaderHTML(out);
+
+    out += '<main>';
+    out =       await U.addPageTitle(12, 12, "Driver Profile", out);
+    
+    out += `    <div class="row" id="red-border">
+    
+                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>
+
+                    <div class="col s12 l3" id="green-border">
+                        <div class="row grey lighten-5 z-depth-1">`;
+    out =                   await U.profileInfoCard( user, out );
+    out +=              `</div>
+                        <div class="row grey lighten-5 z-depth-1">                            
+                            <div class="col s12 l12">
+                                <h5>My Vehicles</h5>
+                                <p>To be implemented</p>
+                                <form method="GET" action="#">
+                                    <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">Manage</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col s12 l7" id="green-border" style="padding-left:2%;">
+                        <div class="row">`;
+    out =                   await U.driverTripsCard( 12, 12, array, out);
+    out +=              `</div>                        
+                        <div class="row grey lighten-5 z-depth-1">
+                            <div class="col s6 l6">
+                                <h5>Recent Trips</h5>
+                                <p>To be implemented</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>`; 
+    
+    out += '    </div>';  // end larger row
+    
+    out += '</main>';
+    
+    out = await U.addFooterHTML(out);
     res.send(out);
 }
 
@@ -102,31 +132,29 @@ async function displayEditUserProfilePage(res, user) {
 
     //out += result;
     out += '<main>';
-    out += `
-    <script>
-						window.addEventListener('load', function () {
-							document.querySelector('#profile_pic_src').addEventListener('change', function () {
-								if (this.files && this.files[0]) {
-									var img = document.querySelector('#profile_pic');
-									var realImg = document.querySelector('#real_image');
-									img.onload = () => {
-										URL.revokeObjectURL(img.src);  // no longer needed, free memory
-									}
-	
-									img.src = URL.createObjectURL(this.files[0]); // set src to blob url
-									var reader = new FileReader();
-    								reader.onload = function(event) {
-        								console.log('File content:', event.target.result);
-										realImg.value = event.target.result;
-										console.log(realImg.value);
-    								};
-									reader.readAsDataURL(this.files[0]);
-								}
-							});
-						});
-					</script>
-    `;
-    out += '  <div class="container col s12 l4 grey lighten-5 z-depth-1" style="width:400px">';
+    out += `    <script>
+                    window.addEventListener('load', function () {
+                        document.querySelector('#profile_pic_src').addEventListener('change', function () {
+                            if (this.files && this.files[0]) {
+                                var img = document.querySelector('#profile_pic');
+                                var realImg = document.querySelector('#real_image');
+                                img.onload = () => {
+                                    URL.revokeObjectURL(img.src);  // no longer needed, free memory
+                                }
+
+                                img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+                                var reader = new FileReader();
+                                reader.onload = function(event) {
+                                    console.log('File content:', event.target.result);
+                                    realImg.value = event.target.result;
+                                    console.log(realImg.value);
+                                };
+                                reader.readAsDataURL(this.files[0]);
+                            }
+                        });
+                    });
+				</script>`;
+    out += '<div class="container col s12 l4 grey lighten-5 z-depth-1" style="width:400px">';
     out += ' <div style ="padding-top: 25px;padding-right: 25px;padding-bottom: 25px;padding-left: 25px;" >'
     out += '	    <h5>Edit profile</h5>';
     out += '	    <form method="POST" action="/editProfile/edit" id="edit">';
@@ -188,6 +216,7 @@ async function regComplete(res, user) {
 
 module.exports = {
     userProfile,
+    driverProfile,
     regComplete,
     displayEditUserProfilePage
 }

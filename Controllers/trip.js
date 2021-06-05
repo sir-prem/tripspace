@@ -3,6 +3,55 @@ const BookingModel = require('../Models/booking');
 const UserModel = require('../Models/user');
 let TripView = require('../Views/trip');
 let Util = require('../Controllers/utilities');
+const { userViewBookingStatsCard } = require('../Views/utilities');
+
+async function getTripsByDriver(driverUsername) {
+    Util.consoleLogHeader('Get Trips by Driver');
+
+    var driverTrips = '';
+    var driverTrip = ''; 
+    var array = [];               
+    
+    try {
+        driverTrips = await TripModel.find( { username: driverUsername }, { __v:0 } ); 
+        for (var i = 0; i < driverTrips.length; i++) {
+            driverTrip = driverTrips[i];
+            console.log("driverTrip._id is: " + driverTrip._id);
+            const bookingsForThisTrip = await BookingModel.find( { tripID: driverTrip._id }, { __v:0 } );
+            
+            var driverTripStatus;
+            var numberOfBookingsForThisTrip = bookingsForThisTrip.length;
+            
+            if (numberOfBookingsForThisTrip > 0) {
+                driverTripStatus = {
+                    status: "BOOKED BY " + numberOfBookingsForThisTrip + " USERS",
+                    colour: "IndianRed"
+                };
+            }
+            else {
+                driverTripStatus = {
+                    status: "AVAILABLE",
+                    colour: "YellowGreen"
+                };
+                
+            }
+
+            var dateJSON = await Util.getDateJSON(driverTrip.date);
+            const viewTripDetailsURL = `/driver/trip-details/${driverTrip._id}`;                        
+            array.push({ driverTrip, dateJSON, driverTripStatus, viewTripDetailsURL });
+        }
+        
+        for (var i = 0; i < array.length; i++) {
+            console.log(array[i]);
+        }
+        //res.send(array);
+        return array;
+        //res.send('hello world');
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 module.exports = {
 
@@ -48,58 +97,16 @@ module.exports = {
                     console.log(error.message);
                 }
             },
-    getTripsByDriver:
+    getTripsByDriverParams:
             async (req, res, next) => {
-
-                Util.consoleLogHeader('Get Trips by Driver');
 
                 const driverUsername = req.params.username;
                 console.log("driverUsername is: " + driverUsername);
-                var driverTrips = '';
-                var driverTrip = ''; 
-                var array = [];               
-                
-                try {
-                    driverTrips = await TripModel.find( { username: driverUsername }, { __v:0 } ); 
-                    for (var i = 0; i < driverTrips.length; i++) {
-                        driverTrip = driverTrips[i];
-                        console.log("driverTrip._id is: " + driverTrip._id);
-                        const bookingsForThisTrip = await BookingModel.find( { tripID: driverTrip._id }, { __v:0 } );
-                        
-                        var driverTripStatus;
-                        var numberOfBookingsForThisTrip = bookingsForThisTrip.length;
-                        
-                        if (numberOfBookingsForThisTrip > 0) {
-                            driverTripStatus = {
-                                status: "BOOKED BY " + numberOfBookingsForThisTrip + " USERS",
-                                colour: "IndianRed"
-                            };
-                        }
-                        else {
-                            driverTripStatus = {
-                                status: "AVAILABLE",
-                                colour: "YellowGreen"
-                            };
-                            
-                        }
-
-                        var dateJSON = await Util.getDateJSON(driverTrip.date);
-                        const viewTripDetailsURL = `/driver/trip-details/${driverTrip._id}`;                        
-                        array.push({ driverTrip, dateJSON, driverTripStatus, viewTripDetailsURL });
-                    }
-                    
-                    for (var i = 0; i < array.length; i++) {
-                        console.log(array[i]);
-                    }
-                    //res.send(array);
-                    await TripView.displayTripsByDriverPage(res, array);
-                    //res.send('hello world');
-
-                } catch (error) {
-                    console.log(error.message);
-                }
+                var array = await getTripsByDriver(driverUsername);
+                await TripView.displayTripsByDriverPage(res, array);
                 
             },
+    getTripsByDriver,
     viewDriverTripDetails:
             async (req, res, next) => {
 
@@ -180,16 +187,37 @@ module.exports = {
                 
                 
             },
-        findTripsBySuburb:
-            async (req, res, next) => {
-                console.log(req.query);
-                const fromSub = req.query.fromSub;
-                const toSub = req.query.toSub;
-                console.log("fromSub is: " + fromSub);
-                console.log("toSub is: " + toSub);
-                var results = '';
+    findTripsBySuburb:
+        async (req, res, next) => {
+
+            
+
+            Util.consoleLogHeader("find Trips By Suburb");
+            
+            console.log(req.query);
+
+            try {
+                var out = ``;
                 
-                try {
+                console.log(">> DISPLAYING TRIP FINDER FORM <<");
+                
+                // display page headers and trip finder form
+                out = await TripView.tripFinder();
+                
+                console.log("req.query.searched is: " + req.query.searched);
+                
+                // if user searched, include search results
+                if (req.query.searched == `true`) {                    
+                    
+                    console.log(">> USER SEARCHED. Searching.. <<");
+                    
+                    const fromSub = req.query.fromSub;
+                    const toSub = req.query.toSub;
+                    console.log("fromSub is: " + fromSub);
+                    console.log("toSub is: " + toSub);
+    
+                    var results = '';
+        
                     results = await TripModel.find( 
                                                     {"$and": 
                                                         [ 
@@ -199,15 +227,19 @@ module.exports = {
                                                     }, 
                                                     { __v:0 } 
                                                 );                    
-                    console.log(results);
-                    res.send(results);
-                    //await UserView.displayUserProfilePage(res, result);
-                } catch (error) {
-                    console.log(error.message);
+                    
+                    out = await TripView.tripFinderResults(results, out);
                 }
-                
-                
+                res.send(out);
+            } catch (error) {
+                console.log(error.message);
             }
+        }
+        
+
+            
+            
+        
             
     
 

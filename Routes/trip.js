@@ -8,9 +8,9 @@ router.post('/', TripController.addNewTrip);
 
 router.get('/driver/trip-details/:tripID', TripController.viewDriverTripDetails);
 
-router.get('/driver/:username', TripController.getTripsByDriver);
+router.get('/driver/:username', TripController.getTripsByDriverParams);
 
-router.get('/search', TripController.findTripsBySuburb);
+router.get('/trip-finder', TripController.findTripsBySuburb);
 
 router.get('/:id', TripController.getTripByID);
 

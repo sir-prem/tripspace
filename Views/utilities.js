@@ -166,28 +166,27 @@ async function thankYouCard(user, out) {
 }
 
 async function profileInfoCard(result, out) {
-	//out += '<div class="row">';
-    //out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">`;
-    out += '	<div class="col s12 l6 grey lighten-5">';
-    out +=		   '<table>';
-    out +=				'<tr><td><b>Username</b></td><td>' + result.username + '</td></tr>';
-    out +=				'<tr><td><b>Given name</b></td><td>' + result.givenname + '</td></tr>';
-    out +=				'<tr><td><b>Last name</b></td><td>' + result.lastname + '</td></tr>';
-    out +=				'<tr><td><b>age</b></td><td>' + result.age + '</td></tr>';
-    out +=				'<tr><td><b>gender</b></td><td>' + result.gender + '</td></tr>';
-    out +=		   '</table>';
-	out += '	</div>';
-    out += '	<div class="col s4 l4 grey lighten-5">';
+
+    out += `<div class="col s12 l6 grey lighten-5">
+                <h5>My Profile</h5>
+                <table>
+                    <tr><td><b>Username</b></td><td>${result.username}</td></tr>
+                    <tr><td><b>Given name</b></td><td>${result.givenname}</td></tr>
+                    <tr><td><b>Last name</b></td><td>${result.lastname}</td></tr>
+                    <tr><td><b>age</b></td><td>${result.age}</td></tr>
+                    <tr><td><b>gender</b></td><td>${result.gender}</td></tr>
+                </table>
+            </div>
+            <div class="col s4 l4 grey lighten-5" style="padding-top: 10%; margin-left:10%;">`;
 
 	if (result.gender=="Male") {
-		out +=		   '<img src="'+result.profile_pic+'" width=100% />';
+		out +=	`<img src="${result.profile_pic}" width=100% style="border:1px solid red;" />`;
 	}
 	else {
-		out +=		   '<img src="'+result.profile_pic+'" width=100% />';
+		out +=	`<img src="${result.profile_pic}" width=100% style="border:1px solid red;" />`;
 	}
 
-	out +=	   '</div>';
-	//out += '</div>';
+	out +=	'</div>';
     return out;
 }
 
@@ -195,6 +194,7 @@ async function driverTripsCard( sColSpan, lColSpan, array, out ) {
     
     const numberOfDriverTrips = array.length;
     out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
+                <h5>My Upcoming Trips</h5>
                 <table>
                     <tr>
                         <th>From</th>
@@ -358,7 +358,7 @@ async function myTripBookingsCard (sColSpan, lColSpan, tripBookingsArray, out ) 
     var numberOfTripBookings = tripBookingsArray.length;
 
     out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
-                <h5>My Bookings</h5>`
+                <h5>Upcoming Bookings</h5>`
 
     
     out +=      `<p>You have <b>${numberOfTripBookings}</b> trip bookings.</p>`;
@@ -492,7 +492,7 @@ async function addSpacerColumn(dividingSpace, out) {
 async function addPageTitle(sColSpan, lColSpan, pageTitle, out) {
     out += `<div class="row">
                 <div class="col s1 l1"></div>
-                <div class="col s1 l1" id="redblock">
+                <div class="col s1 l1" id="greenblock">
                     <p><br><br><br></p>
                 </div>
                 <div class="col s10 l10 white-text"><h1>${pageTitle}</h1></div>
