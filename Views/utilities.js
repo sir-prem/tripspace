@@ -152,12 +152,12 @@ async function thankYouCard(user, out) {
                 <h4>Thanks for registering, <b>${user.givenname}</b></h4>
                 <p>You are now a registered <b>${user.usertype}</b> for TripSpace. We hope you will 
                 have a great time here, as part of our small cause towards a greener sustainable future.</p>
-                <p>Please click below to proceed to your Profile "DashBoard" and start your rewarding journey 
+                <p>Please click below to proceed to your Profile page and start your rewarding journey 
                 with TripSpace...</p>
                 <p>
                     <form method="GET" action="/user/${user.username}">                
                         <button class="btn waves-effect waves-light light-green darken-1" 
-                                    type="submit" name="action">Submit</button>
+                                    type="submit" name="action" style="margin-left:70%;">My Profile</button>
                     </form>
                 </p>
             </div>
@@ -190,7 +190,7 @@ async function profileInfoCard(result, out) {
     return out;
 }
 
-async function driverTripsCard( sColSpan, lColSpan, array, out ) {
+async function driverTripsCard( sColSpan, lColSpan, array, driverUsername, out ) {
     
     const numberOfDriverTrips = array.length;
     out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
@@ -225,13 +225,18 @@ async function driverTripsCard( sColSpan, lColSpan, array, out ) {
                         <td style="color:${thisTripStatus.colour};">${thisTripStatus.status}</td>
                         <td>
                             <form method="GET" action="/trip${thisViewTripDetailsURL}">
-                                <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">View</button>
+                                <button class="btn waves-effect waves-light light-green darken-3" type="submit">View</button>
                             </form>
                         </td>
                     </tr>`;
                 }
 
     out +=      `</table>
+                <p>
+                    <form method="GET" action="/trip/add/${driverUsername}">
+                        <button class="btn waves-effect waves-light light-green darken-3" type="submit" style="margin-left:45%;">[+] Add New Trip</button>
+                    </form>
+                </p>
             </div>`;
     return out;
 }

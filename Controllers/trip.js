@@ -197,6 +197,10 @@ module.exports = {
                 const username = req.params.username;
                 console.log("username is: " + username);
 
+                const toSub = req.query.toSub;
+                const fromSub = req.query.fromSub;
+                
+
                 
                 var driverTrip = '';
                 var driver;
@@ -257,7 +261,7 @@ module.exports = {
                     };
                                         
                     var dateJSON = await Util.getDateJSON(driverTrip.date);
-                    json = { tripID, username, driver, driverTrip, dateJSON, bookingsForTripWithNames, bookingStats };
+                    json = { tripID, username, driver, driverTrip, dateJSON, bookingsForTripWithNames, bookingStats, toSub, fromSub};
                     
 
                     console.log(json);
@@ -268,9 +272,7 @@ module.exports = {
 
                 } catch (error) {
                     console.log(error.message);
-                }
-                
-                
+                }                 
             },
     findTripsBySuburb:
         async (req, res, next) => {
@@ -279,6 +281,14 @@ module.exports = {
             
             console.log(req.query);
             var username = req.query.username;
+            var searchSubmitted;
+
+            if (req.query.searched == undefined) {
+                searchSubmitted = 'false';
+            }
+            else { //req.query.searched == 'true'
+                searchSubmitted = 'true';
+            }
 
 
             try {
@@ -287,9 +297,9 @@ module.exports = {
                 console.log(">> DISPLAYING TRIP FINDER FORM <<");
                 
                 // display page headers and trip finder form
-                out = await TripView.tripFinder(username);
+                out = await TripView.tripFinder(username, searchSubmitted);
                 
-                console.log("req.query.searched is: " + req.query.searched);
+                console.log("searched is: " + searchSubmitted);
                 
                 // if user searched, include search results
                 if (req.query.searched == `true`) {                    
@@ -320,27 +330,21 @@ module.exports = {
                 console.log(error.message);
             }
         },
-        addTripForm:
-            async (req, res, next) => {
-                Util.consoleLogHeader("Form: Add Trip");
-                const driverUsername = req.params.username;
+    addTripForm:
+        async (req, res, next) => {
+            Util.consoleLogHeader("Form: Add Trip");
+            const driverUsername = req.params.username;
 
-                console.log("driver is: " + driverUsername);
+            console.log("driver is: " + driverUsername);
 
-                try {
-                    var out = ``;
-                    out = await TripView.tripAdder(driverUsername);
-                    res.send(out);
-                } catch (error) {
-                    console.log(error.message);
-                }
+            try {
+                var out = ``;
+                out = await TripView.tripAdder(driverUsername);
+                res.send(out);
+            } catch (error) {
+                console.log(error.message);
             }
+        }
         
-
-            
-            
-        
-            
-    
 
 };

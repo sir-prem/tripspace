@@ -102,7 +102,7 @@ async function driverProfile(res, user) {
                     
                     <div class="col s12 l7" id="green-border" style="padding-left:2%;">
                         <div class="row">`;
-    out =                   await U.driverTripsCard( 12, 12, array, out);
+    out =                   await U.driverTripsCard( 12, 12, array, user.username, out);
     out +=              `</div>                        
                         <div class="row grey lighten-5 z-depth-1">
                             <div class="col s6 l6">

@@ -50,7 +50,7 @@ async function displayDriverTripDetailsPage(res, outputJSON) {
     res.send(out);
 }
 
-async function tripFinder(username) {
+async function tripFinder(username, searchSubmitted) {
     Util.consoleLogHeader('trip Finder');
     var out = ``;
     out = await U.addHeaderHTML(out);
@@ -114,6 +114,9 @@ async function tripFinder(username) {
                 </div>
 
             </main>`;
+    if (searchSubmitted == 'false') {
+        out = await U.addFooterHTML(out);
+    }
 
 
 
@@ -155,7 +158,8 @@ async function tripFinderResults(username, results, out) {
         for (var i=0; i< results.length; i++){
             var trip = results[i];
             var dateJSON = await Util.getDateJSON(trip.date);
-            var viewURL = `/trip/user/trip-details/${trip._id}/${username}`;
+            var viewURL = `/trip/user/trip-details/${trip._id}/${username}?fromSub=${trip.fromSuburb}&toSub=${trip.toSuburb}`;
+            console.log("viewURL is: " + viewURL);
                     out +=      `<tr>
                                     <td>${trip.username}</td>
                                     <td>${trip.fromSuburb}</td>
@@ -167,10 +171,9 @@ async function tripFinderResults(username, results, out) {
                                     <td>${trip.cargoSpace}</td>
                                     <td>${trip.seatSpace}</td>
                                     <td>
-                                        <form method="GET" action="${viewURL}">                                            
-                                            <button class="btn waves-effect waves-light light-green darken-1" 
-                                            type="submit">View</button>
-                                        </form>
+                                        <button class="btn waves-effect waves-light light-green darken-1"
+                                                onclick="location.href='${viewURL}'" type="button">
+                                                        View</button>
                                     </td>
                                 </tr>`;
         }
@@ -181,6 +184,8 @@ async function tripFinderResults(username, results, out) {
                 </div>
             </main>
     `;
+
+    out = await U.addFooterHTML(out);
    
     return out;
 
@@ -200,7 +205,7 @@ async function tripAdder(driverUsername) {
                     
                     <div class="col s12 l2" id="green-border">
                         <div class="row">
-                            <p><img src="/images/pic19.png" style="max-height:200px;"/></p>
+                            <p><img src="/images/pic19.png" width="100%" style="max-height:200px;"/></p>
                         </div>
                         <div class="row white-text">
                             <p><blockquote>I now earn $300 extra per week, without driving any extra than I normally would.
@@ -213,7 +218,7 @@ async function tripAdder(driverUsername) {
 
                     <div class="col s12 l4" id="green-border" style="margin-left:2%;">
                         
-                            <form method="POST" action="/trip">
+                            <form id="addTripForm" method="POST" action="/trip">
                                 <div class="row" style="margin-top:2%;">
                                     <div class="col s12 l12 brown darken-1 white-text z-depth-1" style="margin-left:0%;">
                                         <h5 style="background-color:#3e2723;">Where</h5>
@@ -237,13 +242,24 @@ async function tripAdder(driverUsername) {
                                         <p>Seats: <input type="text" name="seatSpace" /></p>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <input type="hidden" name="username" value="${driverUsername}" />
-                                    <button class="btn waves-effect waves-light light-green darken-1" 
-                                        type="submit" style="margin-left:85%;">Add Trip</button>
-                                </div>
+                                <input type="hidden" name="username" value="${driverUsername}" />
                             </form>
-                        
+                                <div class="row">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <form id="backBtn" method="GET" action="/user/${driverUsername}">
+                                                    <button form="backBtn" class="btn waves-effect waves-light light-green darken-1" 
+                                                        type="submit" style="margin-left:0%;">Back to Profile</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <button form="addTripForm" class="btn waves-effect waves-light light-green darken-1" 
+                                                    type="submit" style="margin-left:50%;">Add Trip</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                     </div>
                     
                     <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
@@ -325,6 +341,9 @@ async function userTripDetails(json) {
     var dateJSON = json.dateJSON;
     var dateString = dateJSON.dateString;
     var bookingStats = json.bookingStats;
+    var toSub = json.toSub;
+    var fromSub = json.fromSub;
+    var backToSearchResultsURL = `/trip/trip-finder?fromSub=${fromSub}&toSub=${toSub}&username=${username}&searched=true`;
     out = await U.addHeaderHTML(out);
 
     out += '<main>';
@@ -352,7 +371,7 @@ async function userTripDetails(json) {
                         
                     <div class="col s12 l4 grey lighten-5" id="green-border">
                         <h5>Space Availabile</h5>
-                        <form method="POST" action="/booking" id="usrform">
+                        <form id="bookingForm" method="POST" action="/booking" id="usrform">
                             <table>
                                 <tr>
                                     <th></th>
@@ -371,20 +390,33 @@ async function userTripDetails(json) {
                                 </tr>                                
                                 <tr>
                                     <td>Comments: </td>
-                                    <td colspan="2"><textarea name="comments" form="usrform"></textarea></td>
+                                    <td colspan="2"><textarea name="comments" form="bookingForm"></textarea></td>
                                     
                                 </tr>                                
                             </table>
                             <input type="hidden" name="tripID" value="${tripID}" />
                             <input type="hidden" name="userID" value="${username}" />
+                        <form>
                             <p>
-                                <button class="btn waves-effect waves-light light-green darken-1" 
-                                            type="submit" style="margin-left:70%;">Book My Space</button>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <button class="btn waves-effect waves-light light-green darken-1"
+                                            onclick="location.href='${backToSearchResultsURL}'" type="button">
+                                                    Back To Search Results</button>
+                                        </td>
+                                        <td>
+                                            <button form="bookingForm" class="btn waves-effect waves-light light-green darken-1" 
+                                                        type="submit" style="margin-left:70%;">Book My Space</button>
+                                        </td>
+                                    </tr>
+                                </table>
                             </p>
                             
                             
 
-                        <form>
+                        
+
                     </div>
 
                     <div class="col s12 l2" id="green-border" style="margin-left:2%;">
