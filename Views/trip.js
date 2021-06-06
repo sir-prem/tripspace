@@ -50,7 +50,7 @@ async function displayDriverTripDetailsPage(res, outputJSON) {
     res.send(out);
 }
 
-async function tripFinder() {
+async function tripFinder(username) {
     Util.consoleLogHeader('trip Finder');
     var out = ``;
     out = await U.addHeaderHTML(out);
@@ -103,6 +103,7 @@ async function tripFinder() {
                             </div>
                             <div class="row">
                                 <input type="hidden" name="searched" value="true" />
+                                <input type="hidden" name="username" value="${username}" />
                                 <button class="btn waves-effect waves-light light-green darken-1" 
                                     type="submit" style="margin-left:85%;">Find</button>
                             </div>
@@ -119,7 +120,7 @@ async function tripFinder() {
     return out;
 }
 
-async function tripFinderResults(results, out) {
+async function tripFinderResults(username, results, out) {
     Util.consoleLogHeader('Trip Finder Results');
     
     console.log(results);
@@ -152,21 +153,21 @@ async function tripFinderResults(results, out) {
                     `;
 
         for (var i=0; i< results.length; i++){
-            var result = results[i];
-            var dateJSON = await Util.getDateJSON(result.date);
-            var viewURL = `/trip/${result._id}`;
+            var trip = results[i];
+            var dateJSON = await Util.getDateJSON(trip.date);
+            var viewURL = `/trip/user/trip-details/${trip._id}/${username}`;
                     out +=      `<tr>
-                                    <td>${result.username}</td>
-                                    <td>${result.fromSuburb}</td>
-                                    <td>${result.toSuburb}</td>
+                                    <td>${trip.username}</td>
+                                    <td>${trip.fromSuburb}</td>
+                                    <td>${trip.toSuburb}</td>
                                     <td>${dateJSON.dateString}</td>
-                                    <td>${result.departureTime}</td>
-                                    <td>${result.arrivalTime}</td>
-                                    <td>${result.vehicle}</td>
-                                    <td>${result.cargoSpace}</td>
-                                    <td>${result.seatSpace}</td>
+                                    <td>${trip.departureTime}</td>
+                                    <td>${trip.arrivalTime}</td>
+                                    <td>${trip.vehicle}</td>
+                                    <td>${trip.cargoSpace}</td>
+                                    <td>${trip.seatSpace}</td>
                                     <td>
-                                        <form method="GET" action="${viewURL}">
+                                        <form method="GET" action="${viewURL}">                                            
                                             <button class="btn waves-effect waves-light light-green darken-1" 
                                             type="submit">View</button>
                                         </form>
@@ -254,7 +255,7 @@ async function tripAdder(driverUsername) {
     return out;
 }
 
-async function tripAdded(addedTrip,driver) {
+async function tripAdded(addedTrip, driver) {
     Util.consoleLogHeader('trip Adder');
     var out = ``;
     var dateJSON = await Util.getDateJSON(addedTrip.date);    
@@ -314,6 +315,96 @@ async function tripAdded(addedTrip,driver) {
         
 }
 
+async function userTripDetails(json) {
+    Util.consoleLogHeader('User: Trip Details');
+    var out = ``;
+    var tripID = json.tripID;
+    var username = json.username;
+    var driver = json.driver;
+    var driverTrip = json.driverTrip;
+    var dateJSON = json.dateJSON;
+    var dateString = dateJSON.dateString;
+    var bookingStats = json.bookingStats;
+    out = await U.addHeaderHTML(out);
+
+    out += '<main>';
+    out =       await U.addPageTitle(12, 12, "User: Trip Details", out);
+    
+    out += `    <div class="row" id="red-border">
+    
+                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                    
+                    <div class="col s12 l3" id="green-border">`;
+    out =               await U.driverInfoCard( 12, 12, driver, out );
+    
+    out +=          `</div>
+
+                    <div class="col s12 l5" id="green-border" style="margin-left:2%;">`;
+    out =               await U.tripDetailsCard( 12, 12, driverTrip, dateString, out );
+    out +=          `</div>
+
+                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>
+
+                </div>
+
+                <div class="row" id="red-border">
+                    <div class="col s12 l4" id="green-border"><p>SPACER</p></div>
+                        
+                    <div class="col s12 l4 grey lighten-5" id="green-border">
+                        <h5>Space Availabile</h5>
+                        <form method="POST" action="/booking" id="usrform">
+                            <table>
+                                <tr>
+                                    <th></th>
+                                    <th>Space Required by User</th>
+                                    <th>Space Remaining on Trip</th>
+                                </tr>
+                                <tr>
+                                    <td>Cargo: </td>
+                                    <td><input type="textarea  rows="4" cols="50"" name="cargoSpace" /></td>
+                                    <td>${bookingStats.remainingCargo}m3</td>
+                                </tr>
+                                <tr>
+                                    <td>Seats: </td>
+                                    <td><input type="textarea" name="seatSpace" /></td>
+                                    <td>${bookingStats.remainingSeats}</td>
+                                </tr>                                
+                                <tr>
+                                    <td>Comments: </td>
+                                    <td colspan="2"><textarea name="comments" form="usrform"></textarea></td>
+                                    
+                                </tr>                                
+                            </table>
+                            <input type="hidden" name="tripID" value="${tripID}" />
+                            <input type="hidden" name="userID" value="${username}" />
+                            <p>
+                                <button class="btn waves-effect waves-light light-green darken-1" 
+                                            type="submit" style="margin-left:70%;">Book My Space</button>
+                            </p>
+                            
+                            
+
+                        <form>
+                    </div>
+
+                    <div class="col s12 l2" id="green-border" style="margin-left:2%;">
+                        <div class="row">
+                            <img src="/images/pic9.png" width="100%"/>
+                        </div>
+                        <div class="row">
+                            <img src="/images/pic14.png" width="100%"/>
+                        </div>
+                    </div>
+
+                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>
+                </div>
+
+            </main>`;
+
+    out = await U.addFooterHTML(out);
+    return out;
+}
+
 
 module.exports = {
     displayTripsByDriverPage,
@@ -321,5 +412,6 @@ module.exports = {
     tripFinder, 
     tripFinderResults,
     tripAdder,
-    tripAdded
+    tripAdded,
+    userTripDetails
 };

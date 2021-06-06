@@ -79,9 +79,14 @@ module.exports = {
 
                 try {
                     const newBooking = new BookingModel(req.body);
-                    const result = await newBooking.save();        
-                    res.send(result);
-                    //await TripView.displayTripAddedPage(res, result);
+                    const booking = await newBooking.save();       
+                    const user = await UserModel.findOne( { username: booking.userID }, { __v:0 } );
+                    const trip = await TripModel.findOne( { _id: booking.tripID }, { __v:0 } );
+                    const dateJSON = await Util.getDateJSON(trip.date);
+                    const dateString = dateJSON.dateString;
+                    
+                    var out = await BookingView.bookingConfirmation(booking, user, trip, dateString);
+                    res.send(out);
                 } catch (error) {
                     console.log(error.message);
                 }

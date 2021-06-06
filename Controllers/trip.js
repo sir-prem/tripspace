@@ -107,10 +107,10 @@ module.exports = {
                 
             },
     getTripsByDriver,
-    viewDriverTripDetails:
+    driverViewTrip:
             async (req, res, next) => {
 
-                Util.consoleLogHeader('View Driver Trip Details');
+                Util.consoleLogHeader('Driver View Trip');
 
                 const tripID = req.params.tripID;
                 console.log("tripID is: " + tripID);
@@ -187,12 +187,99 @@ module.exports = {
                 
                 
             },
+    userViewTrip:
+            async (req, res, next) => {
+
+                Util.consoleLogHeader('User View Trip');
+
+                const tripID = req.params.tripID;
+                console.log("tripID is: " + tripID);
+                const username = req.params.username;
+                console.log("username is: " + username);
+
+                
+                var driverTrip = '';
+                var driver;
+                var json;
+                
+                try {
+                    driverTrip = await TripModel.findOne( { _id: tripID }, { __v:0 } );
+                    driver = await UserModel.findOne( { username: driverTrip.username }, { __v:0 } );
+                    var bookingsForThisTrip = await BookingModel.find( { tripID: driverTrip._id }, { __v:0 } );
+
+                    const tripTotalSeatSpace = driverTrip.seatSpace;
+                    const tripTotalCargoSpace = driverTrip.cargoSpace;
+                    var totalBookedSeats = 0;
+                    var totalBookedCargo = 0;
+                    var remainingSeats;
+                    var remainingCargo;
+                    var percentageUtilizedSeatSpace;
+                    var percentageUtilizedCargoSpace;
+
+                    var bookingsForTripWithNames = [];
+
+                    const numberOfBookingsForThisTrip = bookingsForThisTrip.length;
+                    
+                    for (var j = 0; j < numberOfBookingsForThisTrip; j++) {
+                        var thisBooking = bookingsForThisTrip[j];
+                        var thisBookingWithNames = await Util.addNameToBooking(thisBooking);
+                        bookingsForTripWithNames.push(thisBookingWithNames);
+                        totalBookedSeats += thisBooking.seatSpace;
+                        totalBookedCargo += thisBooking.cargoSpace;
+                    }
+                    
+                    remainingSeats = tripTotalSeatSpace - totalBookedSeats;
+                    remainingCargo = tripTotalCargoSpace - totalBookedCargo;
+                    
+                    if (tripTotalSeatSpace == 0) {
+                        percentageUtilizedSeatSpace = "N/A";
+                    }
+                    else {
+                        percentageUtilizedSeatSpace = Math.round((totalBookedSeats/tripTotalSeatSpace)*100);    
+                    }
+
+                    if (tripTotalCargoSpace == 0) {
+                        percentageUtilizedCargoSpace = "N/A";
+                    }
+                    else {
+                        percentageUtilizedCargoSpace = Math.round((totalBookedCargo/tripTotalCargoSpace)*100);
+                    }
+
+                    var bookingStats = {
+                            tripTotalSeatSpace: tripTotalSeatSpace,
+                            tripTotalCargoSpace: tripTotalCargoSpace,
+                            totalBookedSeats: totalBookedSeats,
+                            totalBookedCargo: totalBookedCargo,                                
+                            remainingSeats: remainingSeats,
+                            remainingCargo: remainingCargo,
+                            percentageUtilizedSeatSpace: percentageUtilizedSeatSpace,
+                            percentageUtilizedCargoSpace: percentageUtilizedCargoSpace
+                    };
+                                        
+                    var dateJSON = await Util.getDateJSON(driverTrip.date);
+                    json = { tripID, username, driver, driverTrip, dateJSON, bookingsForTripWithNames, bookingStats };
+                    
+
+                    console.log(json);
+                    //res.send(json);
+
+                    var out = await TripView.userTripDetails(json);
+                    res.send(out);
+
+                } catch (error) {
+                    console.log(error.message);
+                }
+                
+                
+            },
     findTripsBySuburb:
         async (req, res, next) => {
 
             Util.consoleLogHeader("find Trips By Suburb");
             
             console.log(req.query);
+            var username = req.query.username;
+
 
             try {
                 var out = ``;
@@ -200,7 +287,7 @@ module.exports = {
                 console.log(">> DISPLAYING TRIP FINDER FORM <<");
                 
                 // display page headers and trip finder form
-                out = await TripView.tripFinder();
+                out = await TripView.tripFinder(username);
                 
                 console.log("req.query.searched is: " + req.query.searched);
                 
@@ -226,7 +313,7 @@ module.exports = {
                                                     { __v:0 } 
                                                 );                    
                     
-                    out = await TripView.tripFinderResults(results, out);
+                    out = await TripView.tripFinderResults(username, results, out);
                 }
                 res.send(out);
             } catch (error) {

@@ -239,41 +239,31 @@ async function driverTripsCard( sColSpan, lColSpan, array, out ) {
 async function tripDetailsCard( sColSpan, lColSpan, driverTrip, dateString, out ) {
     out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
                 <h5>Trip Info</h5>
-                <table>
-                    <tr> 
-                        <td><b> Driver </b></td> 
-                        <td> ${ driverTrip.username } </td> 
-                    </tr>
+                <table>                    
                     <tr> 
                         <td><b> From </b></td> 
                         <td> ${ driverTrip.fromSuburb } </td> 
-                    </tr>
-                    <tr> 
                         <td><b> To </b></td> 
-                        <td> ${ driverTrip.toSuburb } </td> 
-                    </tr>
+                        <td> ${ driverTrip.toSuburb } </td>
+                    </tr>                    
                     <tr> 
                         <td><b> Date </b></td> 
                         <td> ${ dateString } </td> 
                     </tr>
                     <tr> 
-                        <td><b> Departing </b></td> 
+                        <td><b> Dep: </b></td> 
                         <td> ${ driverTrip.departureTime } </td> 
-                    </tr>
-                    <tr> 
-                        <td><b> Arriving </b></td> 
+                        <td><b> Arr: </b></td> 
                         <td> ${ driverTrip.arrivalTime } </td> 
-                    </tr>
+                    </tr>                    
                     <tr> 
                         <td><b> Vehicle </b></td> 
                         <td> ${ driverTrip.vehicle } </td> 
                     </tr>
                     <tr> 
-                        <td><b> Cargo Space </b></td> 
+                        <td><b> Cargo Capacity </b></td> 
                         <td> ${ driverTrip.cargoSpace } </td> 
-                    </tr>
-                    <tr> 
-                        <td><b> Seat Space </b></td> 
+                        <td><b> Seat Capacity </b></td> 
                         <td> ${ driverTrip.seatSpace } </td> 
                     </tr>                    
                 </table>
@@ -446,25 +436,20 @@ async function userViewBookingStatsCard (sColSpan, lColSpan, bookingStats, out )
     return out;
 }
 
-async function driverInfoCard( sColSpan, lColSpan, driverInfo, out ) {
+async function driverInfoCard( sColSpan, lColSpan, driver, out ) {
     out += `<div class="col s${sColSpan} l${lColSpan} grey lighten-5 z-depth-1">
                 <h5>Driver Info</h5>
-                <table>
+                <table>                    
                     <tr> 
-                        <td><b> Username </b></td> 
-                        <td> ${ driverInfo.username } </td> 
+                        <td><b> Name: </b></td> 
+                        <td> ${ driver.givenname } ${ driver.lastname } </td> 
+                        <td><b> Age: </b></td> 
+                        <td> ${ driver.age } </td> 
+                        <td><b> Gender: </b></td> 
+                        <td> ${ driver.gender } </td> 
                     </tr>
-                    <tr> 
-                        <td><b> Name </b></td> 
-                        <td> ${ driverInfo.givenname } ${ driverInfo.lastname } </td> 
-                    </tr>
-                    <tr> 
-                        <td><b> Age </b></td> 
-                        <td> ${ driverInfo.age } </td> 
-                    </tr>
-                    <tr> 
-                        <td><b> Gender </b></td> 
-                        <td> ${ driverInfo.gender } </td> 
+                    <tr>                          
+                        <td><img src="${ driver.profile_pic }" width="100%" style="margin-left:120%;" /> </td> 
                     </tr>                                  
                 </table>
             </div>`;

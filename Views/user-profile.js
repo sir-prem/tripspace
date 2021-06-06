@@ -33,7 +33,8 @@ async function userProfile(res, user) {
                                 <h5>Trip Finder</h5>
                                 <p><b>Find a trip</b> that's going <b>your</b> way.</p>
                                 <form method="GET" action="/trip/trip-finder">
-                                    <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">Find</button>
+                                    <input type="hidden" name="username" value="${user.username}" />
+                                    <button class="btn waves-effect waves-light light-green darken-3" type="submit">Find</button>
                                 </form>
                             </div>
                         </div>

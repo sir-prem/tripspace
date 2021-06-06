@@ -19,7 +19,6 @@ router.post('/auth', UserController.authenticateUser);
 router.post('/', UserController.userRegistration);
 
 
-
 router.delete('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
