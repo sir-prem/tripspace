@@ -44,9 +44,7 @@ async function getTripsByDriver(driverUsername) {
         for (var i = 0; i < array.length; i++) {
             console.log(array[i]);
         }
-        //res.send(array);
         return array;
-        //res.send('hello world');
 
     } catch (error) {
         console.log(error.message);
@@ -60,9 +58,11 @@ module.exports = {
 
                 try {
                     const newTrip = new TripModel(req.body);
-                    const result = await newTrip.save();        
-                    res.send(result);
-                    //await TripView.displayTripAddedPage(res, result);
+                    const driver = await UserModel.findOne( { username: req.body.username }, { __v:0 } );
+                    const addedTrip = await newTrip.save();        
+                    //res.send(result);
+                    var out = await TripView.tripAdded(addedTrip,driver);
+                    res.send(out);
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -190,8 +190,6 @@ module.exports = {
     findTripsBySuburb:
         async (req, res, next) => {
 
-            
-
             Util.consoleLogHeader("find Trips By Suburb");
             
             console.log(req.query);
@@ -234,7 +232,22 @@ module.exports = {
             } catch (error) {
                 console.log(error.message);
             }
-        }
+        },
+        addTripForm:
+            async (req, res, next) => {
+                Util.consoleLogHeader("Form: Add Trip");
+                const driverUsername = req.params.username;
+
+                console.log("driver is: " + driverUsername);
+
+                try {
+                    var out = ``;
+                    out = await TripView.tripAdder(driverUsername);
+                    res.send(out);
+                } catch (error) {
+                    console.log(error.message);
+                }
+            }
         
 
             

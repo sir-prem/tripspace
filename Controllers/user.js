@@ -1,5 +1,6 @@
 const UserModel = require('../Models/user');
 let UserView = require('../Views/user-profile');
+let Util = require('../Controllers/utilities');
 
 module.exports = {
     edit:
@@ -57,15 +58,27 @@ module.exports = {
             },
     getUserByID:
             async (req, res, next) => {
+                Util.consoleLogHeader("get User By ID");
                 const id = req.params.id;
+
                 console.log("id is: " + id);
                 var user = '';
                 try {
                     if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                        console.log("YO YO here");
                         user = await UserModel.findOne( { _id: id }, { __v:0 } );
                     }
+                    else { // by username
+                        user = await UserModel.findOne( { username: id }, { __v:0 } );
+                    }
+                    
                     console.log(user);
-                    await UserView.userProfile(res, user);
+                    if (user.usertype == 'driver') {
+                        await UserView.driverProfile(res, user);
+                    }
+                    else { // usertype is 'user'
+                        await UserView.userProfile(res, user);                                
+                    }
                 } catch (error) {
                     console.log(error.message);
                 }

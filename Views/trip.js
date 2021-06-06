@@ -185,10 +185,141 @@ async function tripFinderResults(results, out) {
 
 }
 
+async function tripAdder(driverUsername) {
+    Util.consoleLogHeader('trip Adder');
+    var out = ``;
+    out = await U.addHeaderHTML(out);
+
+    out += '<main>';
+    out =       await U.addPageTitle(12, 12, "Add New Trip", out);
+    
+    out += `    <div class="row" id="red-border">
+    
+                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    
+                    <div class="col s12 l2" id="green-border">
+                        <div class="row">
+                            <p><img src="/images/pic19.png" style="max-height:200px;"/></p>
+                        </div>
+                        <div class="row white-text">
+                            <p><blockquote>I now earn $300 extra per week, without driving any extra than I normally would.
+                            My vehicle space is now being utilised by doing jobs here and there via TripSpace.
+                            TripSpace allows me to do pick-ups on routes where I normally would be driving on an empty load. 
+                            I'm making money through TripSpace just from driving the same routes I usually drive.
+                            <br><b>- Neil Armstrong</b> <i>TripSpace driver</i></blockquote></p>
+                        </div>
+                    </div>
+
+                    <div class="col s12 l4" id="green-border" style="margin-left:2%;">
+                        
+                            <form method="POST" action="/trip">
+                                <div class="row" style="margin-top:2%;">
+                                    <div class="col s12 l12 brown darken-1 white-text z-depth-1" style="margin-left:0%;">
+                                        <h5 style="background-color:#3e2723;">Where</h5>
+                                        <p>From: <input type="text" name="fromSuburb" /></p>
+                                        <p>To: <input type="text" name="toSuburb" /></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 l12 brown darken-1 white-text z-depth-1" style="margin-left:0%;">
+                                        <h5 style="background-color:#3e2723;">When</h5>
+                                        <p>Date: <input type="date" name="date" /></p>
+                                        <p>Between: <input type="time" name="departureTime" /></p>
+                                        <p>And: <input type="time" name="arrivalTime" /></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 l12 brown darken-1 white-text z-depth-1" style="margin-left:0%;">
+                                        <h5 style="background-color:#3e2723;">Space Available</h5>
+                                        <p>Vehicle Type: <input type="text" name="vehicle" /></p>
+                                        <p>Cargo (m3): <input type="text" name="cargoSpace" /></p>
+                                        <p>Seats: <input type="text" name="seatSpace" /></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <input type="hidden" name="username" value="${driverUsername}" />
+                                    <button class="btn waves-effect waves-light light-green darken-1" 
+                                        type="submit" style="margin-left:85%;">Add Trip</button>
+                                </div>
+                            </form>
+                        
+                    </div>
+                    
+                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                    
+                </div>
+            </main>`;
+
+    out = await U.addFooterHTML(out);
+    return out;
+}
+
+async function tripAdded(addedTrip,driver) {
+    Util.consoleLogHeader('trip Adder');
+    var out = ``;
+    var dateJSON = await Util.getDateJSON(addedTrip.date);    
+    out = await U.addHeaderHTML(out);
+
+    out += '<main>';
+    out =       await U.addPageTitle(12, 12, "Trip Added", out);
+    
+    out += `    <div class="row" id="red-border">
+    
+                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    
+                    <div class="col s12 l6" id="green-border">
+                        <div class="row grey darken-4">
+                            <img src="/images/pic10.png" style="max-height:300px;">
+                        </div>
+                        <div class="row grey lighten-5" style="padding:2%;">
+                            <h5>Trip Successfully Added</h1>
+                            <p>Congratulations <b>${driver.givenname}</b>, your trip going from <b>${addedTrip.fromSuburb}</b> to 
+                            <b>${addedTrip.toSuburb}</b> on <b>${dateJSON.dateString}</b> has been added successfully. We hope that 
+                            your trip gets fully booked, and your trip-space gets fully utilised!</p>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                            
+                            <div class="col s12 l4" id="green-border">
+                                <p>
+                                    <form method="GET" action="/user/${addedTrip.username}">                                    
+                                        <button class="btn waves-effect waves-light light-green darken-1" 
+                                            type="submit">Back to Profile</button>
+                                    </form>                                    
+                                </p>
+                            </div>
+
+                            <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                            
+                            <div class="col s12 l4" id="green-border">
+                                <p>                                    
+                                    <form method="GET" action="/trip/add/${addedTrip.username}">                                    
+                                        <button class="btn waves-effect waves-light light-green darken-1" 
+                                            type="submit">Add another trip</button>
+                                    </form>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+
+                </div>
+
+            </main>`;
+
+    out = await U.addFooterHTML(out);
+    return out;
+        
+}
+
 
 module.exports = {
     displayTripsByDriverPage,
     displayDriverTripDetailsPage,
-    tripFinder,
-    tripFinderResults
+    tripFinder, 
+    tripFinderResults,
+    tripAdder,
+    tripAdded
 };
