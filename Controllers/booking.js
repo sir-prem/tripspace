@@ -130,7 +130,7 @@ module.exports = {
                 
             },
     getBookingsByUser,
-    viewUserBookingDetails:
+    bookingDetails:
             async (req, res, next) => {
 
                 const bookingID = req.params.bookingID;
@@ -205,10 +205,7 @@ module.exports = {
                     outputJSON = { userBooking, tripLinkedtoThisBooking, dateJSON, driverInfo, otherBookingsForThisTrip, bookingStats };
                     
                     console.log(outputJSON);
-                    //res.send(outputJSON);
-
-                    //res.send(userBookings);
-                    await BookingView.displayUserBookingDetailsPage(res, outputJSON);
+                    await BookingView.bookingDetails(res, outputJSON);
 
                 } catch (error) {
                     console.log(error.message);

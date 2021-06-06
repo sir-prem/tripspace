@@ -17,7 +17,7 @@ async function displayBookingsByUserPage(array) {
     return out;
 }
 
-async function displayUserBookingDetailsPage(res, outputJSON) {
+async function bookingDetails(res, outputJSON) {
     var driverTrip = outputJSON.tripLinkedtoThisBooking;
     var dateString = outputJSON.dateJSON.dateString;
     var driverInfo = outputJSON.driverInfo;
@@ -25,26 +25,69 @@ async function displayUserBookingDetailsPage(res, outputJSON) {
     var bookingStats = outputJSON.bookingStats;
     var bookingComments = userBooking.comments;
 
-    out = ``;
-    out = await U.addHeaderHTML(out);
-    out = await U.openingHtmlElements(out);
-    out = await U.addPageTitle( 12, 12, "View Booking Details", out );
-
     console.log("driver trip: ");
     console.log(driverTrip);
 
-    out += `<div class="row">`;    
+
+    out = ``;
+    out = await U.addHeaderHTML(out);
+
+    out += '<main>';
+    out =       await U.addPageTitle(12, 12, "Booking Details", out);
+    
+    out += `    <div class="row" id="red-border">
+    
+                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+
+                    <div class="col s12 l3" id="green-border">
+                        <div class="row">`;
+    out =                   await U.tripDetailsCard( 12, 12, driverTrip, dateString, out );
+    out += `            </div>
+                        <div class="row">`;
+    out =                   await U.driverInfoCard( 12, 12, driverInfo, out );
+    out += `            </div>
+                    </div>
+
+                    <div class="col s12 l4" id="green-border" style="margin-left:2%;">
+                        <div class="row">`;
+    out =                   await U.bookingCommentsCard( 12, 12, bookingComments, out );
+    out += `            </div>
+                        <div class="row">`;
+    out =                   await U.userViewBookingStatsCard( 12, 12, bookingStats, out );
+    out += `            </div>
+                    </div>
+                    
+                    <p><form method="GET" action="/user/${userBooking.userID}">
+                        <button class="btn waves-effect waves-light light-green darken-1"
+                            type="submit" style="margin-left:70%;margin-top:2%;">Back to Profile</button>
+                    </form></p>
+                    
+                </div>
+            </main>
+                    `;
+
+/*
     out =       await U.tripDetailsCard( 12, 3, driverTrip, dateString, out );
 
     out =       await U.addSpacerColumn( 1, out);
     out +=      `<div class="col s12 l8">`;
+
     out +=          `<div class="row">`;    
     out =               await U.bookingCommentsCard( 12, 12, bookingComments, out );
     out +=          `</div>`;
+
     out +=          `<div class="row">`;    
-    out =               await U.userViewBookingStatsCard( 12, 7, bookingStats, out );
-    out +=              `</div>`;
-    out +=          `</div>`;  
+    out =               await U.userViewBookingStatsCard( 12, 12, bookingStats, out );
+    out +=          `</div>
+
+                    <div class="row">
+                        <form method="GET" action="/user/${userBooking.userID}">
+                            <button class="btn waves-effect waves-light light-green darken-1"
+                                type="submit">Back to Profile</button>
+                        </form>
+                    </div>`;
+                        
+    
     out +=      `</div>`;
     out += `</div>`;
 
@@ -52,7 +95,7 @@ async function displayUserBookingDetailsPage(res, outputJSON) {
     out =       await U.driverInfoCard( 12, 3, driverInfo, out );
     out += `</div>`;
 
-    out = await U.closingHtmlElements(out);
+*/
     out = await U.addFooterHTML(out);
     res.send(out);
 }
@@ -144,6 +187,6 @@ async function bookingConfirmation(booking, user, trip, dateString) {
 
 module.exports = {
     displayBookingsByUserPage,
-    displayUserBookingDetailsPage,
+    bookingDetails,
     bookingConfirmation
 };
