@@ -1,7 +1,7 @@
 let U = require('../Views/utilities');
 let Util = require('../Controllers/utilities');
 var out;
-
+/*
 async function displayTripsByDriverPage(res, array) {
     out = ``;
     out = await U.addHeaderHTML(out);
@@ -16,14 +16,52 @@ async function displayTripsByDriverPage(res, array) {
     out = await U.addFooterHTML(out);
     res.send(out);
 }
+*/
 
-async function displayDriverTripDetailsPage(res, outputJSON) {
+async function tripDetails(res, outputJSON) {
     var driverTrip = outputJSON.driverTrip;
     var dateString = outputJSON.dateJSON.dateString;
     var userBookingsArray = outputJSON.bookingsForTripWithNames;
     var bookingStats = outputJSON.bookingStats;
 
-    out = ``;
+    var out = ``;
+    
+    out = await U.addHeaderHTML(out);
+
+    out += '<main>';
+    out =       await U.addPageTitle(12, 12, "Trip Details", out);
+    
+    out += `    <div class="row" id="red-border">
+    
+                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+
+                    <div class="col s12 l3" id="green-border">
+                        <div class="row">`;
+    out =                   await U.tripDetailsCard( 12, 12, driverTrip, dateString, out );
+    out += `            </div>
+                    </div>
+
+                    <div class="col s12 l5" id="green-border" style="margin-left:2%;">
+                        <div class="row">`;
+    out =                   await U.userBookingsCard( 12, 12, userBookingsArray, out );
+    out += `            </div>
+                        <div class="row">`;
+    out =                   await U.bookingStatsCard( 12, 7, bookingStats, out );
+    out += `            </div>
+                    </div>
+                    
+                    <p><form method="GET" action="/user/${driverTrip.username}">
+                        <button class="btn waves-effect waves-light light-green darken-1"
+                            type="submit" style="margin-left:70%;margin-top:2%;">Back to Profile</button>
+                    </form></p>
+                    
+                </div>
+            </main>
+                    `;
+    out = await U.addFooterHTML(out);
+    res.send(out);
+/*
+
     out = await U.addHeaderHTML(out);
     out = await U.openingHtmlElements(out);
     out = await U.addPageTitle( 12, 12, "View Trip Details", out );
@@ -48,6 +86,7 @@ async function displayDriverTripDetailsPage(res, outputJSON) {
     out = await U.closingHtmlElements(out);
     out = await U.addFooterHTML(out);
     res.send(out);
+    */
 }
 
 async function tripFinder(username, searchSubmitted) {
@@ -439,8 +478,8 @@ async function userTripDetails(json) {
 
 
 module.exports = {
-    displayTripsByDriverPage,
-    displayDriverTripDetailsPage,
+    //displayTripsByDriverPage,
+    tripDetails,
     tripFinder, 
     tripFinderResults,
     tripAdder,

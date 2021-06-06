@@ -179,7 +179,7 @@ module.exports = {
                     console.log(json);
                     //res.send(json);
 
-                    await TripView.displayDriverTripDetailsPage(res, json);
+                    await TripView.tripDetails(res, json);
 
                 } catch (error) {
                     console.log(error.message);

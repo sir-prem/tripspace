@@ -65,37 +65,6 @@ async function bookingDetails(res, outputJSON) {
                 </div>
             </main>
                     `;
-
-/*
-    out =       await U.tripDetailsCard( 12, 3, driverTrip, dateString, out );
-
-    out =       await U.addSpacerColumn( 1, out);
-    out +=      `<div class="col s12 l8">`;
-
-    out +=          `<div class="row">`;    
-    out =               await U.bookingCommentsCard( 12, 12, bookingComments, out );
-    out +=          `</div>`;
-
-    out +=          `<div class="row">`;    
-    out =               await U.userViewBookingStatsCard( 12, 12, bookingStats, out );
-    out +=          `</div>
-
-                    <div class="row">
-                        <form method="GET" action="/user/${userBooking.userID}">
-                            <button class="btn waves-effect waves-light light-green darken-1"
-                                type="submit">Back to Profile</button>
-                        </form>
-                    </div>`;
-                        
-    
-    out +=      `</div>`;
-    out += `</div>`;
-
-    out += `<div class="row">`; 
-    out =       await U.driverInfoCard( 12, 3, driverInfo, out );
-    out += `</div>`;
-
-*/
     out = await U.addFooterHTML(out);
     res.send(out);
 }
