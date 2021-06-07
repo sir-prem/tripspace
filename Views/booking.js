@@ -29,7 +29,7 @@ async function bookingDetails(res, outputJSON) {
     console.log(driverTrip);
 
 
-    out = ``;
+    var out = ``;
     out = await U.addHeaderHTML(out);
 
     out += '<main>';
