@@ -17,6 +17,7 @@ async function addHeaderHTML(out) {
 	out += '    			<li><a href="/">Home</a></li>';
 	out += '    			<li><a href="./about.html">About</a></li>';
 	out += '    			<li><a href="./contact.html">Contact</a></li>';
+    out += '    			<li><a href="./track_driver.html">Track Driver</a></li>';
 	out += '    		  </ul>';
 	out += '    		</div>';
 	out += '    	  </nav>';

@@ -9,5 +9,5 @@ const bookingSchema = new Schema ({
     comments: String
 });
 
-const Booking = mongoose.model('booking', bookingSchema);
-module.exports = Booking;
+module.exports =
+    mongoose.models.Booking || mongoose.model('Booking', bookingSchema);

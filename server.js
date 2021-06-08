@@ -1,10 +1,15 @@
 const express = require("express");
 const app = express();
+const Booking = require('./models/booking')
+const socketio = require('socket.io');
+const http = require('http');
+const server = http.createServer(app);
+const io = socketio(server);
 
 const port = 4000;
 
 
-var uri = "mongodb+srv://cluster0.7hvms.mongodb.net/";
+var uri = "mongodb+srv://admin:00000@cluster0.7hvms.mongodb.net/test";
 
 const mongoose = require("mongoose");
 
@@ -55,6 +60,36 @@ app.get("/new-user", async (req, res, next) => {
   await newUser.displayNewUserPage(res);
 });
 
-app.listen(port, function() {
+//initialize socketio
+io.on('connect', function(socket){
+  console.log('connected to socket.io!')
+
+  //broadcast message to users
+  socket.on('send-notification', function(message){
+    socket.broadcast.emit('new-notification', message)
+  });
+
+  //disconnect socketio
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+  })
+})
+
+//get users tripID and finds in the mongodb
+app.post('/api', function(req, res) {
+  Booking.findOne(req.body)
+      .then(function(data) {
+        res.json({
+          status: 'success',
+          tripID: data.tripID
+      });
+  })
+  .catch(function(error) {
+      console.log('invalid input')
+      res.json(error);
+  });
+});
+
+server.listen(port, function() {
   console.log("Server is running on Port: " + port);
 });
