@@ -11,13 +11,12 @@ router.get('/', UserController.getAllUsers);
 
 router.get('/:id', UserController.getUserByID);
 
-
+// User attempt to login
 router.post('/auth', UserController.authenticateUser);
 
 
 // New user registration
 router.post('/', UserController.userRegistration);
-
 
 
 router.delete('/:id', async (req, res, next) => {
@@ -41,5 +40,3 @@ router.patch('/:id', async (req, res, next) => {
         console.log(error.message);
     }
 });
-
-module.exports = router;

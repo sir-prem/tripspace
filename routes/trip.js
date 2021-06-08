@@ -6,11 +6,17 @@ router.get('/', TripController.getAllTrips);
 
 router.post('/', TripController.addNewTrip);
 
-router.get('/driver/trip-details/:tripID', TripController.viewDriverTripDetails);
+router.get('/add/:username', TripController.addTripForm);
 
-router.get('/driver/:username', TripController.getTripsByDriver);
+//Driver view of trip details (includes showing all user bookings)
+router.get('/driver/trip-details/:tripID', TripController.driverViewTrip);
 
-router.get('/search', TripController.findTripsBySuburb);
+//User view of trip details (does not show all user bookings)
+router.get('/user/trip-details/:tripID/:username', TripController.userViewTrip);
+
+router.get('/driver/:username', TripController.getTripsByDriverParams);
+
+router.get('/trip-finder', TripController.findTripsBySuburb);
 
 router.get('/:id', TripController.getTripByID);
 
