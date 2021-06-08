@@ -22,7 +22,7 @@ io.on('connect', function(socket){
   })
 })
 
-var uri = "mongodb+srv://cluster0.7hvms.mongodb.net/";
+var uri = "mongodb+srv://admin:00000@cluster0.7hvms.mongodb.net/test";
 
 const mongoose = require("mongoose");
 
