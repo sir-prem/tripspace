@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const Booking = require('./models/booking')
 const socketio = require('socket.io');
 const http = require('http');
 const server = http.createServer(app);

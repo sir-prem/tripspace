@@ -22,6 +22,10 @@ function sendNotification() {
     socket.emit('send-notification', msg)
 };
 
+//elements for tripID
+const tripID = document.querySelector('#tripID');
+const message = document.querySelector('#message');
+
 //fetch data entered by the user.
 function getData() {
     const options = {
@@ -45,3 +49,9 @@ function getData() {
         console.log(error);
     });
 };
+
+//elements for tracking driver
+document.querySelector('#track').addEventListener('click', function (error) {
+    error.preventDefault();
+    getData();
+});
