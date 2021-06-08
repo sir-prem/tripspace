@@ -67,6 +67,21 @@ app.get("/new-driver", async (req, res, next) => {
   await newDriver.displayNewDriverPage(res);
 });
 
+//get users tripID and finds in the mongodb
+app.post('/api', function(req, res) {
+  Booking.findOne(req.body)
+      .then(function(data) {
+        res.json({
+          status: 'success',
+          tripID: data.tripID
+      });
+  })
+  .catch(function(error) {
+      console.log('invalid input')
+      res.json(error);
+  });
+});
+
 /*
 app.get("/someroute", (req, res, next) => {
     res.send("SOME ROUTE: hello world");
