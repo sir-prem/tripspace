@@ -1,8 +1,51 @@
 const UserModel = require('../Models/user');
 let UserView = require('../Views/user-profile');
+let Util = require('../Controllers/utilities');
 
 module.exports = {
-
+    edit:
+    async (req, res, next) => {
+        try {
+            console.log("The body is: " + JSON.stringify(req.body));
+            console.log("The id is: " + req.body.uid);
+            var p = req.body.profile_pic;
+            var result;
+            if (p == "") {
+                result = await UserModel.findOneAndUpdate( {_id: req.body.uid}, {$set:{
+                    password: req.body.password,
+                    givenname: req.body.givenname,
+                    lastname: req.body.lastname,
+                    age: req.body.age,
+                    gender: req.body.gender,
+                }} ); 
+        } else {
+            result = await UserModel.findOneAndUpdate( {_id: req.body.uid}, {$set:{
+                    password: req.body.password,
+                    givenname: req.body.givenname,
+                    lastname: req.body.lastname,
+                    age: req.body.age,
+                    gender: req.body.gender,
+                    profile_pic: req.body.profile_pic
+                }} ); 
+        }
+        await UserView.displayUserProfilePage(res, result);
+        } catch (error) {
+            console.log(error.message);
+        }
+    
+    },
+    editProfile: 
+    async (req, res, next) => {
+        try {
+            console.log(req.body);
+            var result = await UserModel.findOne( {username: req.body.username}, { __v:0 } );
+            console.log(result);
+            await UserView.displayEditUserProfilePage(res, result);
+        } catch (error) {
+            console.log(error.message);
+        }
+    
+    },
     getAllUsers: 
             async (req, res, next) => {
                 try {
@@ -15,15 +58,27 @@ module.exports = {
             },
     getUserByID:
             async (req, res, next) => {
+                Util.consoleLogHeader("get User By ID");
                 const id = req.params.id;
+
                 console.log("id is: " + id);
-                var result = '';
+                var user = '';
                 try {
                     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                        result = await UserModel.findOne( { _id: id }, { __v:0 } );
+                        console.log("YO YO here");
+                        user = await UserModel.findOne( { _id: id }, { __v:0 } );
                     }
-                    console.log(result);
-                    await UserView.displayUserProfilePage(res, result);
+                    else { // by username
+                        user = await UserModel.findOne( { username: id }, { __v:0 } );
+                    }
+                    
+                    console.log(user);
+                    if (user.usertype == 'driver') {
+                        await UserView.driverProfile(res, user);
+                    }
+                    else { // usertype is 'user'
+                        await UserView.userProfile(res, user);                                
+                    }
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -54,17 +109,13 @@ module.exports = {
 
                         if (reqPassword == user.password) { // Valid password
                             //res.send('Username found AND Password MATCH. User authenticated.');
-                            var url;
-                            var buttonTitle;
+                            
                             if (user.usertype == 'driver') {
-                                url = `/trip/driver/${user.username}`;
-                                buttonTitle = `My Trips`;
+                                await UserView.driverProfile(res, user);
                             }
                             else { // usertype is 'user'
-                                url = `/booking/user/${user.username}`;
-                                buttonTitle = `My Bookings`;
+                                await UserView.userProfile(res, user);                                
                             }
-                            await UserView.displayUserProfilePage(res, user, url, buttonTitle);
                         }
                         else { // Invalid password
                             res.send('Username found. Invalid Password.');
@@ -83,7 +134,7 @@ module.exports = {
                 try {
                     const newUser = new UserModel(req.body);
                     const result = await newUser.save();        
-                    await UserView.displayRegistrationCompletePage(res, result);
+                    await UserView.regComplete(res, result);
                 } catch (error) {
                     console.log(error.message);
                 }
