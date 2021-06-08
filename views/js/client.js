@@ -22,3 +22,26 @@ function sendNotification() {
     socket.emit('send-notification', msg)
 };
 
+//fetch data entered by the user.
+function getData() {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ tripID: tripID.value }),
+    };
+    fetch('/api', options)
+      .then((res) => res.json())
+      .then(function(data) {
+        if (data.status === 'success') {
+          startTimer();
+        } else {
+          message.textContent = 'invalid input';
+          message.className = 'red-text';
+        }
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+};
