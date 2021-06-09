@@ -8,6 +8,8 @@ router.post('/', TripController.addNewTrip);
 
 router.get('/add/:username', TripController.addTripForm);
 
+router.post('/editTrip', TripController.editTrip);
+
 //Driver view of trip details (includes showing all user bookings)
 router.get('/driver/trip-details/:tripID', TripController.driverViewTrip);
 

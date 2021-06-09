@@ -294,7 +294,7 @@ async function tripDetailsCard( sColSpan, lColSpan, driverTrip, dateString, out 
 
 async function editBookingInfoView(out, booking) {
     out += `<div class="col s12 l12 grey lighten-5 z-depth-1">
-                <h5>Trip Info</h5>
+                <h5>Booking Info</h5>
                 <table>
                     <tr> 
                         <td><b> Trip ID:  </b></td> 
@@ -326,6 +326,69 @@ async function editBookingInfoView(out, booking) {
                     <tr> 
                         <td><input type="text" name="comments" value='${booking.comments}' /></td> 
                     </tr>                       
+                </table>
+            </div>`;
+    return out;
+}
+
+async function editTripInfoView(out, trip) {
+    out += `<div class="col s12 l12 grey lighten-5 z-depth-1">
+                <h5>Trip Info</h5>
+                <table>
+                    <tr> 
+                        <td><b> From:  </b></td> 
+                    </tr>
+                    <tr> 
+                        <td>${trip.fromSuburb}</td> 
+                    </tr>
+                    <tr> 
+                        <td><b> To:  </b></td> 
+                    </tr>
+                    <tr> 
+                        <td>${trip.toSuburb}</td> 
+                    </tr>
+                    <tr> 
+                    <td><b> Username:  </b></td> 
+                </tr>
+                <tr> 
+                    <td>${trip.username}</td> 
+                </tr>  
+                <tr> 
+                <td><b> Date:  </b></td> 
+            </tr>
+            <tr> 
+                <td>${trip.date}</td> 
+            </tr>                        
+                    <tr> 
+                        <td><b> Departure Time: </b></td> 
+                    </tr>
+                    <tr> 
+                        <td>${trip.departureTime}</td> 
+                    </tr>
+                    <tr> 
+                    <td><b> Arrival Time: </b></td> 
+                </tr>
+                <tr> 
+                    <td>${trip.arrivalTime}</td> 
+                </tr>           
+                <tr> 
+                <td><b> Vehicle: </b></td> 
+            </tr>
+            <tr> 
+                <td>${trip.vehicle}</td> 
+            </tr>          
+            <tr> 
+            <td><b> Cargo Space: </b></td> 
+        </tr>
+        <tr> 
+            <td>${trip.cargoSpace}</td> 
+        </tr>     
+        <tr> 
+        <td><b> Seat Space: </b></td> 
+    </tr>
+    <tr> 
+        <td>${trip.seatSpace}</td> 
+    </tr> 
                 </table>
             </div>`;
     return out;
@@ -589,5 +652,6 @@ module.exports = {
     loginCard,
     signUpCard,
     regForm,
-    editBookingInfoView
+    editBookingInfoView,
+    editTripInfoView
 };

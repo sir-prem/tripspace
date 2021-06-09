@@ -53,6 +53,20 @@ async function getTripsByDriver(driverUsername) {
 
 module.exports = {
 
+    editTrip:
+    async (req, res, next) => {
+        var id = req.body;
+        console.log(id.tripID);
+        var trip;
+        try {
+            trip = await TripModel.findOne( { _id: id.tripID }, { __v:0, _id:0 } );     
+            await TripView.editTrip(res, trip);
+        } catch (error) {
+            console.log(error.message);
+        }
+        
+    },
+
     addNewTrip:
             async (req,res,next) => {
 

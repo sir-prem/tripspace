@@ -18,6 +18,58 @@ async function displayTripsByDriverPage(res, array) {
 }
 */
 
+async function editTrip(res, trip) {
+    var out = ``;
+    out = await U.addHeaderHTML(out);
+
+    out += '<main>';
+    out =       await U.addPageTitle(12, 12, "Edit Trip", out);
+    
+    out += `    <div class="row" id="red-border">
+    
+                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+
+                    <div class="col s12 l3" id="green-border">
+                        <div class="row">`;
+    out =                   await U.editTripInfoView(out, trip);
+    out += `                    <p><form method="POST" action="/booking/editBooking-details">
+
+    <p><button class="btn waves-effect waves-light light-green darken-1"
+        type="submit" style="margin-left:70%;margin-top:2%;">Edit</button>
+</form></p>
+
+<p><button class="btn waves-effect waves-light light-green darken-1"
+type="submit" style="margin-left:70%;margin-top:2%;">Cancel</button>
+</form></p>
+
+<p><form method="GET" action="">
+    <button class="btn waves-effect waves-light light-green darken-1"
+        type="submit" style="margin-left:70%;margin-top:2%;">Back</button>
+</form></p>`
+    out += `            </div>
+                        <div class="row">`;
+
+    out += `            </div>
+                    </div>
+
+                    <div class="col s12 l4" id="green-border" style="margin-left:2%;">
+                        <div class="row">`;
+
+    out += `            </div>
+                        <div class="row">`;
+
+    out += `            </div>
+                    </div>
+
+
+                    
+                </div>
+            </main>
+                    `;
+    out = await U.addFooterHTML(out);
+    res.send(out);
+}
+
 async function tripDetails(res, outputJSON) {
     var driverTrip = outputJSON.driverTrip;
     var dateString = outputJSON.dateJSON.dateString;
@@ -49,6 +101,12 @@ async function tripDetails(res, outputJSON) {
     out =                   await U.bookingStatsCard( 12, 7, bookingStats, out );
     out += `            </div>
                     </div>
+
+                    <p><form method="POST" action="/trip/editTrip">
+                    <input type="hidden" name="tripID" value=${driverTrip._id}>
+                    <button class="btn waves-effect waves-light light-green darken-1"
+                        type="submit" style="margin-left:70%;margin-top:2%;">Edit</button>
+                </form></p>
                     
                     <p><form method="GET" action="/user/${driverTrip.username}">
                         <button class="btn waves-effect waves-light light-green darken-1"
@@ -484,5 +542,6 @@ module.exports = {
     tripFinderResults,
     tripAdder,
     tripAdded,
-    userTripDetails
+    userTripDetails,
+    editTrip
 };
