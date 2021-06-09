@@ -28,7 +28,12 @@ module.exports = {
                     profile_pic: req.body.profile_pic
                 }} ); 
         }
-        await UserView.displayUserProfilePage(res, result);
+        if (result.usertype == 'driver') {
+            await UserView.driverProfile(res, result);
+        }
+        else { // usertype is 'user'
+            await UserView.userProfile(res, result);                                
+        }
         } catch (error) {
             console.log(error.message);
         }

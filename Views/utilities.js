@@ -177,6 +177,17 @@ async function profileInfoCard(result, out) {
                     <tr><td><b>age</b></td><td>${result.age}</td></tr>
                     <tr><td><b>gender</b></td><td>${result.gender}</td></tr>
                 </table>
+                <form method="POST" action="/editProfile">
+                    <input type="hidden" name="username" value=${result.username}>
+                    <input type="hidden" name="givenname" value=${result.givenname}>
+                    <input type="hidden" name="lastname" value=${result.lastname}>
+                    <input type="hidden" name="age" value=${result.age}>
+                    <input type="hidden" name="gender" value=${result.gender}>
+                    <input type="hidden" name="profile_pic" value=${result.profile_pic}>
+                    <input type="hidden" name="password" value=${result.password}>
+                    <input type="hidden" name="addNew" value="false">
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Edit</button>
+                </form>
             </div>
             <div class="col s4 l4 grey lighten-5" style="padding-top: 10%; margin-left:10%;">`;
 
