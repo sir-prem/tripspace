@@ -1,6 +1,8 @@
 const UserModel = require('../Models/user');
 let UserView = require('../Views/user-profile');
 let Util = require('../Controllers/utilities');
+const express = require("express");
+const app = express();
 
 module.exports = {
     edit:
@@ -34,6 +36,18 @@ module.exports = {
         else { // usertype is 'user'
             await UserView.userProfile(res, result);                                
         }
+        } catch (error) {
+            console.log(error.message);
+        }
+    
+    },
+    deleteAccount: 
+    async (req, res, next) => {
+        try {
+            console.log(req.body);
+            var result = await UserModel.findOneAndRemove( {username: req.body.username}, { __v:0 } );
+            console.log(result);
+            res.redirect('/');
         } catch (error) {
             console.log(error.message);
         }

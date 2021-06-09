@@ -104,7 +104,7 @@ async function regForm(sColSpan, lColSpan, heading, subheading, usertype, out) {
                 <p>Please fill in the below details.</p>
                 <form method="POST" action="/user">
                     <p>username: <input type="text" name="username" /></p>
-                    <p>password: <input type="text" name="password" /></p>
+                    <p>password: <input type="password" name="password" /></p>
                     <p>Given name: <input type="text" name="givenname" /></p> 
                     <p>Last name: <input type="text" name="lastname" /></p> 
                     <p>Age: <input type="text" name="age" /></p> 
@@ -187,6 +187,10 @@ async function profileInfoCard(result, out) {
                     <input type="hidden" name="password" value=${result.password}>
                     <input type="hidden" name="addNew" value="false">
                     <button class="btn waves-effect waves-light" type="submit" name="action">Edit</button>
+                </form>
+                <form method="POST" action="/editProfile/deleteAccount">
+                    <input type="hidden" name="username" value=${result.username}>
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Delete Account</button>
                 </form>
             </div>
             <div class="col s4 l4 grey lighten-5" style="padding-top: 10%; margin-left:10%;">`;
