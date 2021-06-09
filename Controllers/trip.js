@@ -212,14 +212,14 @@ module.exports = {
                     var percentageUtilizedSeatSpace;
                     var percentageUtilizedCargoSpace;
 
-                    var bookingsForTripWithNames = [];
+                    var bookingsForTripWithNamesAndProfilePic = [];
 
                     const numberOfBookingsForThisTrip = bookingsForThisTrip.length;
                     
                     for (var j = 0; j < numberOfBookingsForThisTrip; j++) {
                         var thisBooking = bookingsForThisTrip[j];
-                        var thisBookingWithNames = await Util.addNameToBooking(thisBooking);
-                        bookingsForTripWithNames.push(thisBookingWithNames);
+                        var thisBookingWithNamesAndProfilePic = await Util.addNameAndProfilePicToBooking(thisBooking);
+                        bookingsForTripWithNamesAndProfilePic.push(thisBookingWithNamesAndProfilePic);
                         totalBookedSeats += thisBooking.seatSpace;
                         totalBookedCargo += thisBooking.cargoSpace;
                     }
@@ -253,7 +253,7 @@ module.exports = {
                     };
                                         
                     var dateJSON = await Util.getDateJSON(driverTrip.date);
-                    json = { tripID, username, driver, driverTrip, dateJSON, bookingsForTripWithNames, bookingStats, toSub, fromSub};
+                    json = { tripID, username, driver, driverTrip, dateJSON, bookingsForTripWithNamesAndProfilePic, bookingStats, toSub, fromSub};
                     
 
                     console.log(json);

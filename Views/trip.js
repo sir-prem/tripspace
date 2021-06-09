@@ -402,7 +402,7 @@ async function userTripDetails(json) {
                                         </td>
                                         <td>
                                             <button form="bookingForm" class="btn waves-effect waves-light light-green darken-1" 
-                                                        type="submit" style="margin-left:70%;">Book My Space</button>
+                                                        type="submit" style="margin-left:40%;">Book My Space</button>
                                         </td>
                                     </tr>
                                 </table>

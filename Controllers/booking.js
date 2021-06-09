@@ -55,21 +55,24 @@ async function getBookingsByUser(username) {
             
             const viewBookingDetailsURL = `/user/booking-details/${userBooking._id}`;
 
-            var userBookingWithNames = await Util.addNameToBooking(userBooking);
+            var userBookingWithNameAndProfilePic = await Util.addNameAndProfilePicToBooking(userBooking);
             var dateJSON = await Util.getDateJSON(tripLinkedtoThisBooking.date);
-            array.push({ userBookingWithNames, tripLinkedtoThisBooking, dateJSON, mySpace, remainingSpace, viewBookingDetailsURL });
+            array.push({ userBookingWithNameAndProfilePic, tripLinkedtoThisBooking, dateJSON, mySpace, remainingSpace, viewBookingDetailsURL });
         }
+        console.log("HERE 1 *******************************************************");
 
         for (var i = 0; i < array.length; i++) {
             console.log(array[i]);                        
         }
+        console.log("HERE 2 *******************************************************");
         //res.send(array);
         //res.send(userBookings);
+        return array;
         
     } catch (error) {
         console.log(error.message);        
     }
-    return array;
+    
 }
 
 module.exports = {
