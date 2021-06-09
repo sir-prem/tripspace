@@ -37,7 +37,7 @@ async function bookingDetails(res, outputJSON) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l2" id="green-border"><p></p></div>
 
                     <div class="col s12 l3" id="green-border">
                         <div class="row">`;
@@ -79,7 +79,7 @@ async function bookingConfirmation(booking, user, trip, dateString) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                     
                     <div class="col s12 l6" id="green-border">
                         <div class="row grey darken-4">
@@ -118,7 +118,7 @@ async function bookingConfirmation(booking, user, trip, dateString) {
                             </p><br>
                         </div>
                         <div class="row">
-                            <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                            <div class="col s12 l2" id="green-border"><p></p></div>
                             
                             <div class="col s12 l4" id="green-border">
                                 <p>
@@ -129,7 +129,7 @@ async function bookingConfirmation(booking, user, trip, dateString) {
                                 </p>
                             </div>
 
-                            <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                            <div class="col s12 l2" id="green-border"><p></p></div>
                             
                             <div class="col s12 l4" id="green-border">
                                 <p>                                    
@@ -144,7 +144,7 @@ async function bookingConfirmation(booking, user, trip, dateString) {
                         </div>
                     </div>
 
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
 
                 </div>
 

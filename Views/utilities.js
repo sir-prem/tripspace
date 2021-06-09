@@ -290,6 +290,7 @@ async function userBookingsCard (sColSpan, lColSpan, userBookingsArray, out ) {
     
         out +=      `<table>
                         <tr>
+                            <th></th>
                             <th>Name</th>
                             <th>Username</th>
                             <th>Cargo Space</th>
@@ -300,6 +301,7 @@ async function userBookingsCard (sColSpan, lColSpan, userBookingsArray, out ) {
         for ( var i = 0; i < numberOfUserBookings; i++ ) {
             var thisBooking = userBookingsArray[i];
             out +=      `<tr>
+                            <td style="width: 6%;"><img src="${thisBooking.profile_pic}" width="100%" /></td>
                             <td>${thisBooking.givenname} ${thisBooking.lastname}</td>
                             <td>${thisBooking.userID}</td>
                             <td>${thisBooking.cargoSpace}</td>

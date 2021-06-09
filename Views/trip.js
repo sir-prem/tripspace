@@ -1,27 +1,10 @@
 let U = require('../Views/utilities');
 let Util = require('../Controllers/utilities');
-var out;
-/*
-async function displayTripsByDriverPage(res, array) {
-    out = ``;
-    out = await U.addHeaderHTML(out);
-    out = await U.openingHtmlElements(out);
-    out = await U.addPageTitle( 12, 12, "My Trips", out );
-
-    out += `<div class="row">`;
-    out =       await U.driverTripsCard( 12, 12, array, out);
-    out += '</div>';
-
-    out = await U.closingHtmlElements(out);
-    out = await U.addFooterHTML(out);
-    res.send(out);
-}
-*/
 
 async function tripDetails(res, outputJSON) {
     var driverTrip = outputJSON.driverTrip;
     var dateString = outputJSON.dateJSON.dateString;
-    var userBookingsArray = outputJSON.bookingsForTripWithNames;
+    var userBookingsArray = outputJSON.bookingsForTripWithNameAndProfilePic;
     var bookingStats = outputJSON.bookingStats;
 
     var out = ``;
@@ -33,7 +16,7 @@ async function tripDetails(res, outputJSON) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l2" id="green-border"><p></p></div>
 
                     <div class="col s12 l3" id="green-border">
                         <div class="row">`;
@@ -60,33 +43,6 @@ async function tripDetails(res, outputJSON) {
                     `;
     out = await U.addFooterHTML(out);
     res.send(out);
-/*
-
-    out = await U.addHeaderHTML(out);
-    out = await U.openingHtmlElements(out);
-    out = await U.addPageTitle( 12, 12, "View Trip Details", out );
-
-    console.log("driver trip: ");
-    console.log(driverTrip);
-
-    out += `<div class="row">`;    
-    out =       await U.tripDetailsCard( 12, 3, driverTrip, dateString, out );
-    out =       await U.addSpacerColumn( 1, out);
-    out +=      `<div class="col s12 l8">`;
-    out +=          `<div class="row">`;    
-    out =               await U.userBookingsCard( 12, 12, userBookingsArray, out );
-    out +=          `</div>`;
-    out +=          `<div class="row">`;    
-    out =               await U.bookingStatsCard( 12, 7, bookingStats, out );
-    out +=          `</div>`;
-    
-    out +=      `</div>`;
-    out += `</div>`;
-
-    out = await U.closingHtmlElements(out);
-    out = await U.addFooterHTML(out);
-    res.send(out);
-    */
 }
 
 async function tripFinder(username, searchSubmitted) {
@@ -99,28 +55,28 @@ async function tripFinder(username, searchSubmitted) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                     <div class="col s12 l6" id="green-border">
                         <p><img src="/images/pic18.png" style="max-height:200px;"/></p>
                     </div>
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                     
                 </div>
 
                 <div class="row" id="red-border">
     
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                     <div class="col s12 l6 white-text" id="green-border">
                         <p><blockquote>Our package was delivered on time, and we paid about half the price. 
                         The driver was professional and friendly. Thank you TripSpace. <br><b>- Mr and Mrs Brown.</b></blockquote></p>
                     </div>
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                     
                 </div>
 
                 <div class="row" id="red-border">
     
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                     <div class="col s12 l6 grey darken-4 z-depth-1" id="green-border">
                         <form method="GET" action="/trip/trip-finder">
                             <div class="row" style="margin-top:2%;">
@@ -148,7 +104,7 @@ async function tripFinder(username, searchSubmitted) {
                             </div>
                         </form>
                     </div>
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                     
                 </div>
 
@@ -171,7 +127,7 @@ async function tripFinderResults(username, results, out) {
             <main>
             <div class="row" id="red-border">
             
-                <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                <div class="col s12 l3" id="green-border"><p></p></div>
                 <div class="col s12 l6 grey lighten-5" id="green-border">
                     <h6>Search Results</h6>`;
     if (results.length == 0) {
@@ -219,7 +175,7 @@ async function tripFinderResults(username, results, out) {
                     out += `</table>`;
     }
     out +=         `</div>
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                 </div>
             </main>
     `;
@@ -240,7 +196,7 @@ async function tripAdder(driverUsername) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                     
                     <div class="col s12 l2" id="green-border">
                         <div class="row">
@@ -301,7 +257,7 @@ async function tripAdder(driverUsername) {
                                 </div>
                     </div>
                     
-                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l2" id="green-border"><p></p></div>
                     
                 </div>
             </main>`;
@@ -321,7 +277,7 @@ async function tripAdded(addedTrip, driver) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
                     
                     <div class="col s12 l6" id="green-border">
                         <div class="row grey darken-4">
@@ -334,7 +290,7 @@ async function tripAdded(addedTrip, driver) {
                             your trip gets fully booked, and your trip-space gets fully utilised!</p>
                         </div>
                         <div class="row">
-                            <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                            <div class="col s12 l2" id="green-border"><p></p></div>
                             
                             <div class="col s12 l4" id="green-border">
                                 <p>
@@ -345,7 +301,7 @@ async function tripAdded(addedTrip, driver) {
                                 </p>
                             </div>
 
-                            <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                            <div class="col s12 l2" id="green-border"><p></p></div>
                             
                             <div class="col s12 l4" id="green-border">
                                 <p>                                    
@@ -359,7 +315,7 @@ async function tripAdded(addedTrip, driver) {
                         </div>
                     </div>
 
-                    <div class="col s12 l3" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l3" id="green-border"><p></p></div>
 
                 </div>
 
@@ -390,7 +346,7 @@ async function userTripDetails(json) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l2" id="green-border"><p></p></div>
                     
                     <div class="col s12 l3" id="green-border">`;
     out =               await U.driverInfoCard( 12, 12, driver, out );
@@ -401,12 +357,12 @@ async function userTripDetails(json) {
     out =               await U.tripDetailsCard( 12, 12, driverTrip, dateString, out );
     out +=          `</div>
 
-                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l1" id="green-border"><p></p></div>
 
                 </div>
 
                 <div class="row" id="red-border">
-                    <div class="col s12 l4" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l4" id="green-border"><p></p></div>
                         
                     <div class="col s12 l4 grey lighten-5" id="green-border">
                         <h5>Space Availabile</h5>
@@ -467,7 +423,7 @@ async function userTripDetails(json) {
                         </div>
                     </div>
 
-                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l1" id="green-border"><p></p></div>
                 </div>
 
             </main>`;
@@ -477,8 +433,7 @@ async function userTripDetails(json) {
 }
 
 
-module.exports = {
-    //displayTripsByDriverPage,
+module.exports = {    
     tripDetails,
     tripFinder, 
     tripFinderResults,

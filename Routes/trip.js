@@ -14,8 +14,6 @@ router.get('/driver/trip-details/:tripID', TripController.driverViewTrip);
 //User view of trip details (does not show all user bookings)
 router.get('/user/trip-details/:tripID/:username', TripController.userViewTrip);
 
-router.get('/driver/:username', TripController.getTripsByDriverParams);
-
 router.get('/trip-finder', TripController.findTripsBySuburb);
 
 router.get('/:id', TripController.getTripByID);

@@ -2,6 +2,7 @@ const TripModel = require('../Models/trip');
 const BookingModel = require('../Models/booking');
 const UserModel = require('../Models/user');
 let TripView = require('../Views/trip');
+let UserView = require('../Views/user-profile');
 let Util = require('../Controllers/utilities');
 const { userViewBookingStatsCard } = require('../Views/utilities');
 
@@ -97,15 +98,6 @@ module.exports = {
                     console.log(error.message);
                 }
             },
-    getTripsByDriverParams:
-            async (req, res, next) => {
-
-                const driverUsername = req.params.username;
-                console.log("driverUsername is: " + driverUsername);
-                var array = await getTripsByDriver(driverUsername);
-                await TripView.displayTripsByDriverPage(res, array);
-                
-            },
     getTripsByDriver,
     driverViewTrip:
             async (req, res, next) => {
@@ -133,14 +125,14 @@ module.exports = {
                     var percentageUtilizedSeatSpace;
                     var percentageUtilizedCargoSpace;
 
-                    var bookingsForTripWithNames = [];
+                    var bookingsForTripWithNameAndProfilePic = [];
 
                     const numberOfBookingsForThisTrip = bookingsForThisTrip.length;
 
                     for (var j = 0; j < numberOfBookingsForThisTrip; j++) {
                         var thisBooking = bookingsForThisTrip[j];
-                        var thisBookingWithNames = await Util.addNameToBooking(thisBooking);
-                        bookingsForTripWithNames.push(thisBookingWithNames);
+                        var thisBookingWithNameAndProfilePic = await Util.addNameAndProfilePicToBooking(thisBooking);
+                        bookingsForTripWithNameAndProfilePic.push(thisBookingWithNameAndProfilePic);
                         totalBookedSeats += thisBooking.seatSpace;
                         totalBookedCargo += thisBooking.cargoSpace;
                     }
@@ -173,7 +165,7 @@ module.exports = {
                     };
                                         
                     var dateJSON = await Util.getDateJSON(driverTrip.date);
-                    json = { driverTrip, dateJSON, bookingsForTripWithNames, bookingStats };
+                    json = { driverTrip, dateJSON, bookingsForTripWithNameAndProfilePic, bookingStats };
 
 
                     console.log(json);
