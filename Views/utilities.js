@@ -506,7 +506,7 @@ async function loginCard(out) {
 				<h4>Login</h4></p>
 				<form method="POST" action="/user/auth">
                     username: <input type="text" name="username" /><br>
-                    password: <input type="text" name="password" /><br>
+                    password: <input type="password" name="password" /><br>
                     <button class="btn waves-effect waves-light light-green darken-1" type="submit" name="action">Submit</button>
 				</form>
             </div>`;
