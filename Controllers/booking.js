@@ -130,6 +130,19 @@ module.exports = {
                 
             },
     getBookingsByUser,
+    editBookingDetails:
+            async (req, res, next) => {
+                console.log(req.body);
+                var userBooking;
+                try {
+                    userBooking = await BookingModel.findOne( { tripID: req.body.tripID, userID: req.body.userID }, { __v:0, _id:0 } );                    
+                    await BookingView.editBookingDetails(res, userBooking);
+
+                } catch (error) {
+                    console.log(error.message);
+                }
+                
+            },
     bookingDetails:
             async (req, res, next) => {
 

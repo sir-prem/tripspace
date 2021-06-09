@@ -7,6 +7,7 @@ router.get("/", BookingController.getAllBookings);
 router.post("/", BookingController.addNewBooking);
 
 router.get('/user/booking-details/:bookingID', BookingController.bookingDetails);
+router.post('/editBooking-details', BookingController.editBookingDetails);
 
 router.get('/user/:username', BookingController.getBookingsByUserParams);
 

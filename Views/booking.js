@@ -17,6 +17,58 @@ async function displayBookingsByUserPage(array) {
     return out;
 }
 
+async function editBookingDetails(res, userBooking) {
+    var out = ``;
+    out = await U.addHeaderHTML(out);
+
+    out += '<main>';
+    out =       await U.addPageTitle(12, 12, "Edit Booking", out);
+    
+    out += `    <div class="row" id="red-border">
+    
+                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+
+                    <div class="col s12 l3" id="green-border">
+                        <div class="row">`;
+    out =                   await U.editBookingInfoView(out, userBooking);
+    out += `                    <p><form method="POST" action="/booking/editBooking-details">
+
+    <p><button class="btn waves-effect waves-light light-green darken-1"
+        type="submit" style="margin-left:70%;margin-top:2%;">Edit</button>
+</form></p>
+
+<p><button class="btn waves-effect waves-light light-green darken-1"
+type="submit" style="margin-left:70%;margin-top:2%;">Cancel</button>
+</form></p>
+
+<p><form method="GET" action="">
+    <button class="btn waves-effect waves-light light-green darken-1"
+        type="submit" style="margin-left:70%;margin-top:2%;">Back</button>
+</form></p>`
+    out += `            </div>
+                        <div class="row">`;
+
+    out += `            </div>
+                    </div>
+
+                    <div class="col s12 l4" id="green-border" style="margin-left:2%;">
+                        <div class="row">`;
+
+    out += `            </div>
+                        <div class="row">`;
+
+    out += `            </div>
+                    </div>
+
+
+                    
+                </div>
+            </main>
+                    `;
+    out = await U.addFooterHTML(out);
+    res.send(out);
+}
+
 async function bookingDetails(res, outputJSON) {
     var driverTrip = outputJSON.tripLinkedtoThisBooking;
     var dateString = outputJSON.dateJSON.dateString;
@@ -56,7 +108,14 @@ async function bookingDetails(res, outputJSON) {
     out =                   await U.userViewBookingStatsCard( 12, 12, bookingStats, out );
     out += `            </div>
                     </div>
-                    
+
+                    <p><form method="POST" action="/booking/editBooking-details">
+                    <input type="hidden" name="tripID" value=${userBooking.tripID}>
+                    <input type="hidden" name="userID" value=${userBooking.userID}>
+                        <button class="btn waves-effect waves-light light-green darken-1"
+                            type="submit" style="margin-left:70%;margin-top:2%;">Edit booking</button>
+                    </form></p>
+
                     <p><form method="GET" action="/user/${userBooking.userID}">
                         <button class="btn waves-effect waves-light light-green darken-1"
                             type="submit" style="margin-left:70%;margin-top:2%;">Back to Profile</button>
@@ -157,5 +216,6 @@ async function bookingConfirmation(booking, user, trip, dateString) {
 module.exports = {
     displayBookingsByUserPage,
     bookingDetails,
-    bookingConfirmation
+    bookingConfirmation,
+    editBookingDetails
 };

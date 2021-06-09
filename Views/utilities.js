@@ -292,6 +292,45 @@ async function tripDetailsCard( sColSpan, lColSpan, driverTrip, dateString, out 
     return out;
 }
 
+async function editBookingInfoView(out, booking) {
+    out += `<div class="col s12 l12 grey lighten-5 z-depth-1">
+                <h5>Trip Info</h5>
+                <table>
+                    <tr> 
+                        <td><b> Trip ID:  </b></td> 
+                    </tr>
+                    <tr> 
+                        <td>${booking.tripID}</td> 
+                    </tr>
+                    <tr> 
+                        <td><b> User ID:  </b></td> 
+                    </tr>
+                    <tr> 
+                        <td>${booking.userID}</td> 
+                    </tr>
+                    <tr> 
+                    <td><b> Cargo Space:  </b></td> 
+                </tr>
+                <tr> 
+                    <td>${booking.cargoSpace}</td> 
+                </tr>  
+                <tr> 
+                <td><b> Seat Space:  </b></td> 
+            </tr>
+            <tr> 
+                <td>${booking.seatSpace}</td> 
+            </tr>                        
+                    <tr> 
+                        <td><b> Comments </b></td> 
+                    </tr>
+                    <tr> 
+                        <td><input type="text" name="comments" value='${booking.comments}' /></td> 
+                    </tr>                       
+                </table>
+            </div>`;
+    return out;
+}
+
 // this function is for Drivers to see User Bookings on their trip
 async function userBookingsCard (sColSpan, lColSpan, userBookingsArray, out ) {
     var numberOfUserBookings = userBookingsArray.length;
@@ -549,5 +588,6 @@ module.exports = {
     displaySymbolLogo,
     loginCard,
     signUpCard,
-    regForm
+    regForm,
+    editBookingInfoView
 };
