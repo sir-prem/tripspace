@@ -35,6 +35,8 @@ const user = require('./Routes/user');
 const bookTrip = require('./Routes/trip');
 const booking = require('./Routes/booking')
 let homePage = require('./Views/homepage');
+let aboutPage = require('./Views/about-page');
+let contactPage = require('./Views/contact-page');
 let newDriver = require('./Views/new-driver');
 let newUser = require('./Views/new-user');
 var editProfile = require('./Routes/editProfile');
@@ -90,6 +92,15 @@ app.post('/api', function(req, res) {
   });
 });
 
-server.listen(port, function() {
+//server.listen(port, function() {
+app.get("/about", async (req, res, next) => {
+  await aboutPage.displayAboutPage(res);
+});
+
+app.get("/contact", async (req, res, next) => {
+  await contactPage.displayContactPage(res);
+});
+
+app.listen(port, function() {
   console.log("Server is running on Port: " + port);
 });

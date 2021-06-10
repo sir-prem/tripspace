@@ -19,7 +19,7 @@ async function userProfile(res, user) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l1" id="green-border"><p></p></div>
 
                     <div class="col s12 l3" id="green-border">
                         <div class="row grey lighten-5 z-depth-1">`;
@@ -58,7 +58,7 @@ async function userProfile(res, user) {
                         </div>
                     </div>
                     
-                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>`; 
+                    <div class="col s12 l1" id="green-border"><p></p></div>`; 
     
     out += '    </div>';  // end larger row
         
@@ -83,7 +83,7 @@ async function driverProfile(res, user) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l1" id="green-border"><p></p></div>
 
                     <div class="col s12 l3" id="green-border">
                         <div class="row grey lighten-5 z-depth-1">`;
@@ -112,7 +112,7 @@ async function driverProfile(res, user) {
                         </div>
                     </div>
                     
-                    <div class="col s12 l1" id="green-border"><p>SPACER</p></div>`; 
+                    <div class="col s12 l1" id="green-border"><p></p></div>`; 
     
     out += '    </div>';  // end larger row
     

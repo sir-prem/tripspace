@@ -52,6 +52,11 @@ h1 {
   margin-bottom: 80px;
 }
 
+li#about-nav {
+  border: 1px dotted rgb(128, 165, 41);
+  color:whitesmoke;
+  background-color: none;
+}
 
 .card{
 	padding: 5px;
@@ -71,11 +76,15 @@ div#greenblock {
 }
 
 div#red-border {
-  border: 1px solid rgb(233, 24, 24);
+  /*
+    border: 1px solid rgb(233, 24, 24);
+  */
 }
 
 div#green-border {
-  border: 1px solid rgb(74, 199, 74);
+  /*
+    border: 1px solid rgb(74, 199, 74);
+  */
 }
 
 div#blue-border {

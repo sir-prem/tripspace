@@ -15,8 +15,8 @@ async function addHeaderHTML(out) {
 	out += '    		  <a href="#" class="brand-logo"><img src="/logo.png" width="120px"/></a>';
 	out += '    		  <ul id="nav-mobile" class="right hide-on-med-and-down">';
 	out += '    			<li><a href="/">Home</a></li>';
-	out += '    			<li><a href="./about.html">About</a></li>';
-	out += '    			<li><a href="./contact.html">Contact</a></li>';
+	out += '    			<li><a href="./about">About</a></li>';
+	out += '    			<li><a href="./contact">Contact</a></li>';
     out += '    			<li><a href="./track_driver.html">Track Driver</a></li>';
 	out += '    		  </ul>';
 	out += '    		</div>';
@@ -27,34 +27,35 @@ async function addHeaderHTML(out) {
 
 async function addFooterHTML(out) {
 
-    out += '<footer class="page-footer brown darken-4 grey-text text-lighten-5">';
-    out += '  <div class="container">';
-    out += '    <div class="row">';
-    out += '      <div class="col l6 s12">';
-    out += '        <h5 class="white-text">Footer Content</h5>';
-    out += '        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>';
-    out += '      </div>';
-    out += '      <div class="col l4 offset-l2 s12">';
-    out += '        <h5 class="white-text">Links</h5>';
-    out += '        <ul>';
-    out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>';
-    out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>';
-    out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>';
-    out += '          <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>';
-    out += '        </ul>';
-    out += '      </div>';
-    out += '    </div>';
-    out += '  </div>';
-    out += '  <div class="footer-copyright brown darken-3 grey-text text-lighten-5">';
-    out += '    <div class="container">';
-    out += '        © 2021 Copyright TripSPACE';
-    out += '        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>';
-    out += '    </div>';
-    out += '  </div>';
-    out += '</footer>';
+    out += `<footer class="page-footer brown darken-4 grey-text text-lighten-5">
+              <div class="container">
+                <div class="row">
+                  <div class="col l6 s12">
+                    <h5 class="white-text">TripSpace</h5>
+                    <p class="grey-text text-lighten-4">Helping the environment to become more sustainable
+                    by leveraging existing vehicle trips, and aiming to utilise them to their capacity.</p>
+                  </div>
+                  <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul>
+                      <li><a class="grey-text text-lighten-3" href="#!">Partner link 1</a></li>
+                      <li><a class="grey-text text-lighten-3" href="#!">Partner link 2</a></li>
+                      <li><a class="grey-text text-lighten-3" href="#!">Partner link 3</a></li>
+                      <li><a class="grey-text text-lighten-3" href="#!">Partner link 4</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="footer-copyright brown darken-3 grey-text text-lighten-5">
+                <div class="container">
+                    © 2021 Copyright TripSPACE
+                    
+                </div>
+              </div>
+            </footer>
 
-    out+= '    </body>';
-    out+= '</html>';
+               </body>
+            </html>`;
     return out;
 }
 
@@ -409,6 +410,7 @@ async function userBookingsCard (sColSpan, lColSpan, userBookingsArray, out ) {
     
         out +=      `<table>
                         <tr>
+                            <th></th>
                             <th>Name</th>
                             <th>Username</th>
                             <th>Cargo Space</th>
@@ -419,6 +421,7 @@ async function userBookingsCard (sColSpan, lColSpan, userBookingsArray, out ) {
         for ( var i = 0; i < numberOfUserBookings; i++ ) {
             var thisBooking = userBookingsArray[i];
             out +=      `<tr>
+                            <td style="width: 6%;"><img src="${thisBooking.profile_pic}" width="100%" /></td>
                             <td>${thisBooking.givenname} ${thisBooking.lastname}</td>
                             <td>${thisBooking.userID}</td>
                             <td>${thisBooking.cargoSpace}</td>
@@ -495,8 +498,8 @@ async function myTripBookingsCard (sColSpan, lColSpan, tripBookingsArray, out ) 
                             <td>${thisBooking.tripLinkedtoThisBooking.fromSuburb}</td>
                             <td>${thisBooking.tripLinkedtoThisBooking.toSuburb}</td>
                             <td>${thisBooking.dateJSON.dateString}</td>
-                            <td>${thisBooking.userBookingWithNames.cargoSpace}</td>
-                            <td>${thisBooking.userBookingWithNames.seatSpace}</td>
+                            <td>${thisBooking.userBookingWithNameAndProfilePic.cargoSpace}</td>
+                            <td>${thisBooking.userBookingWithNameAndProfilePic.seatSpace}</td>
                             <td>
                                 <form method="GET" action="/booking${thisBooking.viewBookingDetailsURL}">
                                     <button class="btn waves-effect waves-light light-green darken-3" type="submit" name="action">View</button>
@@ -573,7 +576,7 @@ async function driverInfoCard( sColSpan, lColSpan, driver, out ) {
                         <td> ${ driver.gender } </td> 
                     </tr>
                     <tr>                          
-                        <td><img src="${ driver.profile_pic }" width="100%" style="margin-left:120%;" /> </td> 
+                        <td><img src="${ driver.profile_pic }" width="100%" style="margin-left:50%;" /> </td> 
                     </tr>                                  
                 </table>
             </div>`;

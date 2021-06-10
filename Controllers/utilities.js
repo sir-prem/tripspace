@@ -26,27 +26,28 @@ async function getDateJSON(driverTripDate) {
     return dateJSON;
 }
 
-async function addNameToBooking(thisBooking) {
+async function addNameAndProfilePicToBooking(thisBooking) {
     const userWhoBooked = await UserModel.findOne( { username: thisBooking.userID },{ __v:0 } );
     //console.log("userWhoBooked is:");
     //console.log(userWhoBooked);
     //console.log("givenname is: " + userWhoBooked.givenname);
 
-    var thisBookingWithNames = {
+    var thisBookingWithNameAndProfilePic = {
         tripID: thisBooking.tripID,
         userID: thisBooking.userID,
         cargoSpace: thisBooking.cargoSpace,
         seatSpace: thisBooking.seatSpace,
         comments: thisBooking.comments,
         givenname: userWhoBooked.givenname, 
-        lastname: userWhoBooked.lastname 
+        lastname: userWhoBooked.lastname,
+        profile_pic: userWhoBooked.profile_pic
     }
-    return thisBookingWithNames;
+    return thisBookingWithNameAndProfilePic;
 
 }
 
 module.exports = {
     consoleLogHeader,
     getDateJSON,
-    addNameToBooking
+    addNameAndProfilePicToBooking
 };
