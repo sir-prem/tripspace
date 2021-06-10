@@ -20,16 +20,17 @@ module.exports = {
                     age: req.body.age,
                     gender: req.body.gender,
                 }} ); 
-        } else {
-            result = await UserModel.findOneAndUpdate( {_id: req.body.uid}, {$set:{
-                    password: req.body.password,
-                    givenname: req.body.givenname,
-                    lastname: req.body.lastname,
-                    age: req.body.age,
-                    gender: req.body.gender,
-                    profile_pic: req.body.profile_pic
-                }} ); 
-        }
+            } else {
+                result = await UserModel.findOneAndUpdate( {_id: req.body.uid}, {$set:{
+                        password: req.body.password,
+                        givenname: req.body.givenname,
+                        lastname: req.body.lastname,
+                        age: req.body.age,
+                        gender: req.body.gender,
+                        profile_pic: req.body.profile_pic
+                    }} ); 
+            }
+            result = await UserModel.findOne( {_id:req.body.uid},{__v:0} );
         if (result.usertype == 'driver') {
             await UserView.driverProfile(res, result);
         }
@@ -55,6 +56,7 @@ module.exports = {
     },
     editProfile: 
     async (req, res, next) => {
+        Util.consoleLogHeader("Edit Profile");
         try {
             console.log(req.body);
             var result = await UserModel.findOne( {username: req.body.username}, { __v:0 } );

@@ -15,9 +15,9 @@ async function addHeaderHTML(out) {
 	out += '    		  <a href="#" class="brand-logo"><img src="/logo.png" width="120px"/></a>';
 	out += '    		  <ul id="nav-mobile" class="right hide-on-med-and-down">';
 	out += '    			<li><a href="/">Home</a></li>';
-	out += '    			<li><a href="./about">About</a></li>';
-	out += '    			<li><a href="./contact">Contact</a></li>';
-    out += '    			<li><a href="./track_driver.html">Track Driver</a></li>';
+	out += '    			<li><a href="/about">About</a></li>';
+	out += '    			<li><a href="/contact">Contact</a></li>';
+    out += '    			<li><a href="/track_driver.html">Track Driver</a></li>';
 	out += '    		  </ul>';
 	out += '    		</div>';
 	out += '    	  </nav>';
@@ -421,7 +421,7 @@ async function userBookingsCard (sColSpan, lColSpan, userBookingsArray, out ) {
         for ( var i = 0; i < numberOfUserBookings; i++ ) {
             var thisBooking = userBookingsArray[i];
             out +=      `<tr>
-                            <td style="width: 6%;"><img src="${thisBooking.profile_pic}" width="100%" /></td>
+                            <td style="width: 15%;"><img src="${thisBooking.profile_pic}" width="100%" /></td>
                             <td>${thisBooking.givenname} ${thisBooking.lastname}</td>
                             <td>${thisBooking.userID}</td>
                             <td>${thisBooking.cargoSpace}</td>

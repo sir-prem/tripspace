@@ -92,7 +92,6 @@ app.post('/api', function(req, res) {
   });
 });
 
-//server.listen(port, function() {
 app.get("/about", async (req, res, next) => {
   await aboutPage.displayAboutPage(res);
 });

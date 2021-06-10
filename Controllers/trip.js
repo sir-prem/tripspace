@@ -2,7 +2,6 @@ const TripModel = require('../Models/trip');
 const BookingModel = require('../Models/booking');
 const UserModel = require('../Models/user');
 let TripView = require('../Views/trip');
-let UserView = require('../Views/user-profile');
 let Util = require('../Controllers/utilities');
 let UserView = require('../Views/user-profile');
 

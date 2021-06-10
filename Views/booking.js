@@ -26,7 +26,7 @@ async function editBookingDetails(res, userBooking) {
     
     out += `    <div class="row" id="red-border">
     
-                    <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
+                    <div class="col s12 l2" id="green-border"><p></p></div>
 
                     <div class="col s12 l3" id="green-border">
                         <div class="row">
@@ -119,12 +119,12 @@ async function bookingDetails(res, outputJSON) {
                     <input type="hidden" name="tripID" value=${userBooking.tripID}>
                     <input type="hidden" name="userID" value=${userBooking.userID}>
                         <button class="btn waves-effect waves-light light-green darken-1"
-                            type="submit" style="margin-left:70%;margin-top:2%;">Edit booking</button>
+                            type="submit" style="margin-left:50%;margin-top:2%;">Edit booking</button>
                     </form></p>
 
                     <p><form method="GET" action="/user/${userBooking.userID}">
                         <button class="btn waves-effect waves-light light-green darken-1"
-                            type="submit" style="margin-left:70%;margin-top:2%;">Back to Profile</button>
+                            type="submit" style="margin-left:50%;margin-top:2%;">Back to Profile</button>
                     </form></p>
                     
                 </div>

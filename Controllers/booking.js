@@ -17,16 +17,21 @@ async function getBookingsByUser(username) {
 
         for (var i = 0; i < userBookings.length; i++) {
             userBooking = userBookings[i];
+            console.log(userBooking);
             console.log("tripID is: " + userBooking.tripID);
             const tripLinkedtoThisBooking = await TripModel.findOne( { _id: userBooking.tripID }, { __v:0 } );
+            console.log('trip Linked to this booking is: ');
+            console.log(tripLinkedtoThisBooking);
 
             const allBookingsForThisTrip = await BookingModel.find( { tripID: userBooking.tripID }, { __v:0 } );
 
+            console.log("HERE 1 *******************************************************");
             const tripTotalSeatSpace = tripLinkedtoThisBooking.seatSpace;
             const tripTotalCargoSpace = tripLinkedtoThisBooking.cargoSpace;
-            
+            console.log("HERE 2 *******************************************************");
             const mySeats = userBooking.seatSpace;
             const myCargo = userBooking.cargoSpace;
+            console.log("HERE 3 *******************************************************");
             var totalBookedSeats = 0;
             var totalBookedCargo = 0;
             var remainingSeats;
@@ -38,7 +43,7 @@ async function getBookingsByUser(username) {
                 totalBookedSeats += thisBooking.seatSpace;
                 totalBookedCargo += thisBooking.cargoSpace;
             }
-
+            console.log("HERE 4 *******************************************************");
             remainingSeats = tripTotalSeatSpace - totalBookedSeats;
             remainingCargo = tripTotalCargoSpace - totalBookedCargo;
             
@@ -59,12 +64,12 @@ async function getBookingsByUser(username) {
             var dateJSON = await Util.getDateJSON(tripLinkedtoThisBooking.date);
             array.push({ userBookingWithNameAndProfilePic, tripLinkedtoThisBooking, dateJSON, mySpace, remainingSpace, viewBookingDetailsURL });
         }
-        console.log("HERE 1 *******************************************************");
+        console.log("HERE 5 *******************************************************");
 
         for (var i = 0; i < array.length; i++) {
             console.log(array[i]);                        
         }
-        console.log("HERE 2 *******************************************************");
+        console.log("HERE 6 *******************************************************");
         //res.send(array);
         //res.send(userBookings);
         return array;
