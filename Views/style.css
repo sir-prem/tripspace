@@ -52,6 +52,11 @@ h1 {
   margin-bottom: 80px;
 }
 
+li#about-nav {
+  border: 1px dotted rgb(128, 165, 41);
+  color:whitesmoke;
+  background-color: none;
+}
 
 .card{
 	padding: 5px;

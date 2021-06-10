@@ -15,8 +15,8 @@ async function addHeaderHTML(out) {
 	out += '    		  <a href="#" class="brand-logo"><img src="/logo.png" width="120px"/></a>';
 	out += '    		  <ul id="nav-mobile" class="right hide-on-med-and-down">';
 	out += '    			<li><a href="/">Home</a></li>';
-	out += '    			<li><a href="./about.html">About</a></li>';
-	out += '    			<li><a href="./contact.html">Contact</a></li>';
+	out += '    			<li><a href="/about">About</a></li>';
+	out += '    			<li><a href="/contact">Contact</a></li>';
 	out += '    		  </ul>';
 	out += '    		</div>';
 	out += '    	  </nav>';
@@ -54,7 +54,7 @@ async function addFooterHTML(out) {
             </footer>
 
                </body>
-            /html>`;
+            </html>`;
     return out;
 }
 
