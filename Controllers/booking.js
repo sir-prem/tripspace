@@ -72,8 +72,40 @@ async function getBookingsByUser(username) {
     return array;
 }
 
-module.exports = {
-
+module.exports = {    
+    edit:
+            async (req,res,next) => {
+        try {
+            console.log(req.body);
+                await BookingModel.findOneAndUpdate( { _id: req.body.id }, { $set:{
+                    comments: req.body.comments
+                } } ); 
+                res.redirect('/booking/user/booking-details/'+req.body.id);
+    
+    
+            } catch (error) {
+                console.log(error.message);
+            }
+            },
+            cancel:
+            async (req,res,next) => {
+                console.log(req.body);
+                try {
+                var booking = await BookingModel.findOne({_id: req.body.id});
+                var user = await UserModel.findOne({username: booking.username})
+                console.log("Cancel");
+                await BookingModel.findOneAndDelete({_id: req.body.id})
+                res.redirect('/user/'+user.username);
+                }
+                catch (error) {
+                    console.log(error.message);
+                }
+            },
+            back:
+            async (req,res,next) => {
+console.log(req.body);
+                res.redirect('/booking/user/booking-details/'+req.body.id);
+            },
     addNewBooking:
             async (req,res,next) => {
 
@@ -132,12 +164,11 @@ module.exports = {
     getBookingsByUser,
     editBookingDetails:
             async (req, res, next) => {
-                console.log(req.body);
+                // console.log(req.body);
                 var userBooking;
                 try {
-                    userBooking = await BookingModel.findOne( { tripID: req.body.tripID, userID: req.body.userID }, { __v:0, _id:0 } );                    
+                    userBooking = await BookingModel.findOne( { tripID: req.body.tripID, userID: req.body.userID });                
                     await BookingView.editBookingDetails(res, userBooking);
-
                 } catch (error) {
                     console.log(error.message);
                 }

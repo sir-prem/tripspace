@@ -5,6 +5,9 @@ const BookingController = require('../Controllers/booking');
 router.get("/", BookingController.getAllBookings);
 
 router.post("/", BookingController.addNewBooking);
+router.post('/edit', BookingController.edit);
+router.post('/cancel', BookingController.cancel);
+router.post('/back', BookingController.back);
 
 router.get('/user/booking-details/:bookingID', BookingController.bookingDetails);
 router.post('/editBooking-details', BookingController.editBookingDetails);

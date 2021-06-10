@@ -29,21 +29,27 @@ async function editBookingDetails(res, userBooking) {
                     <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
 
                     <div class="col s12 l3" id="green-border">
-                        <div class="row">`;
+                        <div class="row">
+                        <p><form method="POST" action="/booking/edit">
+<input type="hidden" name="id" value=${userBooking._id} />
+`;
     out =                   await U.editBookingInfoView(out, userBooking);
-    out += `                    <p><form method="POST" action="/booking/editBooking-details">
+    out += `                    
 
     <p><button class="btn waves-effect waves-light light-green darken-1"
-        type="submit" style="margin-left:70%;margin-top:2%;">Edit</button>
+        type="submit" style="margin-left:80%;margin-top:2%;">Edit</button></p>
+</form>
+
+<p><form method="POST" action="/booking/cancel">
+<input type="hidden" name="id" value=${userBooking._id}/>
+<button class="btn waves-effect waves-light light-green darken-1"
+type="submit" style="margin-left:60%;margin-top:2%;">Cancel \n Booking</button>
 </form></p>
 
-<p><button class="btn waves-effect waves-light light-green darken-1"
-type="submit" style="margin-left:70%;margin-top:2%;">Cancel</button>
-</form></p>
-
-<p><form method="GET" action="">
+<p><form method="POST" action="/booking/back">
+<input type="hidden" name="id" value=${userBooking._id}/>
     <button class="btn waves-effect waves-light light-green darken-1"
-        type="submit" style="margin-left:70%;margin-top:2%;">Back</button>
+        type="submit" style="margin-left:80%;margin-top:2%;">Back</button>
 </form></p>`
     out += `            </div>
                         <div class="row">`;
