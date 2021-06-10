@@ -18,7 +18,7 @@ async function displayTripsByDriverPage(res, array) {
 }
 */
 
-async function editTrip(res, trip) {
+async function editTrip(res, trip, id) {
     var out = ``;
     out = await U.addHeaderHTML(out);
 
@@ -30,22 +30,30 @@ async function editTrip(res, trip) {
                     <div class="col s12 l2" id="green-border"><p>SPACER</p></div>
 
                     <div class="col s12 l3" id="green-border">
-                        <div class="row">`;
-    out =                   await U.editTripInfoView(out, trip);
-    out += `                    <p><form method="POST" action="/booking/editBooking-details">
+                        <div class="row">
+                        <form method="POST" action="/trip/edit">
+                        `;
+    out =                   await U.editTripInfoView(out, trip, id);
+    out += `                    
 
     <p><button class="btn waves-effect waves-light light-green darken-1"
         type="submit" style="margin-left:70%;margin-top:2%;">Edit</button>
-</form></p>
+        </p>
+        </form>
+        <form method="POST" action="/trip/cancel">
+        <input type="hidden" name="id" value=${id} />
+        <p><button class="btn waves-effect waves-light light-green darken-1"
+type="submit" style="margin-left:70%;margin-top:2%;">Cancel Trip</button>
+</p>
+</form>
+<form method="POST" action="/trip/back">
+        <input type="hidden" name="id" value=${id} />
+        <p><button class="btn waves-effect waves-light light-green darken-1"
+        type="submit" style="margin-left:70%;margin-top:2%;">Back</button></p>
+        </form>
 
-<p><button class="btn waves-effect waves-light light-green darken-1"
-type="submit" style="margin-left:70%;margin-top:2%;">Cancel</button>
-</form></p>
 
-<p><form method="GET" action="">
-    <button class="btn waves-effect waves-light light-green darken-1"
-        type="submit" style="margin-left:70%;margin-top:2%;">Back</button>
-</form></p>`
+`
     out += `            </div>
                         <div class="row">`;
 

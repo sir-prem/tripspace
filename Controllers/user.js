@@ -45,7 +45,7 @@ module.exports = {
     async (req, res, next) => {
         try {
             console.log(req.body);
-            var result = await UserModel.findOneAndRemove( {username: req.body.username}, { __v:0 } );
+            var result = await UserModel.findOneAndDelete( {username: req.body.username}, { __v:0 } );
             console.log(result);
             res.redirect('/');
         } catch (error) {

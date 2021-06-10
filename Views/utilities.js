@@ -331,7 +331,7 @@ async function editBookingInfoView(out, booking) {
     return out;
 }
 
-async function editTripInfoView(out, trip) {
+async function editTripInfoView(out, trip, id) {
     out += `<div class="col s12 l12 grey lighten-5 z-depth-1">
                 <h5>Trip Info</h5>
                 <table>
@@ -339,13 +339,13 @@ async function editTripInfoView(out, trip) {
                         <td><b> From:  </b></td> 
                     </tr>
                     <tr> 
-                        <td>${trip.fromSuburb}</td> 
+                        <td><input type="text" name="from" value=${trip.fromSuburb} /></td> 
                     </tr>
                     <tr> 
                         <td><b> To:  </b></td> 
                     </tr>
                     <tr> 
-                        <td>${trip.toSuburb}</td> 
+                        <td><input type="text" name="to" value=${trip.toSuburb} /></td> 
                     </tr>
                     <tr> 
                     <td><b> Username:  </b></td> 
@@ -357,37 +357,38 @@ async function editTripInfoView(out, trip) {
                 <td><b> Date:  </b></td> 
             </tr>
             <tr> 
-                <td>${trip.date}</td> 
+                <td><input type="text" name="date" value=${trip.date} /></td> 
             </tr>                        
                     <tr> 
                         <td><b> Departure Time: </b></td> 
                     </tr>
                     <tr> 
-                        <td>${trip.departureTime}</td> 
+                        <td><input type="text" name="dt" value=${trip.departureTime} /></td> 
                     </tr>
                     <tr> 
                     <td><b> Arrival Time: </b></td> 
                 </tr>
                 <tr> 
-                    <td>${trip.arrivalTime}</td> 
+                    <td><input type="text" name="at" value=${trip.arrivalTime} /></td> 
                 </tr>           
                 <tr> 
                 <td><b> Vehicle: </b></td> 
             </tr>
             <tr> 
-                <td>${trip.vehicle}</td> 
+                <td><input type="text" name="vehicle" value=${trip.vehicle} /></td> 
             </tr>          
             <tr> 
             <td><b> Cargo Space: </b></td> 
         </tr>
         <tr> 
-            <td>${trip.cargoSpace}</td> 
+            <td><input type="text" name="cargoSpace" value=${trip.cargoSpace} /></td> 
         </tr>     
         <tr> 
         <td><b> Seat Space: </b></td> 
     </tr>
     <tr> 
-        <td>${trip.seatSpace}</td> 
+        <td><input type="text" name="seatSpace" value=${trip.seatSpace} /></td> 
+        <td><input type="hidden" name="_id" value=${id} /></td> 
     </tr> 
                 </table>
             </div>`;

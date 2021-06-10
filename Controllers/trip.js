@@ -3,7 +3,7 @@ const BookingModel = require('../Models/booking');
 const UserModel = require('../Models/user');
 let TripView = require('../Views/trip');
 let Util = require('../Controllers/utilities');
-const { userViewBookingStatsCard } = require('../Views/utilities');
+let UserView = require('../Views/user-profile');
 
 async function getTripsByDriver(driverUsername) {
     Util.consoleLogHeader('Get Trips by Driver');
@@ -52,15 +52,54 @@ async function getTripsByDriver(driverUsername) {
 }
 
 module.exports = {
+    edit: 
+    async (req,res,next) => {
+        try {
+            console.log(req.body);
+            var result = await TripModel.findOneAndUpdate( { _id: req.body._id }, { $set:{
+                fromSuburb: req.body.from,
+                toSuburb: req.body.to,
+                date: Date.parse(req.body.date),
+                departureTime: req.body.dt,
+                arrivalTime: req.body.at,
+                vehicle: req.body.vehicle,
+                cargoSpace: req.body.cargoSpace,
+                seatSpace: req.body.seatSpace,
+            } } ); 
 
+            res.redirect('/trip/driver/trip-details/'+req.body._id);
+
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+    cancel: 
+    async (req,res,next) => {
+            console.log(req.body);
+            try {
+            var trip = await TripModel.findOne({_id: req.body.id});
+            var user = await UserModel.findOne({username: trip.username})
+            console.log("Cancel");
+            await TripModel.findOneAndDelete({_id: req.body.id})
+            res.redirect('/user/'+user.username);
+            }
+            catch (error) {
+                console.log(error.message);
+            }
+        },
+    back: 
+    async (req,res,next) => {
+        res.redirect('/trip/driver/trip-details/'+req.body.id);
+    },
     editTrip:
     async (req, res, next) => {
         var id = req.body;
-        console.log(id.tripID);
+        // console.log(id.tripID);
         var trip;
         try {
-            trip = await TripModel.findOne( { _id: id.tripID }, { __v:0, _id:0 } );     
-            await TripView.editTrip(res, trip);
+            trip = await TripModel.findOne( { _id: id.tripID }, { __v:0, _id:0 } ); 
+            await TripView.editTrip(res, trip, id.tripID);
         } catch (error) {
             console.log(error.message);
         }
