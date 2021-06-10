@@ -100,6 +100,6 @@ app.get("/contact", async (req, res, next) => {
   await contactPage.displayContactPage(res);
 });
 
-app.listen(port, function() {
+server.listen(port, function() {
   console.log("Server is running on Port: " + port);
 });
