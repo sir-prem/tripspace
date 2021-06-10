@@ -80,6 +80,10 @@ module.exports = {
             try {
             var trip = await TripModel.findOne({_id: req.body.id});
             var user = await UserModel.findOne({username: trip.username})
+            var r;
+            do{
+                r = await BookingModel.findOneAndDelete({tripID: req.body.id})
+            } while(r!==null)
             console.log("Cancel");
             await TripModel.findOneAndDelete({_id: req.body.id})
             res.redirect('/user/'+user.username);
