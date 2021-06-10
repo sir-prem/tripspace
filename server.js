@@ -9,7 +9,7 @@ const io = socketio(server);
 const port = 4000;
 
 
-var uri = "mongodb+srv://admin:00000@cluster0.7hvms.mongodb.net/test";
+var uri = "mongodb+srv://cluster0.7hvms.mongodb.net/";
 
 const mongoose = require("mongoose");
 
